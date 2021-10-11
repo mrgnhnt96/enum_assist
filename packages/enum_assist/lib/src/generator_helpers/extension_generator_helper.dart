@@ -5,12 +5,13 @@ import 'package:enum_assist/src/templates/maybe_map_template.dart';
 /// A generator class for enum extensions
 abstract class ExtensionGeneratorHelper implements HelperCore {
   /// generates extensions code
-  Iterable<String> generateExtensions() sync* {
-    yield 'extension ${enumName}X on $enumName {';
-    {
-      yield MapTemplate(enumName, fieldNames).toString();
-      yield MaybeMapTemplate(enumName, fieldNames).toString();
-    }
-    yield '}';
+  String generateExtensions() {
+    final buffer = StringBuffer()
+      ..writeln('extension ${enumName}X on $enumName {')
+      ..writeln(MapTemplate(enumName, fieldNames).toString())
+      ..writeln(MaybeMapTemplate(enumName, fieldNames).toString())
+      ..writeln('}');
+
+    return buffer.toString();
   }
 }
