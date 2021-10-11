@@ -1,10 +1,13 @@
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'enums.dart';
-
+/// {@template enum_assist_annotation.field_format_conv}
 /// Serializes [FieldFormat]
+/// {@endtemplate}
 class FieldFormatConv extends JsonConverter<FieldFormat, String> {
+  /// {@macro enum_assist_annotation.field_format_conv}
+  const FieldFormatConv();
+
   static const _kebabName = 'kebab';
   static const _snakeName = 'snake';
   static const _pascalName = 'pascal';
