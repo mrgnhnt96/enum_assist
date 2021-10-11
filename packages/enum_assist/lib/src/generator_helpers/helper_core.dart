@@ -1,6 +1,7 @@
 // ignore_for_file: implementation_imports, comment_references
 import 'package:analyzer/dart/element/element.dart';
 import 'package:enum_assist/src/configs/class_config.dart';
+import 'package:enum_assist/src/enum_field.dart';
 import 'package:meta/meta.dart';
 import 'package:source_helper/source_helper.dart';
 
@@ -42,4 +43,9 @@ abstract class HelperCore {
   /// Returns the names of all fields
   @protected
   Iterable<String> get fieldNames => fieldElements.map(_nameAccess);
+
+  /// returns a list of [EnumField]s for the given [fieldElements]
+  @protected
+  Iterable<EnumField> get fields =>
+      fieldElements.map((e) => EnumField.config(e, config));
 }
