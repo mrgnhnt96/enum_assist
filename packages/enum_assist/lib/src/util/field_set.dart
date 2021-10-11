@@ -3,12 +3,11 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
+/// {@template enum_assist.field_set}
+/// A helper class to provide data & methods for given field
+/// {@endtemplate}
 class FieldSet implements Comparable<FieldSet> {
-  FieldSet._(this.field, this.sortField) : assert(field.name == sortField.name);
-
-  final FieldElement field;
-  final FieldElement sortField;
-
+  /// {@template enum_assist.field_set.name}
   factory FieldSet(FieldElement? classField, FieldElement? superField) {
     // At least one of these will != null, perhaps both.
     final fields = [classField, superField].whereType<FieldElement>().toList();
@@ -23,6 +22,14 @@ class FieldSet implements Comparable<FieldSet> {
 
     return FieldSet._(fieldHasEnumKey, sortField);
   }
+
+  FieldSet._(this.field, this.sortField) : assert(field.name == sortField.name);
+
+  /// The [field]
+  final FieldElement field;
+
+  /// The [sortField]
+  final FieldElement sortField;
 
   @override
   int compareTo(FieldSet other) => _sortByLocation(sortField, other.sortField);
