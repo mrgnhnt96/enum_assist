@@ -1,14 +1,13 @@
+import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta_meta.dart';
-
-import 'util/enums.dart';
 
 part 'enum_assist.g.dart';
 
 /// {@template enum_assist_annotation.enum_assist}
 /// Annotation to assist in generating code for enums.
 /// {@endtemplate}
-@Target({TargetKind.classType})
+@Target({TargetKind.enumType})
 @JsonSerializable(createToJson: false)
 class EnumAssist {
   /// {@macro enum_assist_annotation.enum_assist}
