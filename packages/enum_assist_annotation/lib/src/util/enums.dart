@@ -1,4 +1,6 @@
+/// {@template enum_assist_annotation.field_format}
 /// Formats the field name when serializing.
+/// {@endtemplate}
 enum FieldFormat {
   /// {@template enum_assist_annotation.field_format.kebab}
   /// formats value to kebab-case
