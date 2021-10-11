@@ -1,5 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
-
 /// Formats the field name when serializing.
 enum FieldFormat {
   /// {@template enum_assist_annotation.field_format.kebab}

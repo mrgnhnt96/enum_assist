@@ -1,4 +1,4 @@
-import 'enums.dart';
+import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 
 /// Extensions for [FieldFormat]
 extension FieldFormatX on FieldFormat {
