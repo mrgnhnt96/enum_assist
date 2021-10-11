@@ -1,9 +1,9 @@
 # Read about `build.yaml` at https://pub.dev/packages/build_config
-# builders:
-#   enum_assist:
-#     import: "package:enum_assist/builder.dart"
-#     builder_factories: ["enumAssist"]
-#     build_extensions: { ".dart": ["enum_assist.g.dart"] }
-#     auto_apply: dependents
-#     build_to: cache
-#     applies_builders: ["source_gen|combining_builder"]
+builders:
+  enum_assist:
+    import: "package:enum_assist/builder.dart"
+    builder_factories: ["enumAssist"]
+    build_extensions: { ".dart": ["enum_assist.g.dart"] }
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]
