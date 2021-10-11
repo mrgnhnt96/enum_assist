@@ -1,0 +1,29 @@
+name: enum_assist
+version: 0.0.1
+description: >-
+  Automatically generate code the names for class properties by annotating
+  Dart classes.
+repository: https://github.com/mrgnhnt96/enum_assist/enum_assist
+publish_to: none
+
+environment:
+  sdk: ">=2.14.0 <3.0.0"
+
+dependencies:
+  analyzer: ^2.5.0
+  build: ^2.1.1
+  build_config: ^1.0.0
+  json_annotation: ^4.1.0
+  meta: ^1.7.0
+  source_gen: ^1.1.1
+  source_helper: ^1.3.0
+  enum_assist_annotation:
+    path: ../enum_assist_annotation
+
+dev_dependencies:
+  test: ^1.18.2
+  build_runner: ^2.1.4
+  json_serializable: ^5.0.2
+  very_good_analysis: ^2.3.0
+
+scripts: ../../derry.yaml
