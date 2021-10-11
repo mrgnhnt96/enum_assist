@@ -1,16 +1,18 @@
-import 'package:meta/meta_meta.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'enum_key.g.dart';
 
 /// {@template enum_assist_annotation.enum_key}
 /// Annotation to assist in generating code for enum values.
 /// {@endtemplate}
-@Target({TargetKind.field})
+@JsonSerializable(createToJson: false)
 class EnumKey {
   /// {@macro enum_assist_annotation.enum_key}
   const EnumKey({
     this.name,
     this.description,
     this.serializedValue,
-    this.useDocCommentAsDescription = true,
+    this.useDocCommentAsDescription,
   });
 
   /// {@template enum_assist_annotation.enum_key.name}
@@ -33,7 +35,7 @@ class EnumKey {
   /// {@endtemplate}
   final String? description;
 
-  /// {@template enum_assist_annotation.enum_key.serializedValue}
+  /// {@template enum_assist_annotation.enum_key.serialized_value}
   /// The serialized value of the enum
   ///
   /// To be used only if the desired value cannot be
@@ -41,5 +43,8 @@ class EnumKey {
   final String? serializedValue;
 
   /// {@macro enum_assist_annotation.enum_assist.use_doc_comment_as_description}
-  final bool useDocCommentAsDescription;
+  final bool? useDocCommentAsDescription;
+
+  /// Access serialized names of fields from [EnumKey]
+  static _$EnumKeyFields get fields => const _$EnumKeyFields();
 }
