@@ -8,7 +8,7 @@ part 'enum_assist.g.dart';
 /// Annotation to assist in generating code for enums.
 /// {@endtemplate}
 @Target({TargetKind.enumType})
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: false, fieldRename: FieldRename.snake)
 class EnumAssist {
   /// {@macro enum_assist_annotation.enum_assist}
   const EnumAssist({
@@ -54,5 +54,25 @@ class EnumAssist {
       _$EnumAssistFromJson(json);
 
   /// retrieves all field keys for [EnumAssist]
-  static _$EnumAssistFields get fields => const _$EnumAssistFields();
+  static _Fields get fields => const _Fields();
+}
+
+class _Fields {
+  const _Fields();
+
+  _Camel get camel => const _Camel();
+  _$EnumAssistFields get defaults => const _$EnumAssistFields();
+}
+
+class _Camel implements _$EnumAssistFields {
+  const _Camel();
+
+  @override
+  String get createJsonConv => 'createJsonConv';
+
+  @override
+  String get fieldFormat => 'fieldFormat';
+
+  @override
+  String get useDocCommentAsDescription => 'useDocCommentAsDescription';
 }

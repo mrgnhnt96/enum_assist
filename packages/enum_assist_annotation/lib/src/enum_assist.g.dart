@@ -8,9 +8,9 @@ part of 'enum_assist.dart';
 
 class _$EnumAssistFields {
   const _$EnumAssistFields();
-  final String createJsonConv = 'createJsonConv';
-  final String fieldFormat = 'fieldFormat';
-  final String useDocCommentAsDescription = 'useDocCommentAsDescription';
+  final String createJsonConv = 'create_json_conv';
+  final String fieldFormat = 'field_format';
+  final String useDocCommentAsDescription = 'use_doc_comment_as_description';
 }
 
 // **************************************************************************
@@ -18,10 +18,11 @@ class _$EnumAssistFields {
 // **************************************************************************
 
 EnumAssist _$EnumAssistFromJson(Map<String, dynamic> json) => EnumAssist(
-      createJsonConv: json['createJsonConv'] as bool?,
+      createJsonConv: json['create_json_conv'] as bool?,
       fieldFormat:
-          _$enumDecodeNullable(_$FieldFormatEnumMap, json['fieldFormat']),
-      useDocCommentAsDescription: json['useDocCommentAsDescription'] as bool?,
+          _$enumDecodeNullable(_$FieldFormatEnumMap, json['field_format']),
+      useDocCommentAsDescription:
+          json['use_doc_comment_as_description'] as bool?,
     );
 
 K _$enumDecode<K, V>(
