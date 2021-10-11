@@ -1,0 +1,20 @@
+name: example
+description: A Very Good Project created by Very Good CLI.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=2.13.0 <3.0.0"
+
+dependencies:
+  enum_assist_annotation:
+    path: ../../enum_assist_annotation
+
+dev_dependencies:
+  build_runner: ^2.1.4
+  enum_assist:
+    path: ../../enum_assist
+  test: ">=1.17.0 <1.18.0"
+  very_good_analysis: ^2.3.0
+
+scripts: ../../../derry.yaml
