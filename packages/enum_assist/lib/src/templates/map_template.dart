@@ -1,11 +1,10 @@
-import 'package:enum_assist/src/templates/item_core.dart';
 import 'package:enum_assist/src/templates/template_core.dart';
 import 'package:enum_assist/src/util/util.dart';
 
 /// {@template enum_assist.map_template}
 /// Returns the map extension template
 /// {@endtemplate}
-class MapTemplate extends TemplateCore<_MapItem> {
+class MapTemplate extends TemplateCoreSimple<_MapItem> {
   /// {@macro enum_assist.map_template}
   MapTemplate(String enumName, Iterable<String> fields)
       : super(enumName, fields);
@@ -43,16 +42,13 @@ class MapTemplate extends TemplateCore<_MapItem> {
   }
 
   @override
-  Iterable<_MapItem> get configFields =>
-      fields.map((field) => _MapItem(enumName, field));
+  _MapItem convert(String e) => _MapItem(enumName, e);
 }
 
-class _MapItem extends ItemCore {
+class _MapItem extends FieldTemplate<String> {
   const _MapItem(String enumName, String field) : super(enumName, field);
 
-  @override
   String get arg => 'required T $field,';
-  @override
   String get wholeEnum => '$enumName.$field';
   String get caseString => 'case $wholeEnum:';
   String get returnString => 'return $field;';
