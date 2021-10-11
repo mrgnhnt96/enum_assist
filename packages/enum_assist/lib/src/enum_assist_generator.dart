@@ -1,10 +1,9 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/src/builder/build_step.dart'; // ignore: implementation_imports
+import 'package:enum_assist/src/generator_helpers/generator_helper.dart';
 import 'package:enum_assist/src/settings.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:source_gen/source_gen.dart';
-
-import 'generator_helper.dart';
 
 /// {@template enum_assist_generator}
 /// Generates a [EnumAssist] class for each enum

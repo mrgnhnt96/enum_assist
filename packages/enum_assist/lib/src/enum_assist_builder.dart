@@ -3,11 +3,10 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:build/build.dart';
+import 'package:enum_assist/src/enum_assist_generator.dart';
+import 'package:enum_assist/src/settings.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:source_gen/source_gen.dart';
-
-import 'enum_assist_generator.dart';
-import 'settings.dart';
 
 /// Returns a [Builder] for use within a `package:build_runner`
 /// `BuildAction`.
