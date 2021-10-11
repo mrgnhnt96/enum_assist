@@ -4,7 +4,7 @@ import 'package:enum_assist/src/util/util.dart';
 /// {@template enum_assist.map_template}
 /// Returns the map extension template
 /// {@endtemplate}
-class MapTemplate extends TemplateCoreSimple<_MapItem> {
+class MapTemplate extends TemplateCoreSimple<_Item> {
   /// {@macro enum_assist.map_template}
   MapTemplate(String enumName, Iterable<String> fields)
       : super(enumName, fields);
@@ -27,7 +27,7 @@ class MapTemplate extends TemplateCoreSimple<_MapItem> {
             'switch(this)',
             tab: bodyTab,
             body: (switchBuffer, bodyTab) {
-              String cases(_MapItem item) {
+              String cases(_Item item) {
                 String _tab([int n = 0]) => tabn('', bodyTab + n);
                 return item.caseItem(_tab(), _tab(1));
               }
@@ -42,11 +42,11 @@ class MapTemplate extends TemplateCoreSimple<_MapItem> {
   }
 
   @override
-  _MapItem convert(String e) => _MapItem(enumName, e);
+  _Item convert(String e) => _Item(enumName, e);
 }
 
-class _MapItem extends FieldTemplate<String> {
-  const _MapItem(String enumName, String field) : super(enumName, field);
+class _Item extends FieldTemplate<String> {
+  const _Item(String enumName, String field) : super(enumName, field);
 
   String get arg => 'required T $field,';
   String get wholeEnum => '$enumName.$field';

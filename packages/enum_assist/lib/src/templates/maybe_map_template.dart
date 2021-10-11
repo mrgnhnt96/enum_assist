@@ -4,7 +4,7 @@ import 'package:enum_assist/src/util/util.dart';
 /// {@template enum_assist.map_template}
 /// Returns the map extension template
 /// {@endtemplate}
-class MaybeMapTemplate extends TemplateCoreSimple<_MaybeMapItem> {
+class MaybeMapTemplate extends TemplateCoreSimple<_Item> {
   /// {@macro enum_assist.map_template}
   MaybeMapTemplate(String enumName, Iterable<String> fields)
       : super(enumName, fields);
@@ -29,7 +29,7 @@ class MaybeMapTemplate extends TemplateCoreSimple<_MaybeMapItem> {
             'switch(this)',
             tab: bodyTab,
             body: (switchBuff, switchTab) {
-              String caseItem(_MaybeMapItem item) {
+              String caseItem(_Item item) {
                 String _tab([int n = 0]) => tabn('', switchTab + n);
 
                 return item.caseItem(_tab(), _tab(1));
@@ -45,11 +45,11 @@ class MaybeMapTemplate extends TemplateCoreSimple<_MaybeMapItem> {
   }
 
   @override
-  _MaybeMapItem convert(String e) => _MaybeMapItem(enumName, e);
+  _Item convert(String e) => _Item(enumName, e);
 }
 
-class _MaybeMapItem extends FieldTemplate<String> {
-  const _MaybeMapItem(String enumName, String field) : super(enumName, field);
+class _Item extends FieldTemplate<String> {
+  const _Item(String enumName, String field) : super(enumName, field);
 
   String get orElseCheck => 'if ($field == null) return orElse;';
 

@@ -6,7 +6,7 @@ import 'package:enum_assist/src/util/util.dart';
 /// {@template enum_assist.map_template}
 /// Returns the map extension template
 /// {@endtemplate}
-class JsonConverterTemplate extends TemplateCoreDetailed<_MapItem> {
+class JsonConverterTemplate extends TemplateCoreDetailed<_Item> {
   /// {@macro enum_assist.map_template}
   JsonConverterTemplate(String enumName, Iterable<EnumField> fields)
       : super(enumName, fields);
@@ -29,7 +29,7 @@ class JsonConverterTemplate extends TemplateCoreDetailed<_MapItem> {
                 'switch (json)',
                 tab: fromTab,
                 body: (switchBuff, switchTab) {
-                  String fromCase(_MapItem i) {
+                  String fromCase(_Item i) {
                     String _tab([int n = 0]) => tab('', switchTab + n);
 
                     return i.fromCaseItem(_tab(), _tab(1));
@@ -55,7 +55,7 @@ class JsonConverterTemplate extends TemplateCoreDetailed<_MapItem> {
             open: '(',
             close: ');',
             body: (toBuff, toTab) {
-              String toCase(_MapItem i) => tabn(i.toReturnString, toTab + 2);
+              String toCase(_Item i) => tabn(i.toReturnString, toTab + 2);
 
               toBuff.writeln(map(toCase));
             },
@@ -67,11 +67,11 @@ class JsonConverterTemplate extends TemplateCoreDetailed<_MapItem> {
   }
 
   @override
-  _MapItem convert(EnumField e) => _MapItem(enumName, e);
+  _Item convert(EnumField e) => _Item(enumName, e);
 }
 
-class _MapItem extends FieldTemplate<EnumField> {
-  const _MapItem(String enumName, EnumField field) : super(enumName, field);
+class _Item extends FieldTemplate<EnumField> {
+  const _Item(String enumName, EnumField field) : super(enumName, field);
 
   String get privateField => '_${field}Name';
   String get privateFieldGetter =>
