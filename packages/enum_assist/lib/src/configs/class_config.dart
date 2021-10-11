@@ -54,21 +54,19 @@ class ClassConfig implements EnumAssist {
 }
 
 EnumAssist _valueForAnnotation(ConstantReader reader) {
-  const fieldFormatConv = FieldFormatConv();
-
   FieldFormat? fieldFormat;
-  final fieldFormatJson =
-      reader.read(EnumAssist.fields.fieldFormat).literalValue as String?;
+  final fieldFormatObject =
+      reader.read(EnumAssist.fields.camel.fieldFormat).objectValue;
 
-  if (fieldFormatJson != null) {
-    fieldFormat = fieldFormatConv.fromJson(fieldFormatJson);
-  }
+  String getName(FieldFormat format) => '$format'.split('.').last;
+  fieldFormat = FieldFormat.values
+      .singleWhere((v) => fieldFormatObject.getField(getName(v)) != null);
 
   final createJsonConv =
-      reader.read(EnumAssist.fields.createJsonConv).literalValue as bool?;
+      reader.read(EnumAssist.fields.camel.createJsonConv).literalValue as bool?;
 
   final useDocCommentAsDescription = reader
-      .read(EnumAssist.fields.useDocCommentAsDescription)
+      .read(EnumAssist.fields.camel.useDocCommentAsDescription)
       .literalValue as bool?;
 
   return EnumAssist(
