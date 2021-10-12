@@ -22,7 +22,7 @@ String _formatType<T>(T s) {
 /// Helper class to create [AdditionalTemplate]s
 /// {@endtemplate}
 abstract class AdditionalTemplate<T> extends TemplateCoreDetailed<_Item>
-    implements AdditionalMethodValues<T> {
+    implements AdditionalExtensionValues<T> {
   /// {@macro enum_assist.additional_template}
   AdditionalTemplate(
     String enumName,
@@ -137,7 +137,7 @@ class AdditionalMaybeMapTemplate<T extends Object?>
 }
 
 /// helper class to create [AdditionalTemplate]s
-abstract class AdditionalMethodValues<T> {
+abstract class AdditionalExtensionValues<T> {
   /// the name of the method to call
   String get methodName;
 
