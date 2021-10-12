@@ -2,23 +2,17 @@ import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta_meta.dart';
 
-part 'enum_assist.g.dart';
-
 /// {@template enum_assist_annotation.enum_assist}
 /// Annotation to assist in generating code for enums.
 /// {@endtemplate}
 @Target({TargetKind.enumType})
-@JsonSerializable(
-  createToJson: false,
-  fieldRename: FieldRename.snake,
-)
 class EnumAssist {
   /// {@macro enum_assist_annotation.enum_assist}
   const EnumAssist({
     this.createJsonConv,
     this.fieldFormat,
     this.useDocCommentAsDescription,
-    this.additionalMethods,
+    this.additionalExtensions,
   });
 
   /// {@template enum_assist_annotation.enum_assist.create_json_conv}
@@ -29,6 +23,7 @@ class EnumAssist {
   /// If false, the json converter will not be generated.
   ///
   /// __default:__ `true`
+  /// {@endtemplate}
   final bool? createJsonConv;
 
   /// {@template enum_assist_annotation.enum_assist.field_format}
@@ -56,34 +51,6 @@ class EnumAssist {
   /// {@template enum_assist_annotation.enum_assist.additional_methods}
   /// Additional methods to generate for the enum.
   /// {@endtemplate}
-  final List<AdditionalMethod>? additionalMethods;
-
-  /// converts Map to EnumAssist
-  static EnumAssist fromJson(Map<String, dynamic> json) =>
-      _$EnumAssistFromJson(json);
-
-  /// retrieves all field keys for [EnumAssist]
-  static _Fields get fields => const _Fields();
-}
-
-class _Fields {
-  const _Fields();
-
-  _Camel get camel => const _Camel();
-  _$EnumAssistFields get defaults => const _$EnumAssistFields();
-}
-
-class _Camel implements _$EnumAssistFields {
-  const _Camel();
-
-  @override
-  String get createJsonConv => 'createJsonConv';
-
-  @override
-  String get fieldFormat => 'fieldFormat';
-
-  @override
-  String get useDocCommentAsDescription => 'useDocCommentAsDescription';
-
-  String get additionalMethods => 'additionalMethods';
+  @JsonKey(ignore: true)
+  final List<AdditionalExtension>? additionalExtensions;
 }
