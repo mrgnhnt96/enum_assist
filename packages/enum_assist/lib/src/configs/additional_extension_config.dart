@@ -3,13 +3,6 @@ import 'package:enum_assist/src/util/util.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
-String _format<T>(T value) {
-  if (value is String) {
-    return "'$value'";
-  }
-  return '$value';
-}
-
 /// {@template enum_assist.additional_extension_config}
 /// The configuration for the additional extension.
 /// {@endtemplate}
@@ -46,27 +39,6 @@ class AdditionalExtensionConfig {
   /// type of class used to create the value
   final String valueClassType;
 
-  /// {@macro enum_assist.additional_extension_config}
-  static AdditionalExtensionConfig create<T>({
-    required String className,
-    required String methodName,
-    required String valueType,
-    required String valueClassType,
-    required MethodType methodType,
-    required bool isNullable,
-    T? defaultValue,
-  }) {
-    return AdditionalExtensionConfig._(
-      methodName: methodName,
-      valueType: valueType,
-      methodType: methodType,
-      isNullable: isNullable,
-      defaultValue: _format(defaultValue),
-      className: className,
-      valueClassType: valueClassType,
-    );
-  }
-
   /// resolve the [AdditionalExtensionConfig] from a `ConstantReader`
   static AdditionalExtensionConfig? resolve(ConstantReader reader) {
     const methodNameKey = 'methodName';
@@ -97,9 +69,11 @@ class AdditionalExtensionConfig {
       );
     }
 
-    final classDetails = '${reader.objectValue.type!.element!.declaration}';
+    final classDetails = '${reader.objectValue}';
 
-    final match = RegExp('<.*[, ]?>').firstMatch(classDetails)?.group(0);
+    final match = RegExp(r'(?<![\w])(Map|MaybeMap)Extension<.*[, ]?>(?=\s\(\()')
+        .firstMatch(classDetails)
+        ?.group(0);
 
     if (match == null) {
       throw MissingValueException(
