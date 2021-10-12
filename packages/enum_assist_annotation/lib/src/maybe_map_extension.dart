@@ -4,6 +4,9 @@ import 'package:enum_assist_annotation/src/extension_value.dart';
 
 /// {@template enum_assist.maybe_map_additional_extension}
 /// helper class to create a new extension with a maybeMap method
+///
+/// `MaybeMapExtension<T, V>` must be on the __highest
+/// level__ of the class hierarchy
 /// {@endtemplate}
 abstract class MaybeMapExtension<T, V extends ExtensionValue<T>>
     extends AdditionalExtension<T, V> {
