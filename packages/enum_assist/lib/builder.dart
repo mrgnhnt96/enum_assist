@@ -10,36 +10,22 @@
 /// This library is **not** intended to be imported by typical end-users unless
 /// you are creating a custom compilation pipeline. See documentation for
 /// details, and `build.yaml` for how these builders are configured by default.
-library enum_assist.builder;
 
 import 'package:build/build.dart';
-import 'package:enum_assist/src/enum_assist_builder.dart';
-import 'package:enum_assist/src/util/exceptions.dart';
-import 'package:enum_assist_annotation/enum_assist_annotation.dart';
+import 'package:enum_assist/enum_assist.dart';
+import 'package:enum_assist/src/settings.dart';
+import 'package:source_gen/source_gen.dart';
 
 /// Supports `package:build_runner` creation and configuration of
 /// `enum_assist`.
 ///
 /// Not meant to be invoked by hand-authored code.
 Builder enumAssist(BuilderOptions options) {
-  try {
-    final config = EnumAssist.fromJson(options.config);
+  // get settings from the build file
+  final settings = Settings.resolve(options.config);
 
-    return enumAssistBuilder(config: config);
-  } on CheckedFromEnumAssistException catch (e) {
-    final lines = <String>[
-      'Could not parse the options provided for `enum_assist`.'
-    ];
-
-    if (e.key != null) {
-      lines.add('There is a problem with "${e.key}".');
-    }
-    if (e.message != null) {
-      lines.add(e.message!);
-    } else if (e.innerError != null) {
-      lines.add(e.innerError.toString());
-    }
-
-    throw StateError(lines.join('\n'));
-  }
+  return SharedPartBuilder(
+    [EnumAssistGenerator.fromSettings(settings)],
+    'enum_assist',
+  );
 }
