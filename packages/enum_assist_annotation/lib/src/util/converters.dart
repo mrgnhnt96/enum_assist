@@ -36,3 +36,35 @@ class FieldFormatConv extends JsonConverter<FieldFormat, String> {
         none: _noneName,
       );
 }
+
+/// {@macro enum_assist_annotation.field_format_conv}
+class MethodTypeConv extends JsonConverter<MethodType, String> {
+  /// {@macro enum_assist_annotation.field_format_conv}
+  const MethodTypeConv();
+
+  static const _mapName = 'map';
+  static const _maybeMapName = 'maybeMap';
+  @override
+  MethodType fromJson(String json) {
+    switch (json) {
+      case _mapName:
+        return MethodType.map;
+      case _maybeMapName:
+        return MethodType.maybeMap;
+      default:
+        throw Exception('Unknown method type: $json');
+    }
+  }
+
+  @override
+  String toJson(MethodType object) {
+    switch (object) {
+      case MethodType.map:
+        return _mapName;
+      case MethodType.maybeMap:
+        return _maybeMapName;
+      default:
+        throw Exception('Unknown method type: $object');
+    }
+  }
+}

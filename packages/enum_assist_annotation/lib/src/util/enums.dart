@@ -26,3 +26,18 @@ enum FieldFormat {
   /// {@endtemplate}
   none,
 }
+
+/// {@template enum_assist.method_type}
+/// Determines how to set up the generated method.
+/// {@endtemplate}
+enum MethodType {
+  /// The generated method will be `map(...)`.
+  ///
+  /// requires annotation [EnumKey] on all enum values
+  map,
+
+  /// The generated method will be `maybeMap(...)`.
+  ///
+  /// __does not__ require annotation [EnumKey] all enum values
+  maybeMap,
+}
