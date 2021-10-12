@@ -1,91 +1,116 @@
+import 'package:enum_assist/src/configs/additional_extension_config.dart';
+import 'package:enum_assist/src/util/enum_helpers.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
-part 'class_config.g.dart';
-
 /// {@template enum_assist.class_config}
-/// Represents values from [EnumAssist] when merged with local
+/// Represents most values from [EnumAssist] when merged with local
 /// configuration.
 ///
 /// Values are all known, so types are non-nullable.
 /// {@endtemplate}
-@JsonSerializable(
-  fieldRename: FieldRename.snake,
-)
-class ClassConfig implements EnumAssist {
+
+class ClassConfig {
   /// {@macro enum_assist.class_config}
   const ClassConfig({
     required this.createJsonConv,
     required this.fieldFormat,
     required this.useDocCommentAsDescription,
-    required this.additionalMethods,
+    required this.additionalExtensions,
+    required this.requiredExtensions,
   });
 
   /// Merges [config] with [reader].annotation
   ///
   /// priority is given to `annotation`
   factory ClassConfig.mergeConfigs(ClassConfig config, ConstantReader reader) {
-    final annotation = _valueForAnnotation(reader);
+    final annotation = _getAnnotation(reader);
+    final additionalExtensions = _getAdditionalExtensions(reader);
 
     return ClassConfig(
       createJsonConv: annotation.createJsonConv ?? config.createJsonConv,
       fieldFormat: annotation.fieldFormat ?? config.fieldFormat,
       useDocCommentAsDescription: annotation.useDocCommentAsDescription ??
           config.useDocCommentAsDescription,
-      additionalMethods:
-          annotation.additionalMethods ?? config.additionalMethods,
+      additionalExtensions: additionalExtensions ?? config.additionalExtensions,
+      requiredExtensions: config.requiredExtensions,
     );
   }
 
-  @override
+  /// {@macro enum_assist_annotation.enum_assist.create_json_conv}
   final bool createJsonConv;
 
-  @override
+  /// {@macro enum_assist_annotation.enum_assist.field_format}
   final FieldFormat fieldFormat;
 
-  @override
+  /// {@macro enum_assist_annotation.enum_assist.use_doc_comment_as_description}
   final bool useDocCommentAsDescription;
 
-  @override
-  final List<AdditionalMethod>? additionalMethods;
+  /// {@macro enum_assist_annotation.enum_assist.additional_methods}
+  final List<AdditionalExtensionConfig> additionalExtensions;
+
+  /// List of required extensions to add/check for each enum
+  final List<String> requiredExtensions;
 
   /// all the default values for [ClassConfig]
   static const defaults = ClassConfig(
     createJsonConv: true,
     fieldFormat: FieldFormat.none,
     useDocCommentAsDescription: true,
-    additionalMethods: <AdditionalMethod>[],
+    additionalExtensions: <AdditionalExtensionConfig>[],
+    requiredExtensions: <String>[],
   );
+
+  @override
+  String toString() {
+    return '''
+ClassConfig{
+  createJsonConv: $createJsonConv,
+  fieldFormat: $fieldFormat,
+  useDocCommentAsDescription: $useDocCommentAsDescription,
+  additionalExtensions: $additionalExtensions
+}
+''';
+  }
 }
 
-EnumAssist _valueForAnnotation(ConstantReader reader) {
-  FieldFormat? fieldFormat;
-  final fieldFormatObject =
-      reader.read(EnumAssist.fields.camel.fieldFormat).objectValue;
+List<AdditionalExtensionConfig>? _getAdditionalExtensions(
+    ConstantReader reader) {
+  final additionalExtensionsRaw = reader.read('additionalExtensions').listValue;
 
-  String getName(FieldFormat format) => '$format'.split('.').last;
-  fieldFormat = FieldFormat.values
-      .singleWhere((v) => fieldFormatObject.getField(getName(v)) != null);
+  final additionalExtensions = <AdditionalExtensionConfig>[];
 
-  final createJsonConv =
-      reader.read(EnumAssist.fields.camel.createJsonConv).literalValue as bool?;
+  for (final extension in additionalExtensionsRaw) {
+    final entry = ConstantReader(extension);
 
-  final useDocCommentAsDescription = reader
-      .read(EnumAssist.fields.camel.useDocCommentAsDescription)
-      .literalValue as bool?;
+    AdditionalExtensionConfig? config;
+    try {
+      config = AdditionalExtensionConfig.resolve(entry);
+    } catch (e) {
+      print('Error resolving extension:\n\nmessage: $e');
+    }
+    if (config == null) continue;
 
-  final additionalMethodsRaw = reader
-      .read(EnumAssist.fields.camel.additionalMethods)
-      .objectValue
-      .toListValue();
+    additionalExtensions.add(config);
+  }
+  return additionalExtensions;
+}
 
-  //TODO:figure out how to get the additional methods from the collection!
+EnumAssist _getAnnotation(ConstantReader reader) {
+  final fieldFormatObject = reader.read('fieldFormat').objectValue;
+  final fieldFormat = getEnumFromDartObject(
+    fieldFormatObject,
+    FieldFormat.values,
+  );
+
+  final createJsonConv = reader.read('createJsonConv').literalValue as bool?;
+
+  final useDocCommentAsDescription =
+      reader.read('useDocCommentAsDescription').literalValue as bool?;
 
   return EnumAssist(
     createJsonConv: createJsonConv,
     fieldFormat: fieldFormat,
     useDocCommentAsDescription: useDocCommentAsDescription,
-    additionalMethods: <AdditionalMethod>[],
   );
 }
