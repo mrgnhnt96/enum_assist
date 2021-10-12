@@ -8,13 +8,17 @@ part 'enum_assist.g.dart';
 /// Annotation to assist in generating code for enums.
 /// {@endtemplate}
 @Target({TargetKind.enumType})
-@JsonSerializable(createToJson: false, fieldRename: FieldRename.snake)
+@JsonSerializable(
+  createToJson: false,
+  fieldRename: FieldRename.snake,
+)
 class EnumAssist {
   /// {@macro enum_assist_annotation.enum_assist}
   const EnumAssist({
     this.createJsonConv,
     this.fieldFormat,
     this.useDocCommentAsDescription,
+    this.additionalMethods,
   });
 
   /// {@template enum_assist_annotation.enum_assist.create_json_conv}
@@ -49,6 +53,11 @@ class EnumAssist {
   /// {@endtemplate}
   final bool? useDocCommentAsDescription;
 
+  /// {@template enum_assist_annotation.enum_assist.additional_methods}
+  /// Additional methods to generate for the enum.
+  /// {@endtemplate}
+  final List<AdditionalMethod>? additionalMethods;
+
   /// converts Map to EnumAssist
   static EnumAssist fromJson(Map<String, dynamic> json) =>
       _$EnumAssistFromJson(json);
@@ -75,4 +84,6 @@ class _Camel implements _$EnumAssistFields {
 
   @override
   String get useDocCommentAsDescription => 'useDocCommentAsDescription';
+
+  String get additionalMethods => 'additionalMethods';
 }

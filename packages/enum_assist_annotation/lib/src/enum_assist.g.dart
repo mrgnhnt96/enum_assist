@@ -11,6 +11,7 @@ class _$EnumAssistFields {
   final String createJsonConv = 'create_json_conv';
   final String fieldFormat = 'field_format';
   final String useDocCommentAsDescription = 'use_doc_comment_as_description';
+  final String additionalMethods = 'additional_methods';
 }
 
 // **************************************************************************
@@ -23,6 +24,9 @@ EnumAssist _$EnumAssistFromJson(Map<String, dynamic> json) => EnumAssist(
           _$enumDecodeNullable(_$FieldFormatEnumMap, json['field_format']),
       useDocCommentAsDescription:
           json['use_doc_comment_as_description'] as bool?,
+      additionalMethods: (json['additional_methods'] as List<dynamic>?)
+          ?.map((e) => AdditionalMethod.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 K _$enumDecode<K, V>(

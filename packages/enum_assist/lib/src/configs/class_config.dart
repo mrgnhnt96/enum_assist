@@ -12,7 +12,6 @@ part 'class_config.g.dart';
 /// {@endtemplate}
 @JsonSerializable(
   fieldRename: FieldRename.snake,
-  disallowUnrecognizedKeys: true,
 )
 class ClassConfig implements EnumAssist {
   /// {@macro enum_assist.class_config}
@@ -20,6 +19,7 @@ class ClassConfig implements EnumAssist {
     required this.createJsonConv,
     required this.fieldFormat,
     required this.useDocCommentAsDescription,
+    required this.additionalMethods,
   });
 
   /// Merges [config] with [reader].annotation
@@ -33,6 +33,8 @@ class ClassConfig implements EnumAssist {
       fieldFormat: annotation.fieldFormat ?? config.fieldFormat,
       useDocCommentAsDescription: annotation.useDocCommentAsDescription ??
           config.useDocCommentAsDescription,
+      additionalMethods:
+          annotation.additionalMethods ?? config.additionalMethods,
     );
   }
 
@@ -45,11 +47,15 @@ class ClassConfig implements EnumAssist {
   @override
   final bool useDocCommentAsDescription;
 
+  @override
+  final List<AdditionalMethod>? additionalMethods;
+
   /// all the default values for [ClassConfig]
   static const defaults = ClassConfig(
     createJsonConv: true,
     fieldFormat: FieldFormat.none,
     useDocCommentAsDescription: true,
+    additionalMethods: <AdditionalMethod>[],
   );
 }
 
@@ -69,9 +75,17 @@ EnumAssist _valueForAnnotation(ConstantReader reader) {
       .read(EnumAssist.fields.camel.useDocCommentAsDescription)
       .literalValue as bool?;
 
+  final additionalMethodsRaw = reader
+      .read(EnumAssist.fields.camel.additionalMethods)
+      .objectValue
+      .toListValue();
+
+  //TODO:figure out how to get the additional methods from the collection!
+
   return EnumAssist(
     createJsonConv: createJsonConv,
     fieldFormat: fieldFormat,
     useDocCommentAsDescription: useDocCommentAsDescription,
+    additionalMethods: <AdditionalMethod>[],
   );
 }

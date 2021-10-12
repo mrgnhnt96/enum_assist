@@ -6,27 +6,22 @@ part of 'class_config.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ClassConfig _$ClassConfigFromJson(Map<String, dynamic> json) {
-  $checkKeys(
-    json,
-    allowedKeys: const [
-      'create_json_conv',
-      'field_format',
-      'use_doc_comment_as_description'
-    ],
-  );
-  return ClassConfig(
-    createJsonConv: json['create_json_conv'] as bool,
-    fieldFormat: _$enumDecode(_$FieldFormatEnumMap, json['field_format']),
-    useDocCommentAsDescription: json['use_doc_comment_as_description'] as bool,
-  );
-}
+ClassConfig _$ClassConfigFromJson(Map<String, dynamic> json) => ClassConfig(
+      createJsonConv: json['create_json_conv'] as bool,
+      fieldFormat: _$enumDecode(_$FieldFormatEnumMap, json['field_format']),
+      useDocCommentAsDescription:
+          json['use_doc_comment_as_description'] as bool,
+      additionalMethods: (json['additional_methods'] as List<dynamic>?)
+          ?.map((e) => AdditionalMethod.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$ClassConfigToJson(ClassConfig instance) =>
     <String, dynamic>{
       'create_json_conv': instance.createJsonConv,
       'field_format': _$FieldFormatEnumMap[instance.fieldFormat],
       'use_doc_comment_as_description': instance.useDocCommentAsDescription,
+      'additional_methods': instance.additionalMethods,
     };
 
 K _$enumDecode<K, V>(

@@ -18,5 +18,7 @@ class Settings {
         fieldFormat: _config.fieldFormat ?? ClassConfig.defaults.fieldFormat,
         useDocCommentAsDescription: _config.useDocCommentAsDescription ??
             ClassConfig.defaults.useDocCommentAsDescription,
+        additionalMethods:
+            _config.additionalMethods ?? ClassConfig.defaults.additionalMethods,
       );
 }
