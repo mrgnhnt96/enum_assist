@@ -19,15 +19,13 @@ class EnumField extends KeyConfig {
   }) : super.fromSettings(config);
 
   /// {@macro enum_assist.enum_field}
-  factory EnumField.config(FieldElement e, ClassConfig con) {
-    return EnumField._(
-      e.type.element!.name!,
-      e.name,
-      fieldFormat: con.fieldFormat,
-      docComment: e.documentationComment,
-      config: KeyConfig.mergeConfigs(con, e),
-    );
-  }
+  factory EnumField.config(FieldElement e, ClassConfig con) => EnumField._(
+        e.type.element!.name!,
+        e.name,
+        fieldFormat: con.fieldFormat,
+        docComment: e.documentationComment,
+        config: KeyConfig.mergeConfigs(con, e),
+      );
 
   /// used for testing
   @protected
@@ -77,7 +75,9 @@ class EnumField extends KeyConfig {
   String? get getDescription {
     if (description != null) return description;
     if (useDocCommentAsDescription) {
-      return docComment?.replaceAll(RegExp(r'///\s?'), '');
+      return docComment
+          ?.replaceAll(RegExp(r'///(?:[\s]*)'), '')
+          .replaceAll(RegExp(r'\n'), ' ');
     }
     return null;
   }
