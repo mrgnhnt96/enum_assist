@@ -1,22 +1,17 @@
-// ignore_for_file: comment_references
-
-/// {@template enum_assist.exception}
-/// The exception thrown by the [EnumAssist] class.
+/// {@template enum_assist.missing_value_exception}
+/// The exception thrown when a value is missing
 /// {@endtemplate}
-class CheckedFromEnumAssistException implements Exception {
-  /// {@macro enum_assist.exception}
-  const CheckedFromEnumAssistException({
-    this.key,
-    this.message,
-    this.innerError,
-  });
+class MissingValueException<T> implements Exception {
+  /// {@macro enum_assist.missing_value_exception}
+  const MissingValueException(this.key) : assert(key != null);
 
-  /// The key of the exception thrown.
-  final String? key;
+  /// the key/field of the missing value
+  final T key;
 
-  /// The message of the exception.
-  final String? message;
+  @override
+  String toString() {
+    if (key is String) return key as String;
 
-  /// Any inner error that caused the exception.
-  final Exception? innerError;
+    return 'Missing value for: $key';
+  }
 }
