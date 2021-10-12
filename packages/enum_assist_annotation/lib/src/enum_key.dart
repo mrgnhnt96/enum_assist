@@ -1,11 +1,8 @@
-import 'package:json_annotation/json_annotation.dart';
-
-part 'enum_key.g.dart';
+import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 
 /// {@template enum_assist_annotation.enum_key}
 /// Annotation to assist in generating code for enum values.
 /// {@endtemplate}
-@JsonSerializable(createToJson: false)
 class EnumKey {
   /// {@macro enum_assist_annotation.enum_key}
   const EnumKey({
@@ -13,6 +10,7 @@ class EnumKey {
     this.description,
     this.serializedValue,
     this.useDocCommentAsDescription,
+    this.extensionValues,
   });
 
   /// {@template enum_assist_annotation.enum_key.name}
@@ -45,6 +43,8 @@ class EnumKey {
   /// {@macro enum_assist_annotation.enum_assist.use_doc_comment_as_description}
   final bool? useDocCommentAsDescription;
 
-  /// Access serialized names of fields from [EnumKey]
-  static _$EnumKeyFields get fields => const _$EnumKeyFields();
+  /// {@template enum_assist_annotation.extension_values}
+  /// The extension values for the enum value
+  /// {@endtemplate}
+  final List<ExtensionValue>? extensionValues;
 }
