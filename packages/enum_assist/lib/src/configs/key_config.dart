@@ -2,19 +2,21 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:enum_assist/src/configs/class_config.dart';
 import 'package:enum_assist/src/configs/configs.dart';
+import 'package:enum_assist/src/configs/extension_value_config.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
 /// {@template enum_assist.key_config}
 /// Represents values from the [EnumKey] annotation.
 /// {@endtemplate}
-class KeyConfig implements EnumKey {
+class KeyConfig {
   /// {@macro enum_assist.key_config}
   const KeyConfig({
     required this.description,
     required this.name,
     required this.serializedValue,
     required this.useDocCommentAsDescription,
+    required this.extensionValues,
   });
 
   /// {@macro enum_assist.key_config}
@@ -24,49 +26,23 @@ class KeyConfig implements EnumKey {
           name: settings.name,
           serializedValue: settings.serializedValue,
           useDocCommentAsDescription: settings.useDocCommentAsDescription,
+          extensionValues: settings.extensionValues,
         );
 
   /// Constructs the key configs from the [EnumKey] annotation.
+  /// and the class annotation [ClassConfig].
   ///
   /// {@macro enum_assist.key_config}
   factory KeyConfig.mergeConfigs(
     ClassConfig classConfig,
     FieldElement element,
   ) {
-    final result = _getConfigFromAnnotation(element);
+    const nameKey = 'name';
+    const descriptionKey = 'description';
+    const serializedValueKey = 'serializedValue';
+    const useDocCommentAsDescriptionKey = 'useDocCommentAsDescription';
+    const extensionValuesKey = 'extensionValues';
 
-    return KeyConfig(
-      name: result.name,
-      description: result.description,
-      serializedValue: result.serializedValue,
-      useDocCommentAsDescription: result.useDocCommentAsDescription ??
-          classConfig.useDocCommentAsDescription,
-    );
-  }
-
-  @override
-  final String? description;
-
-  @override
-  final String? name;
-
-  @override
-  final String? serializedValue;
-
-  @override
-  final bool useDocCommentAsDescription;
-
-  /// all the default values of [EnumKey]
-  static const defaults = KeyConfig(
-    name: null,
-    description: null,
-    serializedValue: null,
-    useDocCommentAsDescription: true,
-  );
-
-  static const _enumKeyChecker = TypeChecker.fromRuntime(EnumKey);
-
-  static EnumKey _getConfigFromAnnotation(FieldElement element) {
     DartObject? object;
     object = _enumKeyChecker.firstAnnotationOf(element);
 
@@ -76,27 +52,63 @@ class KeyConfig implements EnumKey {
       }
     }
 
-    if (object == null) return KeyConfig.defaults;
+    if (object == null) return defaults;
 
     final reader = ConstantReader(object);
 
-    final name = reader.read(EnumKey.fields.name).literalValue as String?;
+    final name = reader.peek(nameKey)?.stringValue;
 
-    final description =
-        reader.read(EnumKey.fields.description).literalValue as String?;
+    final description = reader.peek(descriptionKey)?.stringValue;
 
-    final serializedValue =
-        reader.read(EnumKey.fields.serializedValue).literalValue as String?;
+    final serializedValue = reader.peek(serializedValueKey)?.stringValue;
 
-    final useDocCommentAsDescription = reader
-        .read(EnumKey.fields.useDocCommentAsDescription)
-        .literalValue as bool?;
+    final useDocCommentAsDescription =
+        reader.peek(useDocCommentAsDescriptionKey)?.boolValue;
 
-    return EnumKey(
+    final extensionValuesRaw = reader.peek(extensionValuesKey)?.listValue;
+
+    final extensionValues = <ExtensionValueConfig>[];
+
+    if (extensionValuesRaw != null) {
+      for (final entry in extensionValuesRaw) {
+        final reader = ConstantReader(entry);
+        final config = ExtensionValueConfig.resolve(reader);
+        extensionValues.add(config);
+      }
+    }
+    return KeyConfig(
       name: name,
       description: description,
       serializedValue: serializedValue,
-      useDocCommentAsDescription: useDocCommentAsDescription,
+      useDocCommentAsDescription:
+          useDocCommentAsDescription ?? classConfig.useDocCommentAsDescription,
+      extensionValues: extensionValues,
     );
   }
+
+  /// {@macro enum_assist_annotation.enum_key.description}
+  final String? description;
+
+  /// {@macro enum_assist_annotation.enum_key.name}
+  final String? name;
+
+  /// {@macro enum_assist_annotation.enum_key.serialized_value}
+  final String? serializedValue;
+
+  /// {@macro enum_assist_annotation.enum_key.use_doc_comment_as_description}
+  final bool useDocCommentAsDescription;
+
+  /// {@macro enum_assist_annotation.enum_key.extension_values}
+  final List<ExtensionValueConfig> extensionValues;
+
+  /// all the default values of [EnumKey]
+  static const defaults = KeyConfig(
+    name: null,
+    description: null,
+    serializedValue: null,
+    useDocCommentAsDescription: true,
+    extensionValues: [],
+  );
+
+  static const _enumKeyChecker = TypeChecker.fromRuntime(EnumKey);
 }
