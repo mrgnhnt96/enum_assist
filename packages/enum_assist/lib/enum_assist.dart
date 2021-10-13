@@ -1,5 +1,6 @@
+// ignore_for_file: implementation_imports
 import 'package:analyzer/dart/element/element.dart';
-import 'package:build/src/builder/build_step.dart'; // ignore: implementation_imports
+import 'package:build/src/builder/build_step.dart';
 import 'package:enum_assist/src/configs/class_config.dart';
 import 'package:enum_assist/src/generator_helpers/generator_helper.dart';
 import 'package:enum_assist/src/settings.dart';
