@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:enum_assist/src/configs/class_config.dart';
+import 'package:enum_assist/src/configs/extension_value_config.dart';
 import 'package:enum_assist/src/src.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:meta/meta.dart';
@@ -92,6 +93,17 @@ class EnumField extends KeyConfig {
     if (name != null) return name!;
 
     return _format(fieldName, _AllFormats.title);
+  }
+
+  /// returns the config for the extension
+  ExtensionValueConfig? getExtensionValue(String valueClassName) {
+    if (extensionValues.isEmpty) return null;
+
+    final index =
+        extensionValues.indexWhere((e) => e.valueClassName == valueClassName);
+    if (index == -1) return null;
+
+    return extensionValues[index];
   }
 
   @override
