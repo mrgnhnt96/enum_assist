@@ -24,8 +24,10 @@ Builder enumAssist(BuilderOptions options) {
   // get settings from the build file
   final settings = Settings.resolve(options.config);
 
-  return SharedPartBuilder(
-    [EnumAssistGenerator.fromSettings(settings)],
-    'enum_assist',
-  );
+  return PartBuilder([EnumAssistGenerator.fromSettings(settings)], '.ge.dart',
+      header: '''
+// coverage:ignore-file
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: 
+    ''');
 }

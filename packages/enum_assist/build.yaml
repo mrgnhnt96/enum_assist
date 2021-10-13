@@ -3,7 +3,6 @@ builders:
   enum_assist:
     import: "package:enum_assist/builder.dart"
     builder_factories: ["enumAssist"]
-    build_extensions: { ".dart": ["enum_assist.g.dart"] }
+    build_extensions: { ".dart": ["ge.dart"] }
     auto_apply: dependents
-    build_to: cache
-    applies_builders: ["source_gen|combining_builder"]
+    build_to: source
