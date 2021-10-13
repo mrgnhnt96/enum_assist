@@ -12,7 +12,6 @@ class AdditionalExtensionConfig {
     required this.methodName,
     required this.valueType,
     required this.methodType,
-    required this.isNullable,
     required this.defaultValue,
     required this.className,
     required this.valueClassType,
@@ -27,9 +26,6 @@ class AdditionalExtensionConfig {
   /// {@macro enum_assist.additional_extension.method_type}
   final MethodType methodType;
 
-  /// {@macro enum_assist.additional_extension.is_nullable}
-  final bool isNullable;
-
   /// {@macro enum_assist.additional_extension.default_value}
   final String? defaultValue;
 
@@ -38,6 +34,11 @@ class AdditionalExtensionConfig {
 
   /// type of class used to create the value
   final String valueClassType;
+
+  /// checks if the [valueType] is nullable
+  bool get isTypeNullable {
+    return valueType.contains('?');
+  }
 
   /// resolve the [AdditionalExtensionConfig] from a `ConstantReader`
   static AdditionalExtensionConfig? resolve(ConstantReader reader) {
@@ -71,7 +72,7 @@ class AdditionalExtensionConfig {
 
     final classDetails = '${reader.objectValue}';
 
-    final match = RegExp(r'(?<![\w])(Map|MaybeMap)Extension<.*[, ]?>(?=\s\(\()')
+    final match = RegExp(r'(Map|MaybeMap)Extension<.*[, ]?>(?=\s\(\()')
         .firstMatch(classDetails)
         ?.group(0);
 
@@ -81,14 +82,15 @@ class AdditionalExtensionConfig {
       );
     }
 
-    final typeArguments = match.substring(1, match.length - 1).split(', ');
+    final cleanMatch = match.replaceAll(RegExp('(Map|MaybeMap)Extension'), '');
+    final typeArguments =
+        cleanMatch.substring(1, cleanMatch.length - 1).split(', ');
 
     final valueType = typeArguments[0];
     final valueClassType = typeArguments[1];
     final className = reader.objectValue.type!.element!.displayName;
 
     return AdditionalExtensionConfig._(
-      isNullable: _isTypeNullable(valueType),
       methodName: methodNameValue,
       valueType: valueType,
       methodType: methodTypeValue,
@@ -127,7 +129,6 @@ class AdditionalExtensionConfig {
 methodName: $methodName,
 valueType: $valueType,
 methodType: $methodType,
-isNullable: $isNullable,
 defaultValue: $defaultValue,
 className: $className,
 valueClassType: $valueClassType,
@@ -145,8 +146,4 @@ bool _isMissingDefaultValue<T>(T defaultValue, MethodType methodType) {
       return false;
     },
   )();
-}
-
-bool _isTypeNullable(String type) {
-  return type.contains('?');
 }
