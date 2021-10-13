@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:enum_assist/src/configs/class_config.dart';
+import 'package:enum_assist/src/generator_helpers/additional_methods_generator_helper.dart';
 import 'package:enum_assist/src/generator_helpers/extension_generator_helper.dart';
 import 'package:enum_assist/src/generator_helpers/helper_core.dart';
 import 'package:enum_assist/src/generator_helpers/json_converter_generator_helper.dart';
@@ -10,7 +11,10 @@ import 'package:source_gen/source_gen.dart';
 /// A helper class for generating code for enums.
 /// {@endtemplate}
 class GeneratorHelper extends HelperCore
-    with ExtensionGeneratorHelper, JsonConverterGeneratorHelper {
+    with
+        ExtensionGeneratorHelper,
+        JsonConverterGeneratorHelper,
+        AdditionalExtensionsGeneratorHelper {
   /// {@macro enum_assist.enum_generator}
   GeneratorHelper(
     Settings generator,
@@ -26,7 +30,7 @@ class GeneratorHelper extends HelperCore
 
   @override
   Iterable<String> generate() sync* {
-    yield generateExtensions();
+    yield generateExtensions(generateAdditionalExtensions);
 
     if (config.createJsonConv) {
       yield generateJsonConverter();
