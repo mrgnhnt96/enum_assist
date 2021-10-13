@@ -1,58 +1,27 @@
-import 'package:enum_assist/src/templates/template_core.dart';
-import 'package:enum_assist/src/util/util.dart';
+import 'package:enum_assist/src/enum_field.dart';
+import 'package:enum_assist/src/templates/extension_template.dart';
+import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 
-/// {@template enum_assist.map_template}
-/// Returns the map extension template
+/// {@template enum_assist.additional_map_template}
+/// helper class to create [MapTemplate]s
+///
+/// Uses the [map] method to access the enum value
 /// {@endtemplate}
-class MapTemplate extends TemplateCoreSimple<_Item> {
-  /// {@macro enum_assist.map_template}
-  MapTemplate(String enumName, Iterable<String> fields)
-      : super(enumName, fields);
-
-  @override
-  StringBuffer writeTemplate(StringBuffer buffer) {
-    buffer
-      ..writeobj(
-        'T map<T>',
-        open: '({',
-        body: (mapBuffer, tab) {
-          mapBuffer.writeln(map((i) => tabn(i.arg, tab)));
-        },
-        close: '})',
-      )
-      ..writeobj(
-        '',
-        body: (bodyBuffer, bodyTab) {
-          bodyBuffer.writeobj(
-            'switch(this)',
-            tab: bodyTab,
-            body: (switchBuffer, bodyTab) {
-              String cases(_Item item) {
-                String _tab([int n = 0]) => tabn('', bodyTab + n);
-                return item.caseItem(_tab(), _tab(1));
-              }
-
-              switchBuffer.writeln(map(cases));
-            },
-          );
-        },
-      );
-
-    return buffer;
-  }
-
-  @override
-  _Item convert(String e) => _Item(enumName, e);
-}
-
-class _Item extends FieldTemplate<String> {
-  const _Item(String enumName, String field) : super(enumName, field);
-
-  String get arg => 'required T $field,';
-  String get wholeEnum => '$enumName.$field';
-  String get caseString => 'case $wholeEnum:';
-  String get returnString => 'return $field;';
-  String caseItem(String caseTab, String returnTab) => '''
-$caseTab$caseString
-$returnTab$returnString''';
+class MapTemplate extends ExtensionTemplate {
+  /// {@macro enum_assist.additional_map_template}
+  MapTemplate(
+    String enumName,
+    Iterable<EnumField> fields, {
+    required String methodName,
+    required String Function(EnumField) getValue,
+    required String typeAsString,
+  }) : super(
+          enumName,
+          fields,
+          methodName: methodName,
+          defaultValue: null,
+          returnValue: getValue,
+          methodType: MethodType.map,
+          typeAsString: typeAsString,
+        );
 }
