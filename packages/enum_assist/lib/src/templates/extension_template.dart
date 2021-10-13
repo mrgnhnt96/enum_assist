@@ -108,7 +108,5 @@ abstract class ExtensionTemplate extends TemplateCoreDetailed<_Item> {
     return value;
   }
 
-  bool get _isTypeNullable {
-    return typeAsString.contains('?');
-  }
+  bool get _isTypeNullable => isTypeAsStringNullable(typeAsString);
 }

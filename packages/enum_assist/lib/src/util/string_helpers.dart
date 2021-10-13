@@ -15,3 +15,8 @@ String prepareValueForGen<T>(T value) {
   }
   return '$value';
 }
+
+/// checks if the given [type] is nullable
+bool isTypeAsStringNullable(String type) {
+  return type.endsWith('?');
+}

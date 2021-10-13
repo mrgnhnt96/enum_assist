@@ -36,9 +36,7 @@ class AdditionalExtensionConfig {
   final String valueClassType;
 
   /// checks if the [valueType] is nullable
-  bool get isTypeNullable {
-    return valueType.contains('?');
-  }
+  bool get isTypeNullable => isTypeAsStringNullable(valueType);
 
   /// resolve the [AdditionalExtensionConfig] from a `ConstantReader`
   static AdditionalExtensionConfig? resolve(ConstantReader reader) {
