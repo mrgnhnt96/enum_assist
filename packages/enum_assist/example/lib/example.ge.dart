@@ -1,4 +1,6 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file:
 
 part of 'example.dart';
 
@@ -40,6 +42,31 @@ extension NumbersX on Numbers {
         return threelyThree;
     }
   }
+
+  String get name {
+    return map(
+      onetyOne: 'Onety One',
+      twothyTwo: 'Twothy Two',
+      threelyThree: 'threeThree',
+    );
+  }
+
+  String? get description {
+    return maybeMap(
+      orElse: null,
+      onetyOne: 'this is a fake 11',
+      twothyTwo: 'this is a fake 22',
+      threelyThree: 'this is a fake 33 and probably something else',
+    );
+  }
+
+  String get myCoolMethod {
+    return map(
+      onetyOne: '11',
+      twothyTwo: '22',
+      threelyThree: '33',
+    );
+  }
 }
 
 class NumbersConv extends JsonConverter<Numbers, String> {
@@ -47,7 +74,7 @@ class NumbersConv extends JsonConverter<Numbers, String> {
 
   static const _onetyOneName = 'onety_one';
   static const _twothyTwoName = 'twothy_two';
-  static const _threelyThreeName = 'threely_three';
+  static const _threelyThreeName = '1';
 
   @override
   Numbers fromJson(String json) {
