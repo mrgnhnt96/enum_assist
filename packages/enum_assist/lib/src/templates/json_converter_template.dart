@@ -13,55 +13,61 @@ class JsonConverterTemplate extends TemplateCoreDetailed<_Item> {
 
   @override
   StringBuffer writeTemplate(StringBuffer buffer) {
-    buffer.writeobj(
-      'class ${enumName}Conv extends JsonConverter<$enumName, String>',
-      body: (classBuff, classTab) {
-        classBuff
-          ..writelnTab('const ${enumName}Conv();\n', classTab)
-          ..writeln(map((i) => tab(i.privateFieldGetter, classTab)))
-          ..writeln()
-          ..writelnTab('@override', classTab)
-          ..writeobj(
-            '$enumName fromJson(String json)',
-            tab: classTab,
-            body: (fromBuff, fromTab) {
-              fromBuff.writeobj(
-                'switch (json)',
-                tab: fromTab,
-                body: (switchBuff, switchTab) {
-                  String fromCase(_Item i) {
-                    String _tab([int n = 0]) => tab('', switchTab + n);
+    buffer
+      ..writeln('''
+/// {@template ${enumName.toSnakeCase()}.json_converter}
+/// Serializes [$enumName] to and from json
+///
+/// Can be used as annotation for `json_serializable` classes
+///
+/// ```dart
+/// @${enumName}Conv()
+/// final $enumName myEnum;
+/// ```
+/// {@endtemplate}''')
+      ..writeobj(
+        'class ${enumName}Conv extends JsonConverter<$enumName, String>',
+        body: (classBuff, classTab) {
+          classBuff
+            ..writelnTab(
+                '/// {@macro ${enumName.toSnakeCase()}.json_converter}',
+                classTab)
+            ..writelnTab('const ${enumName}Conv();\n', classTab)
+            ..writeln(map((i) => tab(i.privateFieldGetter, classTab)))
+            ..writeln()
+            ..writelnTab('@override', classTab)
+            ..writeobj(
+              '$enumName fromJson(String json)',
+              tab: classTab,
+              body: (fromBuff, fromTab) {
+                fromBuff.writeobj(
+                  'switch (json)',
+                  tab: fromTab,
+                  body: (switchBuff, switchTab) {
+                    String fromCase(_Item i) {
+                      String _tab([int n = 0]) => tab('', switchTab + n);
 
-                    return i.fromCaseItem(_tab(), _tab(1));
-                  }
+                      return i.fromCaseItem(_tab(), _tab(1));
+                    }
 
-                  switchBuff
-                    ..writeln(map(fromCase))
-                    ..writelnTab('default:', switchTab)
-                    ..writelnTab(
-                      r"throw Exception('Unknown field format: $json');",
-                      switchTab + 1,
-                    );
-                },
-              );
-            },
-          )
-          ..writeln()
-          ..writelnTab('@override', classTab)
-          ..writeobj(
-            'String toJson($enumName object) => object.map',
-            tab: classTab,
-            includeSpaceBetweenOpen: false,
-            open: '(',
-            close: ');',
-            body: (toBuff, toTab) {
-              String toCase(_Item i) => tabn(i.toReturnString, toTab + 2);
-
-              toBuff.writeln(map(toCase));
-            },
-          );
-      },
-    );
+                    switchBuff
+                      ..writeln(map(fromCase))
+                      ..writelnTab('default:', switchTab)
+                      ..writelnTab(
+                        r"throw Exception('Unknown field format: $json');",
+                        switchTab + 1,
+                      );
+                  },
+                );
+              },
+            )
+            ..writeln()
+            ..writelnTab('@override', classTab)
+            ..writeln(
+              'String toJson($enumName object) => object.serialized;',
+            );
+        },
+      );
 
     return buffer;
   }
