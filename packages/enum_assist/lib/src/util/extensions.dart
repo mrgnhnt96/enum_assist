@@ -1,5 +1,7 @@
 import 'package:enum_assist/src/util/string_helpers.dart';
 
+export 'package:change_case/change_case.dart';
+
 /// extension to [StringBuffer]
 extension StringBufferX on StringBuffer {
   /// {@macro tab_indentation}

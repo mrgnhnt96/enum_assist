@@ -13,6 +13,7 @@ dependencies:
   analyzer: ^2.5.0
   build: ^2.1.1
   build_config: ^1.0.0
+  change_case: ^1.0.0+2
   enum_assist_annotation:
     path: ../enum_assist_annotation
   json_annotation: ^4.1.0
