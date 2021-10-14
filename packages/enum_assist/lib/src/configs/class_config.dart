@@ -17,7 +17,6 @@ class ClassConfig {
     required this.serializedFormat,
     required this.useDocCommentAsDescription,
     required this.additionalExtensions,
-    required this.requiredExtensions,
   });
 
   /// Merges [config] with [reader].annotation
@@ -33,7 +32,6 @@ class ClassConfig {
       useDocCommentAsDescription: annotation.useDocCommentAsDescription ??
           config.useDocCommentAsDescription,
       additionalExtensions: additionalExtensions ?? config.additionalExtensions,
-      requiredExtensions: config.requiredExtensions,
     );
   }
 
@@ -49,16 +47,12 @@ class ClassConfig {
   /// {@macro enum_assist_annotation.enum_assist.additional_methods}
   final List<AdditionalExtensionConfig> additionalExtensions;
 
-  /// List of required extensions to add/check for each enum
-  final List<String> requiredExtensions;
-
   /// all the default values for [ClassConfig]
   static const defaults = ClassConfig(
     createJsonConv: true,
     serializedFormat: SerializedFormat.none,
     useDocCommentAsDescription: true,
     additionalExtensions: <AdditionalExtensionConfig>[],
-    requiredExtensions: <String>[],
   );
 
   @override

@@ -15,7 +15,6 @@ class Settings {
     const createJsonConvKey = 'create_json_conv';
     const serializedFormatKey = 'serialized_format';
     const useDocCommentAsDescriptionKey = 'use_doc_comment_as_description';
-    const requiredExtensionsKey = 'required_extensions';
 
     const defaultVal = ClassConfig.defaults;
 
@@ -35,16 +34,11 @@ class Settings {
 
     final additionalExtensionsValue = defaultVal.additionalExtensions;
 
-    final requiredExtensionsValue =
-        json[requiredExtensionsKey] as List<String>? ??
-            defaultVal.requiredExtensions;
-
     final config = ClassConfig(
       createJsonConv: createJsonConvValue,
       serializedFormat: serializedFormatValue,
       useDocCommentAsDescription: useDocCommentAsDescriptionValue,
       additionalExtensions: additionalExtensionsValue,
-      requiredExtensions: requiredExtensionsValue,
     );
     return Settings._(config);
   }
