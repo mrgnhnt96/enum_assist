@@ -5,11 +5,20 @@ targets:
         enabled: true
         options:
           # possible values:
-          # - snake
           # - camel
-          # - pascal
+          # - capital
+          # - constant
+          # - dot
+          # - header
           # - kebab
-          # – none
+          # - no
+          # - none
+          # - pascal
+          # - path
+          # - sentence
+          # - snake
+          # - swap
+          # - title
           # default: none
           serialized_format: none
 

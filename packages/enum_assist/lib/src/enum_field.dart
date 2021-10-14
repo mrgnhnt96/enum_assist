@@ -55,7 +55,7 @@ class EnumField extends KeyConfig {
   /// e.g. `MyEnum.myField`
   String get wholeName => '$belongsToEnum.$fieldName';
 
-  /// {@macro enum_assist_annotation.field_format}
+  /// {@macro enum_assist_annotation.serialized_format}
   final SerializedFormat serializedFormat;
 
   /// gets the serialized form of the field's name
@@ -113,6 +113,15 @@ class EnumField extends KeyConfig {
       snake: s.toSnakeCase(),
       pascal: s.toPascalCase(),
       camel: s.toCamelCase(),
+      title: s.toTitleCase(),
+      dot: s.toDotCase(),
+      capital: s.toCapitalCase(),
+      constant: s.toConstantCase(),
+      header: s.toHeaderCase(),
+      no: s.toNoCase(),
+      path: s.toPathCase(),
+      sentence: s.toSentenceCase(),
+      swap: s.toSwapCase(),
       none: s,
     );
   }

@@ -38,7 +38,7 @@ class ClassConfig {
   /// {@macro enum_assist_annotation.enum_assist.create_json_conv}
   final bool createJsonConv;
 
-  /// {@macro enum_assist_annotation.enum_assist.field_format}
+  /// {@macro enum_assist_annotation.enum_assist.serialized_format}
   final SerializedFormat serializedFormat;
 
   /// {@macro enum_assist_annotation.enum_assist.use_doc_comment_as_description}

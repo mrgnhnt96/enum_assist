@@ -26,13 +26,13 @@ class EnumAssist {
   /// {@endtemplate}
   final bool? createJsonConv;
 
-  /// {@template enum_assist_annotation.enum_assist.field_format}
+  /// {@template enum_assist_annotation.enum_assist.serialized_format}
   /// The format of the enum value when serialized.
   ///
   /// __default:__ `none`
   ///
   /// {@endtemplate}
-  /// {@macro enum_assist_annotation.field_format.none}
+  /// {@macro enum_assist_annotation.serialized_format.none}
   final SerializedFormat? serializedFormat;
 
   // ignore: lines_longer_than_80_chars
