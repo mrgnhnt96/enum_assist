@@ -134,7 +134,7 @@ class SerializedFormatConv extends JsonConverter<SerializedFormat, String> {
       case _noneName:
         return SerializedFormat.none;
       default:
-        throw Exception('Unknown field format: $json');
+        throw Exception('Unknown field: $json');
     }
   }
 
@@ -229,7 +229,7 @@ class MethodTypeConv extends JsonConverter<MethodType, String> {
       case _maybeMapName:
         return MethodType.maybeMap;
       default:
-        throw Exception('Unknown field format: $json');
+        throw Exception('Unknown field: $json');
     }
   }
 

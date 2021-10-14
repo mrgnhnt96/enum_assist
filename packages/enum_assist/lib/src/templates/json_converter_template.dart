@@ -54,7 +54,7 @@ class JsonConverterTemplate extends TemplateCoreDetailed<_Item> {
                       ..writeln(map(fromCase))
                       ..writelnTab('default:', switchTab)
                       ..writelnTab(
-                        r"throw Exception('Unknown field format: $json');",
+                        r"throw Exception('Unknown field: $json');",
                         switchTab + 1,
                       );
                   },
