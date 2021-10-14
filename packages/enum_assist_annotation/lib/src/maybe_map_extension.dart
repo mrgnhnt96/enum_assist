@@ -14,9 +14,11 @@ abstract class MaybeMapExtension<T, V extends ExtensionValue<T>>
   const MaybeMapExtension(
     String methodName, {
     required T defaultValue,
+    String? docComment,
   }) : super(
           defaultValue: defaultValue,
           methodName: methodName,
           methodType: MethodType.maybeMap,
+          docComment: docComment,
         );
 }

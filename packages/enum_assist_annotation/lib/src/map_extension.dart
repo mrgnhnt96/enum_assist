@@ -12,9 +12,11 @@ abstract class MapExtension<T, V extends ExtensionValue<T>>
     extends AdditionalExtension<T, V> {
   /// {@macro enum_assist.map_additional_extension}
   const MapExtension(
-    String methodName,
-  ) : super(
+    String methodName, {
+    String? docComment,
+  }) : super(
           methodName: methodName,
           methodType: MethodType.map,
+          docComment: docComment,
         );
 }

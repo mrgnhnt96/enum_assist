@@ -11,6 +11,7 @@ abstract class AdditionalExtension<T, V extends ExtensionValue<T>> {
     this.defaultValue,
     required this.methodName,
     required this.methodType,
+    required this.docComment,
   });
 
   /// {@template enum_assist.additional_extension.default_value}
@@ -25,4 +26,11 @@ abstract class AdditionalExtension<T, V extends ExtensionValue<T>> {
 
   /// {@macro enum_assist.method_type}
   final MethodType methodType;
+
+  /// {@template enum_assist.additional_extension.doc_comment}
+  /// The doc comment to be used in the generated code.
+  ///
+  /// the `///` will be automatically added to the start of all new lines.
+  /// {@endtemplate}
+  final String? docComment;
 }
