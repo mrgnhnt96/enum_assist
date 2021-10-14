@@ -52,8 +52,11 @@ class KeyConfig {
       }
     }
 
-    if (object == null) return defaults;
-
+    if (object == null) {
+      return defaults.copyWith(
+        useDocCommentAsDescription: classConfig.useDocCommentAsDescription,
+      );
+    }
     final reader = ConstantReader(object);
 
     final name = reader.peek(nameKey)?.stringValue;
@@ -76,6 +79,9 @@ class KeyConfig {
         extensionValues.add(config);
       }
     }
+
+    print(
+        'class config uses doc comments? ${classConfig.useDocCommentAsDescription}');
     return KeyConfig(
       name: name,
       description: description,
@@ -111,4 +117,22 @@ class KeyConfig {
   );
 
   static const _enumKeyChecker = TypeChecker.fromRuntime(EnumKey);
+
+  /// @nodoc
+  KeyConfig copyWith({
+    String? description,
+    String? name,
+    String? serializedValue,
+    bool? useDocCommentAsDescription,
+    List<ExtensionValueConfig>? extensionValues,
+  }) {
+    return KeyConfig(
+      description: description ?? this.description,
+      name: name ?? this.name,
+      serializedValue: serializedValue ?? this.serializedValue,
+      useDocCommentAsDescription:
+          useDocCommentAsDescription ?? this.useDocCommentAsDescription,
+      extensionValues: extensionValues ?? this.extensionValues,
+    );
+  }
 }
