@@ -6,7 +6,7 @@ part 'enums.ge.dart';
 /// Formats the field name when serializing.
 /// {@endtemplate}
 @EnumAssist(useDocCommentAsDescription: false)
-enum FieldFormat {
+enum SerializedFormat {
   /// {@template enum_assist_annotation.field_format.kebab}
   /// formats value to kebab-case
   /// (e.g. `fieldName` becomes `field-name`).

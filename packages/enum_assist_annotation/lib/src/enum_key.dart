@@ -37,7 +37,7 @@ class EnumKey {
   /// The serialized value of the enum
   ///
   /// To be used only if the desired value cannot be
-  /// achieved by using `EnumAssist.fieldFormat`
+  /// achieved by using `EnumAssist.serializedFormat`
   final String? serializedValue;
 
   /// {@macro enum_assist_annotation.enum_assist.use_doc_comment_as_description}

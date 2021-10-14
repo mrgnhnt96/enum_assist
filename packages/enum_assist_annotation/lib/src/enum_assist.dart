@@ -10,7 +10,7 @@ class EnumAssist {
   /// {@macro enum_assist_annotation.enum_assist}
   const EnumAssist({
     this.createJsonConv,
-    this.fieldFormat,
+    this.serializedFormat,
     this.useDocCommentAsDescription,
     this.additionalExtensions,
   });
@@ -33,7 +33,7 @@ class EnumAssist {
   ///
   /// {@endtemplate}
   /// {@macro enum_assist_annotation.field_format.none}
-  final FieldFormat? fieldFormat;
+  final SerializedFormat? serializedFormat;
 
   // ignore: lines_longer_than_80_chars
   /// {@template enum_assist_annotation.enum_assist.use_doc_comment_as_description}

@@ -14,7 +14,7 @@ class ClassConfig {
   /// {@macro enum_assist.class_config}
   const ClassConfig({
     required this.createJsonConv,
-    required this.fieldFormat,
+    required this.serializedFormat,
     required this.useDocCommentAsDescription,
     required this.additionalExtensions,
     required this.requiredExtensions,
@@ -29,7 +29,7 @@ class ClassConfig {
 
     return ClassConfig(
       createJsonConv: annotation.createJsonConv ?? config.createJsonConv,
-      fieldFormat: annotation.fieldFormat ?? config.fieldFormat,
+      serializedFormat: annotation.serializedFormat ?? config.serializedFormat,
       useDocCommentAsDescription: annotation.useDocCommentAsDescription ??
           config.useDocCommentAsDescription,
       additionalExtensions: additionalExtensions ?? config.additionalExtensions,
@@ -41,7 +41,7 @@ class ClassConfig {
   final bool createJsonConv;
 
   /// {@macro enum_assist_annotation.enum_assist.field_format}
-  final FieldFormat fieldFormat;
+  final SerializedFormat serializedFormat;
 
   /// {@macro enum_assist_annotation.enum_assist.use_doc_comment_as_description}
   final bool useDocCommentAsDescription;
@@ -55,7 +55,7 @@ class ClassConfig {
   /// all the default values for [ClassConfig]
   static const defaults = ClassConfig(
     createJsonConv: true,
-    fieldFormat: FieldFormat.none,
+    serializedFormat: SerializedFormat.none,
     useDocCommentAsDescription: true,
     additionalExtensions: <AdditionalExtensionConfig>[],
     requiredExtensions: <String>[],
@@ -66,7 +66,7 @@ class ClassConfig {
     return '''
 ClassConfig{
   createJsonConv: $createJsonConv,
-  fieldFormat: $fieldFormat,
+  serializedFormat: $serializedFormat,
   useDocCommentAsDescription: $useDocCommentAsDescription,
   additionalExtensions: $additionalExtensions
 }
@@ -99,10 +99,10 @@ List<AdditionalExtensionConfig>? _getAdditionalExtensions(
 }
 
 EnumAssist _getAnnotation(ConstantReader reader) {
-  final fieldFormatObject = reader.peek('fieldFormat')?.objectValue;
-  final fieldFormat = getEnumFromDartObject(
-    fieldFormatObject,
-    FieldFormat.values,
+  final serializedFormatObject = reader.peek('serializedFormat')?.objectValue;
+  final serializedFormat = getEnumFromDartObject(
+    serializedFormatObject,
+    SerializedFormat.values,
   );
 
   final createJsonConv = reader.peek('createJsonConv')?.boolValue;
@@ -112,7 +112,7 @@ EnumAssist _getAnnotation(ConstantReader reader) {
 
   return EnumAssist(
     createJsonConv: createJsonConv,
-    fieldFormat: fieldFormat,
+    serializedFormat: serializedFormat,
     useDocCommentAsDescription: useDocCommentAsDescription,
   );
 }

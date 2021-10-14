@@ -13,21 +13,21 @@ class Settings {
   /// {@macro enum_assist.settings}
   factory Settings.resolve(Map<String, dynamic> json) {
     const createJsonConvKey = 'create_json_conv';
-    const fieldFormatKey = 'field_format';
+    const serializedFormatKey = 'serialized_format';
     const useDocCommentAsDescriptionKey = 'use_doc_comment_as_description';
     const requiredExtensionsKey = 'required_extensions';
 
-    final defaultVal = ClassConfig.defaults;
+    const defaultVal = ClassConfig.defaults;
 
     final createJsonConvValue =
         json[createJsonConvKey] as bool? ?? defaultVal.createJsonConv;
 
-    final fieldFormatString = json[fieldFormatKey] as String?;
+    final serializedFormatString = json[serializedFormatKey] as String?;
 
-    const fieldFormatConv = FieldFormatConv();
-    final fieldFormatValue = fieldFormatString == null
-        ? defaultVal.fieldFormat
-        : fieldFormatConv.fromJson(fieldFormatString);
+    const serializedFormatConv = SerializedFormatConv();
+    final serializedFormatValue = serializedFormatString == null
+        ? defaultVal.serializedFormat
+        : serializedFormatConv.fromJson(serializedFormatString);
 
     final useDocCommentAsDescriptionValue =
         json[useDocCommentAsDescriptionKey] as bool? ??
@@ -41,7 +41,7 @@ class Settings {
 
     final config = ClassConfig(
       createJsonConv: createJsonConvValue,
-      fieldFormat: fieldFormatValue,
+      serializedFormat: serializedFormatValue,
       useDocCommentAsDescription: useDocCommentAsDescriptionValue,
       additionalExtensions: additionalExtensionsValue,
       requiredExtensions: requiredExtensionsValue,

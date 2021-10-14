@@ -13,7 +13,7 @@ class EnumField extends KeyConfig {
   EnumField._(
     this.belongsToEnum,
     this.fieldName, {
-    required this.fieldFormat,
+    required this.serializedFormat,
     required this.docComment,
     required KeyConfig config,
   }) : super.fromSettings(config);
@@ -22,7 +22,7 @@ class EnumField extends KeyConfig {
   factory EnumField.config(FieldElement e, ClassConfig con) => EnumField._(
         e.type.element!.name!,
         e.name,
-        fieldFormat: con.fieldFormat,
+        serializedFormat: con.serializedFormat,
         docComment: e.documentationComment,
         config: KeyConfig.mergeConfigs(con, e),
       );
@@ -33,7 +33,7 @@ class EnumField extends KeyConfig {
   EnumField.manual({
     this.belongsToEnum = 'MyEnum',
     this.fieldName = 'myField',
-    this.fieldFormat = FieldFormat.none,
+    this.serializedFormat = SerializedFormat.none,
     this.docComment,
     KeyConfig config = KeyConfig.defaults,
   }) : super.fromSettings(config);
@@ -56,7 +56,7 @@ class EnumField extends KeyConfig {
   String get wholeName => '$belongsToEnum.$fieldName';
 
   /// {@macro enum_assist_annotation.field_format}
-  final FieldFormat fieldFormat;
+  final SerializedFormat serializedFormat;
 
   /// gets the serialized form of the field's name
   ///
@@ -108,7 +108,7 @@ class EnumField extends KeyConfig {
   String toString() => fieldName;
 
   String _format(String s) {
-    return fieldFormat.map(
+    return serializedFormat.map(
       kebab: s.toKebabCase(),
       snake: s.toSnakeCase(),
       pascal: s.toPascalCase(),

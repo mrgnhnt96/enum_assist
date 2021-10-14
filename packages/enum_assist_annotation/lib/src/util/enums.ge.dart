@@ -8,8 +8,8 @@ part of 'enums.dart';
 // EnumAssistGenerator
 // **************************************************************************
 
-/// Extensions for the enum FieldFormat
-extension FieldFormatX on FieldFormat {
+/// Extensions for the enum SerializedFormat
+extension SerializedFormatX on SerializedFormat {
   /// Map of all values of the enum
   T map<T>({
     required T kebab,
@@ -19,15 +19,15 @@ extension FieldFormatX on FieldFormat {
     required T none,
   }) {
     switch (this) {
-      case FieldFormat.kebab:
+      case SerializedFormat.kebab:
         return kebab;
-      case FieldFormat.snake:
+      case SerializedFormat.snake:
         return snake;
-      case FieldFormat.pascal:
+      case SerializedFormat.pascal:
         return pascal;
-      case FieldFormat.camel:
+      case SerializedFormat.camel:
         return camel;
-      case FieldFormat.none:
+      case SerializedFormat.none:
         return none;
     }
   }
@@ -44,19 +44,19 @@ extension FieldFormatX on FieldFormat {
     T? none,
   }) {
     switch (this) {
-      case FieldFormat.kebab:
+      case SerializedFormat.kebab:
         if (kebab == null) return orElse;
         return kebab;
-      case FieldFormat.snake:
+      case SerializedFormat.snake:
         if (snake == null) return orElse;
         return snake;
-      case FieldFormat.pascal:
+      case SerializedFormat.pascal:
         if (pascal == null) return orElse;
         return pascal;
-      case FieldFormat.camel:
+      case SerializedFormat.camel:
         if (camel == null) return orElse;
         return camel;
-      case FieldFormat.none:
+      case SerializedFormat.none:
         if (none == null) return orElse;
         return none;
     }
@@ -91,28 +91,28 @@ extension FieldFormatX on FieldFormat {
   /// Returns the serialized value of the enum field.
   String get serialized {
     return map(
-      kebab: FieldFormatConv._kebabName,
-      snake: FieldFormatConv._snakeName,
-      pascal: FieldFormatConv._pascalName,
-      camel: FieldFormatConv._camelName,
-      none: FieldFormatConv._noneName,
+      kebab: SerializedFormatConv._kebabName,
+      snake: SerializedFormatConv._snakeName,
+      pascal: SerializedFormatConv._pascalName,
+      camel: SerializedFormatConv._camelName,
+      none: SerializedFormatConv._noneName,
     );
   }
 }
 
 /// {@template field_format.json_converter}
-/// Serializes [FieldFormat] to and from json
+/// Serializes [SerializedFormat] to and from json
 ///
 /// Can be used as annotation for `json_serializable` classes
 ///
 /// ```dart
-/// @FieldFormatConv()
-/// final FieldFormat myEnum;
+/// @SerializedFormatConv()
+/// final SerializedFormat myEnum;
 /// ```
 /// {@endtemplate}
-class FieldFormatConv extends JsonConverter<FieldFormat, String> {
+class SerializedFormatConv extends JsonConverter<SerializedFormat, String> {
   /// {@macro field_format.json_converter}
-  const FieldFormatConv();
+  const SerializedFormatConv();
 
   static const _kebabName = 'kebab';
   static const _snakeName = 'snake';
@@ -121,25 +121,25 @@ class FieldFormatConv extends JsonConverter<FieldFormat, String> {
   static const _noneName = 'none';
 
   @override
-  FieldFormat fromJson(String json) {
+  SerializedFormat fromJson(String json) {
     switch (json) {
       case _kebabName:
-        return FieldFormat.kebab;
+        return SerializedFormat.kebab;
       case _snakeName:
-        return FieldFormat.snake;
+        return SerializedFormat.snake;
       case _pascalName:
-        return FieldFormat.pascal;
+        return SerializedFormat.pascal;
       case _camelName:
-        return FieldFormat.camel;
+        return SerializedFormat.camel;
       case _noneName:
-        return FieldFormat.none;
+        return SerializedFormat.none;
       default:
         throw Exception('Unknown field format: $json');
     }
   }
 
   @override
-  String toJson(FieldFormat object) => object.serialized;
+  String toJson(SerializedFormat object) => object.serialized;
 }
 
 /// Extensions for the enum MethodType
