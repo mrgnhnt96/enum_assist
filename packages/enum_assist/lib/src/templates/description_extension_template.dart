@@ -14,5 +14,21 @@ class DescriptionTemplate extends MaybeMapTemplate {
           getValue: (field) => field.getDescription,
           methodName: 'description',
           typeAsString: '$String?',
+          docComment: '''
+/// Returns the description of the enum field.
+///
+/// If the description is null, the doc comment of the enum field is returned.''',
         );
+
+  @override
+  String? prepValueForGen(String? value) {
+    if (value == null) return null;
+    final description = value
+        .replaceAll(RegExp('{@(template|endtemplate|macro)*(?:[^}]*)}'), '')
+        .replaceAll(RegExp('^\n*'), '');
+
+    return '''
+\'\'\'
+$description\'\'\'''';
+  }
 }

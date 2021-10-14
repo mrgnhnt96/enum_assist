@@ -12,6 +12,10 @@ class MaybeMapTemplate extends TemplateCoreSimple<_Item> {
   @override
   StringBuffer writeTemplate(StringBuffer buffer) {
     buffer
+      ..writeln('''
+/// Optionally map all values of the enum
+///
+/// default value is provided when value has not been mapped''')
       ..writeobj(
         'T maybeMap<T>',
         open: '({',

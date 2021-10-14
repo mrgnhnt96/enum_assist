@@ -18,6 +18,7 @@ class AdaptiveTemplate extends ExtensionTemplate {
     required String? defaultValue,
     required String typeAsString,
     required MethodType methodType,
+    required String docComment,
   }) : super(
           enumName,
           fields,
@@ -26,5 +27,6 @@ class AdaptiveTemplate extends ExtensionTemplate {
           returnValue: getValue,
           methodType: methodType,
           typeAsString: typeAsString,
+          docComment: docComment,
         );
 }

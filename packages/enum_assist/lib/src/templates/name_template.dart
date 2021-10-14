@@ -13,5 +13,8 @@ class NameTemplate extends MapTemplate {
           getValue: (field) => field.getName,
           methodName: 'name',
           typeAsString: '$String',
+          docComment: '''
+/// Returns the name of the enum field
+/// in a human readable format.''',
         );
 }

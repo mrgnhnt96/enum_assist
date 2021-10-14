@@ -15,6 +15,7 @@ class AdditionalExtensionConfig {
     required this.defaultValue,
     required this.className,
     required this.valueClassType,
+    required this.docComment,
   });
 
   /// {@macro enum_assist.additional_extension.default_value}
@@ -35,6 +36,16 @@ class AdditionalExtensionConfig {
   /// type of class used to create the value
   final String valueClassType;
 
+  /// {@macro enum_assist.additional_extension.doc_comment}
+  final String? docComment;
+
+  /// returns the formatted [docComment]
+  String getDocComment() {
+    if (docComment == null) return '/// @nodoc';
+
+    return docComment!.replaceAll(r'\n', r'\n\\\');
+  }
+
   /// checks if the [valueType] is nullable
   bool get isTypeNullable => isTypeAsStringNullable(valueType);
 
@@ -43,11 +54,12 @@ class AdditionalExtensionConfig {
     const methodNameKey = 'methodName';
     const methodTypeKey = 'methodType';
     const defaultValueKey = 'defaultValue';
+    const docCommentKey = 'docComment';
 
-    final methodNameValue = reader.peek('methodName')?.stringValue;
+    final methodNameValue = reader.peek(methodNameKey)?.stringValue;
     if (methodNameValue == null) throw _methodNameException(methodNameKey);
 
-    final methodTypeObj = reader.peek('methodType')?.objectValue;
+    final methodTypeObj = reader.peek(methodTypeKey)?.objectValue;
     if (methodTypeObj == null) {
       throw _methodTypeException(methodTypeKey, methodNameValue);
     }
@@ -58,7 +70,7 @@ class AdditionalExtensionConfig {
       throw _methodTypeException(methodTypeKey, methodNameValue);
     }
 
-    final defaultValueValue = reader.peek('defaultValue')?.stringValue;
+    final defaultValueValue = reader.peek(defaultValueKey)?.stringValue;
 
     if (_isMissingDefaultValue(defaultValueValue, methodTypeValue)) {
       throw _defaultValueException(
@@ -87,6 +99,7 @@ class AdditionalExtensionConfig {
     final valueType = typeArguments[0];
     final valueClassType = typeArguments[1];
     final className = reader.objectValue.type!.element!.displayName;
+    final docCommentValue = reader.peek(docCommentKey)?.stringValue;
 
     return AdditionalExtensionConfig._(
       methodName: methodNameValue,
@@ -95,6 +108,7 @@ class AdditionalExtensionConfig {
       defaultValue: defaultValueValue,
       className: className,
       valueClassType: valueClassType,
+      docComment: docCommentValue,
     );
   }
 
@@ -130,6 +144,7 @@ methodType: $methodType,
 defaultValue: $defaultValue,
 className: $className,
 valueClassType: $valueClassType,
+docCommentValue: $docComment,
 ''';
   }
 }
@@ -139,7 +154,7 @@ bool _isMissingDefaultValue<T>(T defaultValue, MethodType methodType) {
     orElse: () {
       return false;
     },
-    maybeMapMethod: () {
+    maybeMap: () {
       if (defaultValue == null) return true;
       return false;
     },

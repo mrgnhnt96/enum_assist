@@ -23,12 +23,15 @@ abstract class ExtensionTemplate extends TemplateCoreDetailed<_Item> {
     required this.returnValue,
     required this.methodType,
     required this.typeAsString,
+    required this.docComment,
   }) : super(enumName, fields);
 
   /// The name of the method to call
+  @protected
   final String methodName;
 
   /// the value to be returned by the enum value
+  @protected
   final String? Function(EnumField) returnValue;
 
   /// the access method that will be used
@@ -36,76 +39,84 @@ abstract class ExtensionTemplate extends TemplateCoreDetailed<_Item> {
   /// Options:
   /// - `map`
   /// - `maybeMap`
+  @protected
   final MethodType methodType;
 
   /// the default value to be returned by the enum value
+  @protected
   final String? defaultValue;
 
   /// the return type of the method
   ///
   /// (e.g. `'$String'` or `'String'`)
+  @protected
   final String typeAsString;
 
-  String get _getAccess =>
-      methodType.map(maybeMapMethod: 'maybeMap', mapMethod: 'map');
+  /// the doc comment for the method
+  @protected
+  final String docComment;
 
-  bool get _useOrElse => methodType.map(maybeMapMethod: true, mapMethod: false);
+  String get _getAccess => methodType.map(maybeMap: 'maybeMap', map: 'map');
+
+  bool get _useOrElse => methodType.map(maybeMap: true, map: false);
 
   @protected
   @nonVirtual
   @override
   StringBuffer writeTemplate(StringBuffer buffer) {
     String? _checkValueAndPrepare(String? value, EnumField field) {
-      if (value == '') {
-        throw BadStringFormatException(field.wholeName, value!);
-      }
-
-      final formattedValue = value?.replaceAll(RegExp('\n'), r'\n');
-
-      return _prepValueForGen(formattedValue);
+      return prepValueForGen(value);
     }
 
-    buffer.writeobj(
-      '$typeAsString get $methodName',
-      body: (nameBuffer, tab) {
-        nameBuffer.writeobj(
-          'return $_getAccess',
-          tab: tab,
-          open: '(',
-          close: ');',
-          body: (mapBuffer, mapTab) {
-            if (_useOrElse) {
-              mapBuffer.writeln('orElse: $defaultValue,');
-            }
-            mapBuffer.writelnTab(
-              map((i) {
-                final value = returnValue(i.field);
-                final preparedValue = _checkValueAndPrepare(value, i.field);
+    buffer
+      ..writeln(docComment)
+      ..writeobj(
+        '$typeAsString get $methodName',
+        body: (nameBuffer, tab) {
+          nameBuffer.writeobj(
+            'return $_getAccess',
+            tab: tab,
+            open: '(',
+            close: ');',
+            body: (mapBuffer, mapTab) {
+              if (_useOrElse) {
+                mapBuffer.writeln('orElse: $defaultValue,');
+              }
+              mapBuffer.writelnTab(
+                map((i) {
+                  final value = returnValue(i.field);
+                  final preparedValue = _checkValueAndPrepare(value, i.field);
 
-                if (!_isTypeNullable && preparedValue == null) {
-                  throw NullValueException(i.field.fieldName);
-                }
+                  if (!_isTypeNullable && preparedValue == null) {
+                    throw NullValueException(i.field.fieldName);
+                  }
 
-                return tabn(i.returnString(preparedValue), tab);
-              }),
-              mapTab,
-            );
-          },
-        );
-      },
-    );
+                  return tabn(i.returnString(preparedValue), tab);
+                }),
+                mapTab,
+              );
+            },
+          );
+        },
+      );
 
     return buffer;
   }
 
   @override
+  @protected
   _Item convert(EnumField e) => _Item(enumName, e);
 
-  String? _prepValueForGen(String? value) {
-    if (typeAsString.startsWith('String') && value != null) {
-      return "'$value'";
+  /// prepares the value for the generation
+  ///
+  /// if type is `String`, it will be wrapped in quotes
+  String? prepValueForGen(String? value) {
+    final formattedValue = value?.replaceAll(RegExp('\n'), r'\n');
+
+    if (typeAsString.startsWith('String') && formattedValue != null) {
+      return "'$formattedValue'";
     }
-    return value;
+    return formattedValue;
   }
 
   bool get _isTypeNullable => isTypeAsStringNullable(typeAsString);

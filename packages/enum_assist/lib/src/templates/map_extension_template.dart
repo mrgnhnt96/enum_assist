@@ -12,6 +12,7 @@ class MapTemplate extends TemplateCoreSimple<_Item> {
   @override
   StringBuffer writeTemplate(StringBuffer buffer) {
     buffer
+      ..writeln('/// Map of all values of the enum')
       ..writeobj(
         'T map<T>',
         open: '({',

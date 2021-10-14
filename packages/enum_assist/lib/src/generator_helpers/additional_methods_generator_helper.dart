@@ -15,6 +15,7 @@ abstract class AdditionalExtensionsGeneratorHelper implements HelperCore {
             enumName,
             fields,
             methodName: extension.methodName,
+            docComment: extension.getDocComment(),
             defaultValue: extension.defaultValue,
             methodType: extension.methodType,
             typeAsString: extension.valueType,

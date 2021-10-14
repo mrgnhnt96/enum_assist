@@ -15,6 +15,7 @@ class MapTemplate extends ExtensionTemplate {
     required String methodName,
     required String Function(EnumField) getValue,
     required String typeAsString,
+    required String docComment,
   }) : super(
           enumName,
           fields,
@@ -23,5 +24,6 @@ class MapTemplate extends ExtensionTemplate {
           returnValue: getValue,
           methodType: MethodType.map,
           typeAsString: typeAsString,
+          docComment: docComment,
         );
 }

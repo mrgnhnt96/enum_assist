@@ -16,6 +16,7 @@ class MaybeMapTemplate extends ExtensionTemplate {
     required String? Function(EnumField) getValue,
     required String? defaultValue,
     required String typeAsString,
+    required String docComment,
   }) : super(
           enumName,
           fields,
@@ -24,5 +25,6 @@ class MaybeMapTemplate extends ExtensionTemplate {
           returnValue: getValue,
           methodType: MethodType.maybeMap,
           typeAsString: typeAsString,
+          docComment: docComment,
         );
 }
