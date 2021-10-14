@@ -4,7 +4,6 @@ import 'package:enum_assist/src/configs/extension_value_config.dart';
 import 'package:enum_assist/src/src.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:meta/meta.dart';
-import 'package:source_helper/src/case_helpers.dart'; // ignore: implementation_imports
 
 /// {@template enum_assist.enum_field}
 /// A field & all its associated metadata.
@@ -75,10 +74,9 @@ class EnumField extends KeyConfig {
   /// - [docComment]
   String? get getDescription {
     if (description != null) return description;
+
     if (useDocCommentAsDescription) {
-      return docComment
-          ?.replaceAll(RegExp(r'///(?:[\s]*)'), '')
-          .replaceAll(RegExp(r'\n'), ' ');
+      return docComment?.replaceAll(RegExp('///(?: *)'), '');
     }
     return null;
   }
@@ -92,7 +90,7 @@ class EnumField extends KeyConfig {
   String get getName {
     if (name != null) return name!;
 
-    return _format(fieldName, _AllFormats.title);
+    return fieldName.toTitleCase();
   }
 
   /// returns the config for the extension
@@ -109,65 +107,13 @@ class EnumField extends KeyConfig {
   @override
   String toString() => fieldName;
 
-  String _format(String s, [_AllFormats? format]) {
-    if (format != null) return format.format(s);
-
+  String _format(String s) {
     return fieldFormat.map(
-      kebab: s.kebab,
-      snake: s.snake,
-      pascal: s.pascal,
+      kebab: s.toKebabCase(),
+      snake: s.toSnakeCase(),
+      pascal: s.toPascalCase(),
+      camel: s.toCamelCase(),
       none: s,
     );
-  }
-}
-
-enum _AllFormats { title, kebab, snake, pascal, none }
-
-extension on _AllFormats {
-  T map<T>({
-    required T title,
-    required T kebab,
-    required T snake,
-    required T pascal,
-    required T none,
-  }) {
-    switch (this) {
-      case _AllFormats.title:
-        return title;
-      case _AllFormats.kebab:
-        return kebab;
-      case _AllFormats.snake:
-        return snake;
-      case _AllFormats.pascal:
-        return pascal;
-      case _AllFormats.none:
-        return none;
-    }
-  }
-
-  String format(String s) {
-    return map(
-      title: s.title,
-      kebab: s.kebab,
-      snake: s.snake,
-      pascal: s.pascal,
-      none: s,
-    );
-  }
-}
-
-extension on String {
-  String get title {
-    String capitalizeFirstLetter(String word) {
-      final firstLetter = word.substring(0, 1).toUpperCase();
-      final rest = word.substring(1).toLowerCase();
-      final capitalizedWord = '$firstLetter$rest';
-
-      return capitalizedWord;
-    }
-
-    final words = snake.split('_');
-
-    return words.map(capitalizeFirstLetter).join(' ');
   }
 }
