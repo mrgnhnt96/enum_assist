@@ -36,10 +36,10 @@ abstract class AdditionalExtensionsGeneratorHelper implements HelperCore {
           ).toString(),
         );
       } on MissingExtensionValueException catch (e) {
-        print(e);
+        print(e); // ignore: avoid_print
         continue;
       } on NullValueException catch (e) {
-        print(e);
+        print(e); // ignore: avoid_print
         continue;
       }
     }

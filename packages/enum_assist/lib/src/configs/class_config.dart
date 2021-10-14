@@ -83,7 +83,7 @@ List<AdditionalExtensionConfig>? _getAdditionalExtensions(
     try {
       config = AdditionalExtensionConfig.resolve(entry);
     } catch (e) {
-      print('Error resolving extension:\n\nmessage: $e');
+      print('Error resolving extension:\n\nmessage: $e'); // ignore: avoid_print
     }
     if (config == null) continue;
 
