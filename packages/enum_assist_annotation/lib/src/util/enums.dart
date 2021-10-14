@@ -1,6 +1,11 @@
+import 'package:enum_assist_annotation/enum_assist_annotation.dart';
+
+part 'enums.ge.dart';
+
 /// {@template enum_assist_annotation.field_format}
 /// Formats the field name when serializing.
 /// {@endtemplate}
+@EnumAssist(useDocCommentAsDescription: false)
 enum FieldFormat {
   /// {@template enum_assist_annotation.field_format.kebab}
   /// formats value to kebab-case
@@ -20,6 +25,12 @@ enum FieldFormat {
   /// {@endtemplate}
   pascal,
 
+  /// {@template enum_assist_annotation.field_format.camel_case}
+  /// formats value to camelCase
+  /// (e.g. `field_name` becomes `fieldName`).
+  /// {@endtemplate}
+  camel,
+
   /// {@template enum_assist_annotation.field_format.none}
   /// does not format the value
   /// (e.g. `fieldName` remains `fieldName`).
@@ -30,6 +41,7 @@ enum FieldFormat {
 /// {@template enum_assist.method_type}
 /// Determines how to set up the generated method.
 /// {@endtemplate}
+@EnumAssist(useDocCommentAsDescription: false)
 enum MethodType {
   /// The generated method will be `map(...)`.
   ///
