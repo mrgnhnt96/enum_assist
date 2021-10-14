@@ -3,7 +3,7 @@ import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 part 'example.ge.dart';
 
 @EnumAssist(
-  fieldFormat: FieldFormat.snake,
+  serializedFormat: SerializedFormat.snake,
   additionalExtensions: [MyExtension()],
 )
 enum Numbers {

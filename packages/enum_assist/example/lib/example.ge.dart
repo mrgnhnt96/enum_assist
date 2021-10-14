@@ -8,7 +8,9 @@ part of 'example.dart';
 // EnumAssistGenerator
 // **************************************************************************
 
+/// Extensions for the enum Numbers
 extension NumbersX on Numbers {
+  /// Map of all values of the enum
   T map<T>({
     required T onetyOne,
     required T twothyTwo,
@@ -24,6 +26,9 @@ extension NumbersX on Numbers {
     }
   }
 
+  /// Optionally map all values of the enum
+  ///
+  /// default value is provided when value has not been mapped
   T maybeMap<T>({
     required T orElse,
     T? onetyOne,
@@ -43,23 +48,45 @@ extension NumbersX on Numbers {
     }
   }
 
+  /// Returns the name of the enum field
+  /// in a human readable format.
   String get name {
     return map(
-      onetyOne: 'Onety One',
-      twothyTwo: 'Twothy Two',
+      onetyOne: 'onetyOne',
+      twothyTwo: 'twothyTwo',
       threelyThree: 'threeThree',
     );
   }
 
+  /// Returns the description of the enum field.
+  ///
+  /// If the description is null, the doc comment of the enum field is returned.
   String? get description {
     return maybeMap(
       orElse: null,
-      onetyOne: 'this is a fake 11',
-      twothyTwo: 'this is a fake 22',
-      threelyThree: 'this is a fake 33 and probably something else',
+      onetyOne: '''
+this is a fake 11''',
+      twothyTwo: '''
+this is a fake 22''',
+      threelyThree: '''
+this is a fake 33
+
+
+
+and probably something else''',
     );
   }
 
+  /// Returns the serialized value of the enum field.
+  String get serialized {
+    return map(
+      onetyOne: NumbersConv._onetyOneName,
+      twothyTwo: NumbersConv._twothyTwoName,
+      threelyThree: NumbersConv._threelyThreeName,
+    );
+  }
+
+  /// @nodoc
   String get myCoolMethod {
     return map(
       onetyOne: '11',
@@ -69,7 +96,18 @@ extension NumbersX on Numbers {
   }
 }
 
+/// {@template numbers.json_converter}
+/// Serializes [Numbers] to and from json
+///
+/// Can be used as annotation for `json_serializable` classes
+///
+/// ```dart
+/// @NumbersConv()
+/// final Numbers myEnum;
+/// ```
+/// {@endtemplate}
 class NumbersConv extends JsonConverter<Numbers, String> {
+  /// {@macro numbers.json_converter}
   const NumbersConv();
 
   static const _onetyOneName = 'onety_one';
@@ -86,14 +124,10 @@ class NumbersConv extends JsonConverter<Numbers, String> {
       case _threelyThreeName:
         return Numbers.threelyThree;
       default:
-        throw Exception('Unknown field format: $json');
+        throw Exception('Unknown field: $json');
     }
   }
 
   @override
-  String toJson(Numbers object) => object.map(
-        onetyOne: _onetyOneName,
-        twothyTwo: _twothyTwoName,
-        threelyThree: _threelyThreeName,
-      );
+  String toJson(Numbers object) => object.serialized;
 }
