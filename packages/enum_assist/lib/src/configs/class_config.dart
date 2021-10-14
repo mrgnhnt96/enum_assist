@@ -76,10 +76,12 @@ ClassConfig{
 
 List<AdditionalExtensionConfig>? _getAdditionalExtensions(
     ConstantReader reader) {
-  final additionalExtensionsRaw = reader.read('additionalExtensions').listValue;
+  final additionalExtensionsRaw =
+      reader.peek('additionalExtensions')?.listValue;
+
+  if (additionalExtensionsRaw == null) return null;
 
   final additionalExtensions = <AdditionalExtensionConfig>[];
-
   for (final extension in additionalExtensionsRaw) {
     final entry = ConstantReader(extension);
 
@@ -97,16 +99,16 @@ List<AdditionalExtensionConfig>? _getAdditionalExtensions(
 }
 
 EnumAssist _getAnnotation(ConstantReader reader) {
-  final fieldFormatObject = reader.read('fieldFormat').objectValue;
+  final fieldFormatObject = reader.peek('fieldFormat')?.objectValue;
   final fieldFormat = getEnumFromDartObject(
     fieldFormatObject,
     FieldFormat.values,
   );
 
-  final createJsonConv = reader.read('createJsonConv').literalValue as bool?;
+  final createJsonConv = reader.peek('createJsonConv')?.boolValue;
 
   final useDocCommentAsDescription =
-      reader.read('useDocCommentAsDescription').literalValue as bool?;
+      reader.peek('useDocCommentAsDescription')?.boolValue;
 
   return EnumAssist(
     createJsonConv: createJsonConv,
