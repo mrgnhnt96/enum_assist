@@ -1,0 +1,26 @@
+targets:
+  $default:
+    builders:
+      enum_assist:
+        enabled: true
+        options:
+          # possible values:
+          # - snake
+          # - camel
+          # - pascal
+          # - kebab
+          # – none
+          # default: none
+          serialized_format: none
+
+          # possible values:
+          # - true
+          # - false
+          # default: true
+          use_doc_comment_as_description: true
+
+          # possible values:
+          # - true
+          # - false
+          # default: true
+          create_json_conv: true
