@@ -6,4 +6,12 @@ extension LibraryElementX on LibraryElement {
     return await session.getErrors(
         '/enum_assist/test/integration/$fileName.ge.dart') as ErrorsResult;
   }
+
+  bool doesConvExist(String enumName) {
+    return getType('${enumName}Conv') != null;
+  }
+
+  bool doesConvNullableExist(String enumName) {
+    return doesConvExist('_${enumName}Nullable');
+  }
 }
