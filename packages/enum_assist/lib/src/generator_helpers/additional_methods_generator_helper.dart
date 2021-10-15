@@ -24,7 +24,7 @@ abstract class AdditionalExtensionsGeneratorHelper implements HelperCore {
                   field.getExtensionValue(extension.valueClassType);
               final returnValue = extensionValueConfig?.value;
 
-              if (!extension.isTypeNullable && returnValue == null) {
+              if (!extension.isValueTypeNullable && returnValue == null) {
                 throw MissingExtensionValueException(
                   field.wholeName,
                   extension.methodName,

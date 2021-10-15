@@ -1,6 +1,7 @@
 import 'package:enum_assist/src/util/enum_helpers.dart';
 import 'package:enum_assist/src/util/util.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
+import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
 /// {@template enum_assist.additional_extension_config}
@@ -43,11 +44,41 @@ class AdditionalExtensionConfig {
   String getDocComment() {
     if (docComment == null) return '/// @nodoc';
 
-    return docComment!.replaceAll(r'\n', r'\n\\\');
+    return docComment!
+        // prepend "/// " to each line that starts with anything other than a line break
+        .replaceAllMapped(
+            RegExp('^(.)', multiLine: true), (match) => '/// ${match.group(0)}')
+
+        /// prepend "/// " to each line that starts with a line break
+        .replaceAllMapped(RegExp(r'^\n', multiLine: true), (_) => '///\n');
   }
 
   /// checks if the [valueType] is nullable
-  bool get isTypeNullable => isTypeAsStringNullable(valueType);
+  bool get isValueTypeNullable => isTypeAsStringNullable(valueType);
+
+  /// used for testing
+  ///
+  /// {@macro enum_assist.additional_extension_config}
+  @visibleForTesting
+  static AdditionalExtensionConfig manual({
+    String methodName = 'manual',
+    String valueType = 'String',
+    MethodType methodType = MethodType.map,
+    String? defaultValue,
+    String className = 'Manual',
+    String valueClassType = 'String',
+    String? docComment,
+  }) {
+    return AdditionalExtensionConfig._(
+      methodName: methodName,
+      valueType: valueType,
+      methodType: methodType,
+      defaultValue: defaultValue,
+      className: className,
+      valueClassType: valueClassType,
+      docComment: docComment,
+    );
+  }
 
   /// resolve the [AdditionalExtensionConfig] from a `ConstantReader`
   static AdditionalExtensionConfig? resolve(ConstantReader reader) {
