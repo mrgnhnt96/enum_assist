@@ -17,8 +17,7 @@ prep:
   - flutter format lib test
   - $sort
 
-# requires `dart pub global activate pub_version_plus`
-vmajor: pubversion major
-vminor: pubversion minor
-vpatch: pubversion patch
-vbuild: pubversion build
+runtests:
+  - flutter test --coverage
+  - genhtml coverage/lcov.info -o coverage
+  - open coverage/index.html
