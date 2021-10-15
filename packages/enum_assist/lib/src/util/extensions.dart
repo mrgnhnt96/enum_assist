@@ -6,12 +6,12 @@ export 'package:change_case/change_case.dart';
 extension StringBufferX on StringBuffer {
   /// {@macro tab_indentation}
   void writelnTab(String s, [int n = 1]) {
-    writeln('${tabIndentation * n}$s');
+    writeln(tab(s, n));
   }
 
   /// {@macro tab_indentation}
   void writeTab(String s, [int n = 1]) {
-    write('${tabIndentation * n}$s');
+    write(tab(s, n));
   }
 
   /// accepts a header string to name the section

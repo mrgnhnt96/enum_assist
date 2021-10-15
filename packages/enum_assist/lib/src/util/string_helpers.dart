@@ -1,7 +1,11 @@
+import 'dart:math';
+
 /// {@template tab_indentation}
 /// writes new line with tab indentation
 /// {@endtemplate}
 String tab(String s, [int n = 1]) {
+  n = max(n, 0);
+
   return '${tabIndentation * n}$s';
 }
 
