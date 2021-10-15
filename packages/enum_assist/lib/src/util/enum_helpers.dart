@@ -11,7 +11,13 @@ T? getEnumFromDartObject<T>(
 
   String getName(T format) => '$format'.split('.').last;
 
-  final enumValue = values.singleWhere((v) => obj.getField(getName(v)) != null);
+  T? enumValue;
+  try {
+    enumValue = values.firstWhere((v) => obj.getField(getName(v!)) != null);
+  } catch (_) {
+    // there was no enum value found
+    // continue
+  }
 
   return enumValue;
 }
