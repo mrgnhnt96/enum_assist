@@ -14,7 +14,7 @@ class MapTemplate extends TemplateCoreSimple<_Item> {
     buffer
       ..writeln('/// Map of all values of the enum')
       ..writeobj(
-        'T map<T>',
+        'T map<T extends Object?>',
         open: '({',
         body: (mapBuffer, tab) {
           mapBuffer.writeln(map((i) => tabn(i.arg, tab)));
