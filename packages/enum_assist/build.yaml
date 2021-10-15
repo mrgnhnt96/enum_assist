@@ -1,4 +1,16 @@
 # Read about `build.yaml` at https://pub.dev/packages/build_config
+targets:
+  $default:
+    builders:
+      enum_assist:
+        enabled: true
+        generate_for:
+          exclude:
+            - test/
+          include:
+            - test/integration/*
+            - test/integration/**/*
+
 builders:
   enum_assist:
     import: "package:enum_assist/builder.dart"
