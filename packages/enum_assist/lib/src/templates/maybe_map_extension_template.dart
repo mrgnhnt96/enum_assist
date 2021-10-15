@@ -17,7 +17,7 @@ class MaybeMapTemplate extends TemplateCoreSimple<_Item> {
 ///
 /// default value is provided when value has not been mapped''')
       ..writeobj(
-        'T maybeMap<T>',
+        'T maybeMap<T extends Object?>',
         open: '({',
         body: (mapBuffer, tab) {
           mapBuffer
@@ -29,19 +29,29 @@ class MaybeMapTemplate extends TemplateCoreSimple<_Item> {
       ..writeobj(
         '',
         body: (mapBuff, bodyTab) {
-          mapBuff.writeobj(
-            'switch(this)',
-            tab: bodyTab,
-            body: (switchBuff, switchTab) {
-              String caseItem(_Item item) {
-                String _tab([int n = 0]) => tabn('', switchTab + n);
+          mapBuff
+            ..writelnTab('var isNullable = true;', bodyTab)
+            ..writeln()
+            ..writeobj('try', body: (tryBuff, tryTab) {
+              tryBuff.writelnTab('final value = null as T;', tryTab);
+            })
+            ..writeobj('catch (_)', body: (catchBuff, catchTab) {
+              catchBuff.writelnTab('isNullable = false;', catchTab);
+            })
+            ..writeln()
+            ..writeobj(
+              'switch(this)',
+              tab: bodyTab,
+              body: (switchBuff, switchTab) {
+                String caseItem(_Item item) {
+                  String _tab([int n = 0]) => tabn('', switchTab + n);
 
-                return item.caseItem(_tab(), _tab(1));
-              }
+                  return item.caseItem(_tab(), _tab(1));
+                }
 
-              switchBuff.writeln(map(caseItem));
-            },
-          );
+                switchBuff.writeln(map(caseItem));
+              },
+            );
         },
       ); // maybeMap
 
@@ -55,7 +65,7 @@ class MaybeMapTemplate extends TemplateCoreSimple<_Item> {
 class _Item extends FieldTemplate<String> {
   const _Item(String enumName, String field) : super(enumName, field);
 
-  String get orElseCheck => 'if ($field == null) return orElse;';
+  String get orElseCheck => 'if ($field == null && !isNullable) return orElse;';
 
   String get arg => 'T? $field,';
 
@@ -63,7 +73,7 @@ class _Item extends FieldTemplate<String> {
 
   String get caseString => 'case $wholeEnum:';
 
-  String get returnString => 'return $field;';
+  String get returnString => 'return $field as T;';
 
   String caseItem(String caseTab, String returnTab) => '''
 $caseTab$caseString
