@@ -113,7 +113,7 @@ class EnumField extends KeyConfig {
       snake: s.toSnakeCase(),
       pascal: s.toPascalCase(),
       camel: s.toCamelCase(),
-      dot: s.toDotCase(),
+      dot: s.toDotCase().toLowerCase(),
       capital: s.toCapitalCase(),
       constant: s.toConstantCase(),
       header: s.toHeaderCase(),
