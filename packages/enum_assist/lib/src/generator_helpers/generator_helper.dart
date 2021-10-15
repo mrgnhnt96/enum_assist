@@ -1,6 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:enum_assist/src/configs/class_config.dart';
-import 'package:enum_assist/src/generator_helpers/additional_methods_generator_helper.dart';
+import 'package:enum_assist/src/generator_helpers/additional_extensions_generator_helper.dart';
 import 'package:enum_assist/src/generator_helpers/extension_generator_helper.dart';
 import 'package:enum_assist/src/generator_helpers/helper_core.dart';
 import 'package:enum_assist/src/generator_helpers/json_converter_generator_helper.dart';

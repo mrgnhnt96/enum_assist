@@ -27,6 +27,7 @@ abstract class HelperCore {
 
   /// the name of the enum
   @protected
+  @visibleForTesting
   String get enumName => element.name.nonPrivate;
 
   /// Returns a [Set] of all instance [FieldElement] items for [element] and
@@ -42,10 +43,12 @@ abstract class HelperCore {
 
   /// Returns the names of all fields
   @protected
+  @visibleForTesting
   Iterable<String> get fieldNames => fieldElements.map(_nameAccess);
 
   /// returns a list of [EnumField]s for the given [fieldElements]
   @protected
+  @visibleForTesting
   Iterable<EnumField> get fields =>
       fieldElements.map((e) => EnumField.config(e, config));
 }
