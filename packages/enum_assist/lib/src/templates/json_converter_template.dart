@@ -8,36 +8,71 @@ import 'package:enum_assist/src/util/util.dart';
 /// {@endtemplate}
 class JsonConverterTemplate extends TemplateCoreDetailed<_Item> {
   /// {@macro enum_assist.map_template}
-  JsonConverterTemplate(String enumName, Iterable<EnumField> fields)
+  JsonConverterTemplate(String enumName, Iterable<EnumField> fields,
+      {required this.isNullable})
       : super(enumName, fields);
+
+  /// sets the template to return a nullable value
+  final bool isNullable;
+
+  String get _possNullType => isNullable ? '?' : '';
+  String get _possNullName => isNullable ? 'Nullable' : '';
+  String get _className =>
+      '${isNullable ? '_' : ''}$enumName${_possNullName}Conv';
+  String get _enumType => '$enumName$_possNullType';
+  String get _stringType => 'String$_possNullType';
+
+  String get _templateName =>
+      isNullable ? _templateNameNullable : _templateNameNonNullable;
+  String get _templateNameNullable => '${_templateNameNonNullable}_nullable';
+  String get _templateNameNonNullable =>
+      '${enumName.toSnakeCase()}.json_converter';
+  String get _annotation =>
+      isNullable ? '@${enumName}Conv.nullable' : '@$_className()';
 
   @override
   StringBuffer writeTemplate(StringBuffer buffer) {
     buffer
       ..writeln('''
-/// {@template ${enumName.toSnakeCase()}.json_converter}
-/// Serializes [$enumName] to and from json
+/// {@template $_templateName}
+/// Serializes [$_enumType] to and from json
 ///
 /// Can be used as annotation for `json_serializable` classes
 ///
 /// ```dart
-/// @${enumName}Conv()
-/// final $enumName myEnum;
+/// $_annotation
+/// final $_enumType myEnum;
 /// ```
 /// {@endtemplate}''')
       ..writeobj(
-        'class ${enumName}Conv extends JsonConverter<$enumName, String>',
+        'class $_className extends JsonConverter<$_enumType, $_stringType>', // ignore:
         body: (classBuff, classTab) {
+          classBuff.writelnTab(
+              '/// {@macro ${enumName.toSnakeCase()}.json_converter}',
+              classTab);
+
+          if (!isNullable) {
+            classBuff
+              ..writelnTab('const $_className({this.defaultValue});', classTab)
+              ..writeln()
+              ..writelnTab(
+                  '/// the value to be used when no match is found', classTab)
+              ..writelnTab('final $enumName? defaultValue;', classTab)
+              ..writeln()
+              ..writelnTab('/// {@macro $_templateNameNullable}', classTab)
+              ..writelnTab(
+                  'static const nullable = _${enumName}NullableConv();')
+              ..writeln()
+              ..writeln(map((i) => tab(i.privateFieldGetter, classTab)));
+          } else {
+            classBuff.writelnTab('const $_className();');
+          }
+
           classBuff
-            ..writelnTab(
-                '/// {@macro ${enumName.toSnakeCase()}.json_converter}',
-                classTab)
-            ..writelnTab('const ${enumName}Conv();\n', classTab)
-            ..writeln(map((i) => tab(i.privateFieldGetter, classTab)))
             ..writeln()
             ..writelnTab('@override', classTab)
             ..writeobj(
-              '$enumName fromJson(String json)',
+              '$_enumType fromJson($_stringType json)',
               tab: classTab,
               body: (fromBuff, fromTab) {
                 fromBuff.writeobj(
@@ -52,11 +87,23 @@ class JsonConverterTemplate extends TemplateCoreDetailed<_Item> {
 
                     switchBuff
                       ..writeln(map(fromCase))
-                      ..writelnTab('default:', switchTab)
-                      ..writelnTab(
-                        r"throw Exception('Unknown field: $json');",
-                        switchTab + 1,
-                      );
+                      ..writelnTab('default:', switchTab);
+
+                    if (isNullable) {
+                      switchBuff
+                        ..writeln()
+                        ..writelnTab('return null;', switchTab);
+                    } else {
+                      switchBuff
+                        ..writelnTab(
+                            'if (defaultValue != null) return defaultValue!;',
+                            switchTab + 1)
+                        ..writeln()
+                        ..writelnTab(
+                          r"throw Exception('Unknown field: $json');",
+                          switchTab + 1,
+                        );
+                    }
                   },
                 );
               },
@@ -64,7 +111,8 @@ class JsonConverterTemplate extends TemplateCoreDetailed<_Item> {
             ..writeln()
             ..writelnTab('@override', classTab)
             ..writeln(
-              'String toJson($enumName object) => object.serialized;',
+              '$_stringType toJson($_enumType object) => '
+              'object$_possNullType.serialized;',
             );
         },
       );
@@ -73,22 +121,25 @@ class JsonConverterTemplate extends TemplateCoreDetailed<_Item> {
   }
 
   @override
-  _Item convert(EnumField e) => _Item(enumName, e);
+  _Item convert(EnumField e) => _Item(enumName, e, isNullable);
 }
 
 class _Item extends FieldTemplate<EnumField> {
-  const _Item(String enumName, EnumField field) : super(enumName, field);
+  const _Item(String enumName, EnumField field, this.isNullable)
+      : super(enumName, field);
+
+  final bool isNullable;
 
   String get privateField => field.privateName;
   String get privateFieldGetter =>
       "static const $privateField = '${field.getSerializedName}';";
 
-  String get arg => 'required T $field,';
-  String caseString(String str) => 'case $str:';
+  String get _className => isNullable ? '${enumName}Conv.' : '';
 
-  String get toReturnString => '$field: $privateField,';
+  String caseString(String str) => 'case $_className$str:';
 
   String get fromReturnString => 'return ${field.wholeName};';
+
   String fromCaseItem(String caseTab, String returnTab) => '''
 $caseTab${caseString(privateField)}
 $returnTab$fromReturnString''';
