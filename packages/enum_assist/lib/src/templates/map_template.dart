@@ -13,7 +13,7 @@ class MapTemplate extends ExtensionTemplate {
     String enumName,
     Iterable<EnumField> fields, {
     required String methodName,
-    required String Function(EnumField) getValue,
+    required String? Function(EnumField) getValue,
     required String typeAsString,
     required String docComment,
   }) : super(
