@@ -83,14 +83,14 @@ class EnumField extends KeyConfig {
 
   /// retrieves the name
   ///
-  /// _prioritizes name from [EnumKey]
+  /// _prioritizes name from [EnumKey]_
   ///
   /// if name is not provided, returns the field name
-  /// formatted to Title case
+  /// formatted to Capital case
   String get getName {
     if (name != null) return name!;
 
-    return fieldName.toTitleCase();
+    return fieldName.toCapitalCase();
   }
 
   /// returns the config for the extension
@@ -113,7 +113,6 @@ class EnumField extends KeyConfig {
       snake: s.toSnakeCase(),
       pascal: s.toPascalCase(),
       camel: s.toCamelCase(),
-      title: s.toTitleCase(),
       dot: s.toDotCase(),
       capital: s.toCapitalCase(),
       constant: s.toConstantCase(),

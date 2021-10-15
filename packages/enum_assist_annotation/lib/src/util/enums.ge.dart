@@ -23,7 +23,6 @@ extension SerializedFormatX on SerializedFormat {
     required T sentence,
     required T snake,
     required T swap,
-    required T title,
     required T capital,
     required T header,
   }) {
@@ -50,8 +49,6 @@ extension SerializedFormatX on SerializedFormat {
         return snake;
       case SerializedFormat.swap:
         return swap;
-      case SerializedFormat.title:
-        return title;
       case SerializedFormat.capital:
         return capital;
       case SerializedFormat.header:
@@ -75,7 +72,6 @@ extension SerializedFormatX on SerializedFormat {
     T? sentence,
     T? snake,
     T? swap,
-    T? title,
     T? capital,
     T? header,
   }) {
@@ -113,9 +109,6 @@ extension SerializedFormatX on SerializedFormat {
       case SerializedFormat.swap:
         if (swap == null) return orElse;
         return swap;
-      case SerializedFormat.title:
-        if (title == null) return orElse;
-        return title;
       case SerializedFormat.capital:
         if (capital == null) return orElse;
         return capital;
@@ -140,7 +133,6 @@ extension SerializedFormatX on SerializedFormat {
       sentence: 'Sentence',
       snake: 'Snake',
       swap: 'Swap',
-      title: 'Title',
       capital: 'Capital',
       header: 'Header',
     );
@@ -229,19 +221,6 @@ example:
 
 `'Hello World' -> 'hELLO wORLD'`
 ''',
-      title: '''
-Converts to a space separated string with the
-
-first character of every word uppercased
-__except__
-- small words
-- urls
-- words that contain capital letters
-
-example:
-
-`'hello world' -> 'Hello World'`
-''',
       capital: '''
 Converts to a lowercased, first letter captialized word,
 space separated string of every word
@@ -274,7 +253,6 @@ example:
       sentence: SerializedFormatConv._sentenceName,
       snake: SerializedFormatConv._snakeName,
       swap: SerializedFormatConv._swapName,
-      title: SerializedFormatConv._titleName,
       capital: SerializedFormatConv._capitalName,
       header: SerializedFormatConv._headerName,
     );
@@ -336,8 +314,6 @@ class SerializedFormatConv extends JsonConverter<SerializedFormat, String> {
       case _swapName:
         return SerializedFormat.swap;
       case _titleName:
-        return SerializedFormat.title;
-      case _capitalName:
         return SerializedFormat.capital;
       case _headerName:
         return SerializedFormat.header;

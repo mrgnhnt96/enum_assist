@@ -79,7 +79,7 @@ class JsonConverterTemplate extends TemplateCoreDetailed<_Item> {
 class _Item extends FieldTemplate<EnumField> {
   const _Item(String enumName, EnumField field) : super(enumName, field);
 
-  String get privateField => '_${field}Name';
+  String get privateField => field.privateName;
   String get privateFieldGetter =>
       "static const $privateField = '${field.getSerializedName}';";
 

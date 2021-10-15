@@ -124,21 +124,6 @@ enum SerializedFormat {
   /// `'Hello World' -> 'hELLO wORLD'`
   /// {@endtemplate}
   swap,
-
-  /// {@template enum_assist_annotation.serialized_format.title}
-  /// Converts to a space separated string with the
-  ///
-  /// first character of every word uppercased
-  /// __except__
-  /// - small words
-  /// - urls
-  /// - words that contain capital letters
-  ///
-  /// example:
-  ///
-  /// `'hello world' -> 'Hello World'`
-  /// {@endtemplate}
-  title,
 }
 
 /// {@template enum_assist.method_type}
