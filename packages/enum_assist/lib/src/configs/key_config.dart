@@ -80,9 +80,6 @@ class KeyConfig {
       }
     }
 
-    // ignore: avoid_print
-    print('class config uses doc comments? '
-        '${classConfig.useDocCommentAsDescription}');
     return KeyConfig(
       name: name,
       description: description,
