@@ -24,10 +24,16 @@ Builder enumAssist(BuilderOptions options) {
   // get settings from the build file
   final settings = Settings.resolve(options.config);
 
+  final ignores = [
+    'constant_identifier_names',
+    'prefer_const_declarations',
+    'unused_local_variable',
+  ];
+
   return PartBuilder([EnumAssistGenerator.fromSettings(settings)], '.ge.dart',
       header: '''
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: 
+// ignore_for_file: ${ignores.join(',')}
     ''');
 }
