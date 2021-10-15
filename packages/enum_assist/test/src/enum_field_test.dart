@@ -68,7 +68,7 @@ void main() {
         return format.map(
           camel: 'myFieldName',
           constant: 'MY_FIELD_NAME',
-          dot: 'my.Field.Name',
+          dot: 'my.field.name',
           kebab: 'my-field-name',
           no: 'my field name',
           none: 'myFieldName',
