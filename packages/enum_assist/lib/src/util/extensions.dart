@@ -1,4 +1,7 @@
+import 'package:analyzer/dart/constant/value.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:enum_assist/src/util/string_helpers.dart';
+import 'package:source_gen/source_gen.dart';
 
 export 'package:change_case/change_case.dart';
 
@@ -43,6 +46,21 @@ extension StringBufferX on StringBuffer {
       writelnTab(closer, tab);
     } else {
       writeTab(closer, tab);
+    }
+  }
+}
+
+/// extension to [TypeChecker]
+
+extension TypeCheckerX on TypeChecker {
+  /// retrieves the object form the annotation on an [element]
+  DartObject? getObjectFromAnnotation(FieldElement element) {
+    final object = firstAnnotationOf(element);
+
+    if (object != null) return object;
+
+    if (element.getter != null) {
+      return firstAnnotationOf(element.getter!);
     }
   }
 }
