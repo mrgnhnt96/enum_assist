@@ -22,14 +22,17 @@ class MissingValueException<T> implements Exception {
 /// {@endtemplate}
 class NullValueException implements Exception {
   /// {@macro enum_assist.invalid_value_exception}
-  const NullValueException(this.key);
+  const NullValueException(this.key, this.method);
 
   /// the key/field of the invalid value
   final String key;
 
+  /// the method on which the error was thrown
+  final String method;
+
   @override
   String toString() {
-    return 'Null value for non-nullable field: $key';
+    return 'Null value for non-nullable field: $key for $method';
   }
 }
 
