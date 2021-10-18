@@ -1,4 +1,4 @@
-import 'package:enum_assist/src/enum_field.dart';
+import 'package:enum_assist/src/field_data.dart';
 import 'package:enum_assist/src/templates/map_template.dart';
 
 /// {@template enum_assist.description_template}
@@ -6,14 +6,14 @@ import 'package:enum_assist/src/templates/map_template.dart';
 /// {@endtemplate}
 class SerializedTemplate extends MapTemplate {
   /// {@macro enum_assist.description_template}
-  SerializedTemplate(String enumName, Iterable<EnumField> fields)
+  SerializedTemplate(String enumName, Iterable<FieldData> fields)
       : super(
           enumName,
           fields,
-          getValue: (field) =>
-              '${field.belongsToEnum}Conv._${field.fieldName}Name',
+          getValue: (field) => '${field.enumName}Conv._${field.fieldName}Name',
           methodName: 'serialized',
           typeAsString: '$String',
+          allowNulls: false,
           docComment: '''
 /// Returns the serialized value of the enum field.''',
         );

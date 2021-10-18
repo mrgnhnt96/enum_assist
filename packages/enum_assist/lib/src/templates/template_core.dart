@@ -1,4 +1,4 @@
-import 'package:enum_assist/src/enum_field.dart';
+import 'package:enum_assist/src/field_data.dart';
 import 'package:enum_assist/src/util/string_helpers.dart';
 import 'package:meta/meta.dart';
 
@@ -89,9 +89,9 @@ abstract class TemplateCoreSimple<T extends FieldTemplate<String>>
 }
 
 /// {@macro enum_assist.template_core}
-abstract class TemplateCoreDetailed<T extends FieldTemplate<EnumField>>
-    extends TemplateCore<T, EnumField> {
+abstract class TemplateCoreDetailed<T extends FieldTemplate<FieldData>>
+    extends TemplateCore<T, FieldData> {
   /// {@macro enum_assist.template_core}
-  TemplateCoreDetailed(String enumName, Iterable<EnumField> fields)
+  TemplateCoreDetailed(String enumName, Iterable<FieldData> fields)
       : super(enumName, fields);
 }

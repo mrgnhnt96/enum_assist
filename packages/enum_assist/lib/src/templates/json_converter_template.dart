@@ -1,4 +1,4 @@
-import 'package:enum_assist/src/enum_field.dart';
+import 'package:enum_assist/src/field_data.dart';
 import 'package:enum_assist/src/templates/template_core.dart';
 import 'package:enum_assist/src/util/string_helpers.dart';
 import 'package:enum_assist/src/util/util.dart';
@@ -8,7 +8,7 @@ import 'package:enum_assist/src/util/util.dart';
 /// {@endtemplate}
 class JsonConverterTemplate extends TemplateCoreDetailed<_Item> {
   /// {@macro enum_assist.map_template}
-  JsonConverterTemplate(String enumName, Iterable<EnumField> fields,
+  JsonConverterTemplate(String enumName, Iterable<FieldData> fields,
       {required this.isNullable})
       : super(enumName, fields);
 
@@ -121,11 +121,11 @@ class JsonConverterTemplate extends TemplateCoreDetailed<_Item> {
   }
 
   @override
-  _Item convert(EnumField e) => _Item(enumName, e, isNullable);
+  _Item convert(FieldData e) => _Item(enumName, e, isNullable);
 }
 
-class _Item extends FieldTemplate<EnumField> {
-  const _Item(String enumName, EnumField field, this.isNullable)
+class _Item extends FieldTemplate<FieldData> {
+  const _Item(String enumName, FieldData field, this.isNullable)
       : super(enumName, field);
 
   final bool isNullable;

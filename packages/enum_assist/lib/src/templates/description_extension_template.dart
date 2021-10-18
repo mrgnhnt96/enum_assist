@@ -1,4 +1,4 @@
-import 'package:enum_assist/src/enum_field.dart';
+import 'package:enum_assist/src/field_data.dart';
 import 'package:enum_assist/src/templates/map_template.dart';
 
 /// {@template enum_assist.description_template}
@@ -6,13 +6,14 @@ import 'package:enum_assist/src/templates/map_template.dart';
 /// {@endtemplate}
 class DescriptionTemplate extends MapTemplate {
   /// {@macro enum_assist.description_template}
-  DescriptionTemplate(String enumName, Iterable<EnumField> fields)
+  DescriptionTemplate(String enumName, Iterable<FieldData> fields)
       : super(
           enumName,
           fields,
           getValue: (field) => field.getDescription,
           methodName: 'description',
-          typeAsString: '$String?',
+          typeAsString: '$String',
+          allowNulls: true,
           docComment: '''
 /// Returns the description of the enum field.
 ///
