@@ -13,18 +13,19 @@ abstract class AdditionalExtensionsGeneratorHelper implements HelperCore {
         buffer.write(
           AdaptiveTemplate(
             enumName,
-            fields,
+            fieldData,
             methodName: extension.methodName,
             docComment: extension.getDocComment(),
             defaultValue: extension.defaultValue,
             methodType: extension.methodType,
             typeAsString: extension.valueType,
+            allowNulls: extension.allowNulls,
             getValue: (field) {
               final extensionValueConfig =
-                  field.getExtensionValue(extension.valueClassType);
+                  field.getExtensionValue(extension.methodName);
               final returnValue = extensionValueConfig?.value;
 
-              if (!extension.isValueTypeNullable && returnValue == null) {
+              if (!extension.allowNulls && returnValue == null) {
                 throw MissingExtensionValueException(
                   field.wholeName,
                   extension.methodName,

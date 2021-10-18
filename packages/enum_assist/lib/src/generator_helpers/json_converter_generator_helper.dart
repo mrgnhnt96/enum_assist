@@ -6,11 +6,11 @@ abstract class JsonConverterGeneratorHelper implements HelperCore {
   /// generates extensions code
   String generateJsonConverter() {
     final buffer = StringBuffer()
-      ..writeln(
-          JsonConverterTemplate(enumName, fields, isNullable: false).toString())
+      ..writeln(JsonConverterTemplate(enumName, fieldData, isNullable: false)
+          .toString())
       ..writeln()
-      ..writeln(
-          JsonConverterTemplate(enumName, fields, isNullable: true).toString());
+      ..writeln(JsonConverterTemplate(enumName, fieldData, isNullable: true)
+          .toString());
 
     return '$buffer';
   }

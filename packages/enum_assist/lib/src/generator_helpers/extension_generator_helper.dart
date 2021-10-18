@@ -15,11 +15,11 @@ abstract class ExtensionGeneratorHelper implements HelperCore {
       ..writeln('extension ${enumName}X on $enumName {')
       ..writeln(MapTemplate(enumName, fieldNames).toString())
       ..writeln(MaybeMapTemplate(enumName, fieldNames).toString())
-      ..writeln(NameTemplate(enumName, fields).toString())
-      ..writeln(DescriptionTemplate(enumName, fields).toString());
+      ..writeln(NameTemplate(enumName, fieldData).toString())
+      ..writeln(DescriptionTemplate(enumName, fieldData).toString());
 
     if (config.createJsonConv) {
-      buffer.writeln(SerializedTemplate(enumName, fields).toString());
+      buffer.writeln(SerializedTemplate(enumName, fieldData).toString());
     }
 
     buffer

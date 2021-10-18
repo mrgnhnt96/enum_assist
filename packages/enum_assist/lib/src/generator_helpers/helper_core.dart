@@ -1,7 +1,7 @@
 // ignore_for_file: implementation_imports, comment_references
 import 'package:analyzer/dart/element/element.dart';
 import 'package:enum_assist/src/configs/class_config.dart';
-import 'package:enum_assist/src/enum_field.dart';
+import 'package:enum_assist/src/field_data.dart';
 import 'package:meta/meta.dart';
 import 'package:source_helper/source_helper.dart';
 
@@ -22,9 +22,6 @@ abstract class HelperCore {
   /// The method to use for generating the code
   Iterable<String> generate();
 
-  /// The name of the enum value for the given [field].
-  String _nameAccess(FieldElement field) => field.name;
-
   /// the name of the enum
   @protected
   @visibleForTesting
@@ -34,21 +31,22 @@ abstract class HelperCore {
   /// super classes, sorted first by their location in the inheritance hierarchy
   /// (super first) and then by their location in the source file.
   @protected
-  Iterable<FieldElement> get fieldElements {
-    // Get all of the fields that need to be assigned
-    final elementInstanceFields = element.fields.where((e) => e.isEnumConstant);
+  Iterable<FieldData> get fieldData {
+    final fields = <FieldData>[];
 
-    return elementInstanceFields.toSet();
+    for (final field in element.fields) {
+      if (!field.isEnumConstant) continue;
+
+      final data = FieldData.config(field, config);
+
+      fields.add(data);
+    }
+
+    return fields;
   }
 
   /// Returns the names of all fields
   @protected
   @visibleForTesting
-  Iterable<String> get fieldNames => fieldElements.map(_nameAccess);
-
-  /// returns a list of [EnumField]s for the given [fieldElements]
-  @protected
-  @visibleForTesting
-  Iterable<EnumField> get fields =>
-      fieldElements.map((e) => EnumField.config(e, config));
+  Iterable<String> get fieldNames => fieldData.map((e) => e.fieldName);
 }

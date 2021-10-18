@@ -23,6 +23,7 @@ class GeneratorHelper extends HelperCore
   ) : super(
           element,
           ClassConfig.mergeConfigs(
+            element,
             generator.config,
             annotation,
           ),
