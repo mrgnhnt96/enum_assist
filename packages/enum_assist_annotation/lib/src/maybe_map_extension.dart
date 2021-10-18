@@ -8,17 +8,19 @@ import 'package:enum_assist_annotation/src/extension_value.dart';
 /// `MaybeMapExtension<T, V>` must be on the __highest
 /// level__ of the class hierarchy
 /// {@endtemplate}
-abstract class MaybeMapExtension<T, V extends ExtensionValue<T>>
+abstract class MaybeMapExtension<T extends Object?, V extends ExtensionValue<T>>
     extends AdditionalExtension<T, V> {
   /// {@macro enum_assist.maybe_map_additional_extension}
   const MaybeMapExtension(
     String methodName, {
     required T defaultValue,
     String? docComment,
+    bool allowNulls = false,
   }) : super(
           defaultValue: defaultValue,
           methodName: methodName,
           methodType: MethodType.maybeMap,
           docComment: docComment,
+          allowNulls: allowNulls,
         );
 }
