@@ -35,6 +35,7 @@ class Settings {
     final additionalExtensionsValue = defaultVal.additionalExtensions;
 
     final config = ClassConfig(
+      enumName: '',
       createJsonConv: createJsonConvValue,
       serializedFormat: serializedFormatValue,
       useDocCommentAsDescription: useDocCommentAsDescriptionValue,
