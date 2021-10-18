@@ -39,5 +39,5 @@ class MyExtension extends MapExtension<String, MyExtensionValue> {
 }
 
 class MyExtensionValue extends ExtensionValue<String> {
-  const MyExtensionValue(value) : super(value);
+  const MyExtensionValue(value) : super('myCoolMethod', value);
 }

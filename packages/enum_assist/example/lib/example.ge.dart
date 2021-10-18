@@ -1,6 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file:
+// ignore_for_file: constant_identifier_names,prefer_const_declarations,unused_local_variable,prefer_int_literals,lines_longer_than_80_chars
 
 part of 'example.dart';
 
@@ -11,7 +11,7 @@ part of 'example.dart';
 /// Extensions for the enum Numbers
 extension NumbersX on Numbers {
   /// Map of all values of the enum
-  T map<T>({
+  T map<T extends Object?>({
     required T onetyOne,
     required T twothyTwo,
     required T threelyThree,
@@ -29,22 +29,30 @@ extension NumbersX on Numbers {
   /// Optionally map all values of the enum
   ///
   /// default value is provided when value has not been mapped
-  T maybeMap<T>({
+  T maybeMap<T extends Object?>({
     required T orElse,
     T? onetyOne,
     T? twothyTwo,
     T? threelyThree,
   }) {
+    var isNullable = true;
+
+    try {
+      final value = null as T;
+    } catch (_) {
+      isNullable = false;
+    }
+
     switch (this) {
       case Numbers.onetyOne:
-        if (onetyOne == null) return orElse;
-        return onetyOne;
+        if (onetyOne == null && !isNullable) return orElse;
+        return onetyOne as T;
       case Numbers.twothyTwo:
-        if (twothyTwo == null) return orElse;
-        return twothyTwo;
+        if (twothyTwo == null && !isNullable) return orElse;
+        return twothyTwo as T;
       case Numbers.threelyThree:
-        if (threelyThree == null) return orElse;
-        return threelyThree;
+        if (threelyThree == null && !isNullable) return orElse;
+        return threelyThree as T;
     }
   }
 
@@ -52,8 +60,8 @@ extension NumbersX on Numbers {
   /// in a human readable format.
   String get name {
     return map(
-      onetyOne: 'onetyOne',
-      twothyTwo: 'twothyTwo',
+      onetyOne: 'Onety One',
+      twothyTwo: 'Twothy Two',
       threelyThree: 'threeThree',
     );
   }
@@ -62,8 +70,7 @@ extension NumbersX on Numbers {
   ///
   /// If the description is null, the doc comment of the enum field is returned.
   String? get description {
-    return maybeMap(
-      orElse: null,
+    return map(
       onetyOne: '''
 this is a fake 11''',
       twothyTwo: '''
@@ -108,7 +115,13 @@ and probably something else''',
 /// {@endtemplate}
 class NumbersConv extends JsonConverter<Numbers, String> {
   /// {@macro numbers.json_converter}
-  const NumbersConv();
+  const NumbersConv({this.defaultValue});
+
+  /// the value to be used when no match is found
+  final Numbers? defaultValue;
+
+  /// {@macro numbers.json_converter_nullable}
+  static const nullable = _NumbersNullableConv();
 
   static const _onetyOneName = 'onety_one';
   static const _twothyTwoName = 'twothy_two';
@@ -124,10 +137,44 @@ class NumbersConv extends JsonConverter<Numbers, String> {
       case _threelyThreeName:
         return Numbers.threelyThree;
       default:
+        if (defaultValue != null) return defaultValue!;
+
         throw Exception('Unknown field: $json');
     }
   }
 
   @override
   String toJson(Numbers object) => object.serialized;
+}
+
+/// {@template numbers.json_converter_nullable}
+/// Serializes [Numbers?] to and from json
+///
+/// Can be used as annotation for `json_serializable` classes
+///
+/// ```dart
+/// @NumbersConv.nullable
+/// final Numbers? myEnum;
+/// ```
+/// {@endtemplate}
+class _NumbersNullableConv extends JsonConverter<Numbers?, String?> {
+  /// {@macro numbers.json_converter}
+  const _NumbersNullableConv();
+
+  @override
+  Numbers? fromJson(String? json) {
+    switch (json) {
+      case NumbersConv._onetyOneName:
+        return Numbers.onetyOne;
+      case NumbersConv._twothyTwoName:
+        return Numbers.twothyTwo;
+      case NumbersConv._threelyThreeName:
+        return Numbers.threelyThree;
+      default:
+        return null;
+    }
+  }
+
+  @override
+  String? toJson(Numbers? object) => object?.serialized;
 }

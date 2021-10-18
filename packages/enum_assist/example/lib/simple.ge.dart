@@ -1,6 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file:
+// ignore_for_file: constant_identifier_names,prefer_const_declarations,unused_local_variable,prefer_int_literals,lines_longer_than_80_chars
 
 part of 'simple.dart';
 
@@ -11,7 +11,7 @@ part of 'simple.dart';
 /// Extensions for the enum SimpleEnum
 extension SimpleEnumX on SimpleEnum {
   /// Map of all values of the enum
-  T map<T>({
+  T map<T extends Object?>({
     required T one,
     required T two,
     required T three,
@@ -29,22 +29,30 @@ extension SimpleEnumX on SimpleEnum {
   /// Optionally map all values of the enum
   ///
   /// default value is provided when value has not been mapped
-  T maybeMap<T>({
+  T maybeMap<T extends Object?>({
     required T orElse,
     T? one,
     T? two,
     T? three,
   }) {
+    var isNullable = true;
+
+    try {
+      final value = null as T;
+    } catch (_) {
+      isNullable = false;
+    }
+
     switch (this) {
       case SimpleEnum.one:
-        if (one == null) return orElse;
-        return one;
+        if (one == null && !isNullable) return orElse;
+        return one as T;
       case SimpleEnum.two:
-        if (two == null) return orElse;
-        return two;
+        if (two == null && !isNullable) return orElse;
+        return two as T;
       case SimpleEnum.three:
-        if (three == null) return orElse;
-        return three;
+        if (three == null && !isNullable) return orElse;
+        return three as T;
     }
   }
 
@@ -52,7 +60,7 @@ extension SimpleEnumX on SimpleEnum {
   /// in a human readable format.
   String get name {
     return map(
-      one: 'One',
+      one: 'name',
       two: 'Two',
       three: 'Three',
     );
@@ -62,9 +70,9 @@ extension SimpleEnumX on SimpleEnum {
   ///
   /// If the description is null, the doc comment of the enum field is returned.
   String? get description {
-    return maybeMap(
-      orElse: null,
-      one: null,
+    return map(
+      one: '''
+description''',
       two: null,
       three: null,
     );
@@ -76,6 +84,26 @@ extension SimpleEnumX on SimpleEnum {
       one: SimpleEnumConv._oneName,
       two: SimpleEnumConv._twoName,
       three: SimpleEnumConv._threeName,
+    );
+  }
+
+  /// @nodoc
+  Duration? get myCoolMethod {
+    return maybeMap(
+      orElse: MyOtherExtension().defaultValue,
+      one: Duration(days: 1),
+      two: null,
+      three: null,
+    );
+  }
+
+  /// @nodoc
+  Duration get myCoolMethod2 {
+    return maybeMap(
+      orElse: MyExtension2().defaultValue!,
+      one: Duration(days: 1),
+      two: Duration(days: 1),
+      three: Duration(days: 1),
     );
   }
 }
@@ -92,9 +120,15 @@ extension SimpleEnumX on SimpleEnum {
 /// {@endtemplate}
 class SimpleEnumConv extends JsonConverter<SimpleEnum, String> {
   /// {@macro simple_enum.json_converter}
-  const SimpleEnumConv();
+  const SimpleEnumConv({this.defaultValue});
 
-  static const _oneName = 'one';
+  /// the value to be used when no match is found
+  final SimpleEnum? defaultValue;
+
+  /// {@macro simple_enum.json_converter_nullable}
+  static const nullable = _SimpleEnumNullableConv();
+
+  static const _oneName = 'value';
   static const _twoName = 'two';
   static const _threeName = 'three';
 
@@ -108,10 +142,44 @@ class SimpleEnumConv extends JsonConverter<SimpleEnum, String> {
       case _threeName:
         return SimpleEnum.three;
       default:
+        if (defaultValue != null) return defaultValue!;
+
         throw Exception('Unknown field: $json');
     }
   }
 
   @override
   String toJson(SimpleEnum object) => object.serialized;
+}
+
+/// {@template simple_enum.json_converter_nullable}
+/// Serializes [SimpleEnum?] to and from json
+///
+/// Can be used as annotation for `json_serializable` classes
+///
+/// ```dart
+/// @SimpleEnumConv.nullable
+/// final SimpleEnum? myEnum;
+/// ```
+/// {@endtemplate}
+class _SimpleEnumNullableConv extends JsonConverter<SimpleEnum?, String?> {
+  /// {@macro simple_enum.json_converter}
+  const _SimpleEnumNullableConv();
+
+  @override
+  SimpleEnum? fromJson(String? json) {
+    switch (json) {
+      case SimpleEnumConv._oneName:
+        return SimpleEnum.one;
+      case SimpleEnumConv._twoName:
+        return SimpleEnum.two;
+      case SimpleEnumConv._threeName:
+        return SimpleEnum.three;
+      default:
+        return null;
+    }
+  }
+
+  @override
+  String? toJson(SimpleEnum? object) => object?.serialized;
 }
