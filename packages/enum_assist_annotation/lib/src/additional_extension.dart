@@ -12,6 +12,7 @@ abstract class AdditionalExtension<T, V extends ExtensionValue<T>> {
     required this.methodName,
     required this.methodType,
     required this.docComment,
+    required this.allowNulls,
   });
 
   /// {@template enum_assist.additional_extension.default_value}
@@ -33,4 +34,11 @@ abstract class AdditionalExtension<T, V extends ExtensionValue<T>> {
   /// the `///` will be automatically added to the start of all new lines.
   /// {@endtemplate}
   final String? docComment;
+
+  /// {@template enum_assist.additional_extension.allow_nulls}
+  /// When the value of the extension can return null
+  ///
+  /// _default: false_
+  /// {@endtemplate}
+  final bool allowNulls;
 }
