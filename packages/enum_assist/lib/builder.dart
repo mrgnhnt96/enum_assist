@@ -28,6 +28,8 @@ Builder enumAssist(BuilderOptions options) {
     'constant_identifier_names',
     'prefer_const_declarations',
     'unused_local_variable',
+    'prefer_int_literals',
+    'lines_longer_than_80_chars'
   ];
 
   return PartBuilder([EnumAssistGenerator.fromSettings(settings)], '.ge.dart',
