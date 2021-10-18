@@ -1,7 +1,9 @@
+import 'package:analyzer/dart/element/element.dart';
 import 'package:enum_assist/src/configs/additional_extension_config.dart';
 import 'package:enum_assist/src/util/enum_helpers.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:source_gen/source_gen.dart';
+import 'package:source_helper/source_helper.dart';
 
 /// {@template enum_assist.class_config}
 /// Represents most values from [EnumAssist] when merged with local
@@ -13,6 +15,7 @@ import 'package:source_gen/source_gen.dart';
 class ClassConfig {
   /// {@macro enum_assist.class_config}
   const ClassConfig({
+    required this.enumName,
     required this.createJsonConv,
     required this.serializedFormat,
     required this.useDocCommentAsDescription,
@@ -22,11 +25,13 @@ class ClassConfig {
   /// Merges [config] with [reader].annotation
   ///
   /// priority is given to `annotation`
-  factory ClassConfig.mergeConfigs(ClassConfig config, ConstantReader reader) {
+  factory ClassConfig.mergeConfigs(
+      ClassElement element, ClassConfig config, ConstantReader reader) {
     final annotation = _getAnnotation(reader);
-    final additionalExtensions = _getAdditionalExtensions(reader);
+    final additionalExtensions = _getAdditionalExtensions(reader, element);
 
     return ClassConfig(
+      enumName: element.name.nonPrivate,
       createJsonConv: annotation.createJsonConv ?? config.createJsonConv,
       serializedFormat: annotation.serializedFormat ?? config.serializedFormat,
       useDocCommentAsDescription: annotation.useDocCommentAsDescription ??
@@ -34,6 +39,9 @@ class ClassConfig {
       additionalExtensions: additionalExtensions ?? config.additionalExtensions,
     );
   }
+
+  ///
+  final String enumName;
 
   /// {@macro enum_assist_annotation.enum_assist.create_json_conv}
   final bool createJsonConv;
@@ -49,6 +57,7 @@ class ClassConfig {
 
   /// all the default values for [ClassConfig]
   static const defaults = ClassConfig(
+    enumName: '',
     createJsonConv: true,
     serializedFormat: SerializedFormat.none,
     useDocCommentAsDescription: true,
@@ -69,7 +78,9 @@ ClassConfig{
 }
 
 List<AdditionalExtensionConfig>? _getAdditionalExtensions(
-    ConstantReader reader) {
+  ConstantReader reader,
+  ClassElement element,
+) {
   final additionalExtensionsRaw =
       reader.peek('additionalExtensions')?.listValue;
 
@@ -81,7 +92,7 @@ List<AdditionalExtensionConfig>? _getAdditionalExtensions(
 
     AdditionalExtensionConfig? config;
     try {
-      config = AdditionalExtensionConfig.resolve(entry);
+      config = AdditionalExtensionConfig.resolve(element, entry);
     } catch (e) {
       print('Error resolving extension:\n\nmessage: $e'); // ignore: avoid_print
     }

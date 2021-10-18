@@ -1,3 +1,4 @@
+import 'package:analyzer/dart/element/element.dart';
 import 'package:enum_assist/src/util/enum_helpers.dart';
 import 'package:enum_assist/src/util/util.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
@@ -9,26 +10,27 @@ import 'package:source_gen/source_gen.dart';
 /// {@endtemplate}
 class AdditionalExtensionConfig {
   /// {@macro enum_assist.additional_extension_config}
-  AdditionalExtensionConfig._({
-    required this.methodName,
-    required this.valueType,
-    required this.methodType,
-    required this.defaultValue,
-    required this.className,
-    required this.valueClassType,
-    required this.docComment,
-  });
+  AdditionalExtensionConfig._(
+      {required String methodName,
+      required this.methodType,
+      required this.valueType,
+      required this.defaultValue,
+      required this.className,
+      required this.valueClassType,
+      required this.docComment,
+      required this.allowNulls})
+      : methodName = methodName.toCamelCase();
 
-  /// {@macro enum_assist.additional_extension.default_value}
-  final String methodName;
-
-  /// {@macro enum_assist.additional_extension.default_value}
+  ///
   final String valueType;
 
-  /// {@macro enum_assist.additional_extension.method_type}
+  ///
+  final String methodName;
+
+  ///
   final MethodType methodType;
 
-  /// {@macro enum_assist.additional_extension.default_value}
+  ///
   final String? defaultValue;
 
   /// name of the class used to create the extension
@@ -39,6 +41,9 @@ class AdditionalExtensionConfig {
 
   /// {@macro enum_assist.additional_extension.doc_comment}
   final String? docComment;
+
+  /// {@macro enum_assist.additional_extension.allow_nulls}
+  final bool allowNulls;
 
   /// returns the formatted [docComment]
   String getDocComment() {
@@ -53,141 +58,87 @@ class AdditionalExtensionConfig {
         .replaceAllMapped(RegExp(r'^\n', multiLine: true), (_) => '///\n');
   }
 
-  /// checks if the [valueType] is nullable
-  bool get isValueTypeNullable => isTypeAsStringNullable(valueType);
-
   /// used for testing
   ///
   /// {@macro enum_assist.additional_extension_config}
   @visibleForTesting
   static AdditionalExtensionConfig manual({
     String methodName = 'manual',
-    String valueType = 'String',
     MethodType methodType = MethodType.map,
     String? defaultValue,
     String className = 'Manual',
-    String valueClassType = 'String',
+    String valueClassType = 'MyValue',
+    String valueType = 'String',
     String? docComment,
+    bool allowNulls = false,
   }) {
     return AdditionalExtensionConfig._(
-      methodName: methodName,
       valueType: valueType,
       methodType: methodType,
+      methodName: methodName,
       defaultValue: defaultValue,
       className: className,
       valueClassType: valueClassType,
       docComment: docComment,
+      allowNulls: allowNulls,
     );
   }
 
   /// resolve the [AdditionalExtensionConfig] from a `ConstantReader`
-  static AdditionalExtensionConfig? resolve(ConstantReader reader) {
-    const methodNameKey = 'methodName';
-    const methodTypeKey = 'methodType';
-    const defaultValueKey = 'defaultValue';
-    const docCommentKey = 'docComment';
+  static AdditionalExtensionConfig? resolve(
+      ClassElement element, ConstantReader reader) {
+    final details = '${reader.objectValue}';
 
-    final methodNameValue = reader.peek(methodNameKey)?.stringValue;
-    if (methodNameValue == null) throw _methodNameException(methodNameKey);
+    final extensionClassName = RegExp(r'^(\w+)').firstMatch(details)!.group(0)!;
 
-    final methodTypeObj = reader.peek(methodTypeKey)?.objectValue;
-    if (methodTypeObj == null) {
-      throw _methodTypeException(methodTypeKey, methodNameValue);
-    }
-
+    final methodNameValue = reader.peek('methodName')?.stringValue;
+    final methodTypeObj = reader.peek('methodType')?.objectValue;
+    final defaultValue = '$extensionClassName().defaultValue';
+    final docCommentValue = reader.peek('docComment')?.stringValue;
+    final allowNullsValue = reader.peek('allowNulls')?.boolValue;
     final methodTypeValue =
         getEnumFromDartObject(methodTypeObj, MethodType.values);
-    if (methodTypeValue == null) {
-      throw _methodTypeException(methodTypeKey, methodNameValue);
+
+    const comparable = 'AdditionalExtension<';
+    final match =
+        RegExp('$comparable([^>]*[, ]?)').firstMatch(details)?.group(0);
+
+    final typeArguments = match?.substring(comparable.length).split(', ');
+
+    final valueType = typeArguments?[0];
+    final valueClassType = typeArguments?[1];
+
+    if (valueType == null ||
+        valueClassType == null ||
+        methodTypeValue == null ||
+        methodNameValue == null) {
+      throw 'missing values!';
     }
 
-    final defaultValueValue = reader.peek(defaultValueKey)?.stringValue;
-
-    if (_isMissingDefaultValue(defaultValueValue, methodTypeValue)) {
-      throw _defaultValueException(
-        defaultValueKey,
-        methodTypeKey,
-        methodNameValue,
-      );
-    }
-
-    final classDetails = '${reader.objectValue}';
-
-    final match = RegExp(r'(Map|MaybeMap)Extension<.*[, ]?>(?=\s\(\()')
-        .firstMatch(classDetails)
-        ?.group(0);
-
-    if (match == null) {
-      throw MissingValueException(
-        'Could not locate the Type arguements for $classDetails',
-      );
-    }
-
-    final cleanMatch = match.replaceAll(RegExp('(Map|MaybeMap)Extension'), '');
-    final typeArguments =
-        cleanMatch.substring(1, cleanMatch.length - 1).split(', ');
-
-    final valueType = typeArguments[0];
-    final valueClassType = typeArguments[1];
-    final className = reader.objectValue.type!.element!.displayName;
-    final docCommentValue = reader.peek(docCommentKey)?.stringValue;
-
-    return AdditionalExtensionConfig._(
+    final data = AdditionalExtensionConfig._(
+      methodType: methodTypeValue,
       methodName: methodNameValue,
       valueType: valueType,
-      methodType: methodTypeValue,
-      defaultValue: defaultValueValue,
-      className: className,
+      defaultValue: methodTypeValue.map(map: null, maybeMap: defaultValue),
+      className: extensionClassName,
       valueClassType: valueClassType,
       docComment: docCommentValue,
+      allowNulls: allowNullsValue ?? false,
     );
-  }
 
-  static MissingValueException<String> _methodTypeException(
-      String key, String methodName) {
-    return MissingValueException(
-      'Missing value "$key" in method "$methodName". '
-      'Choose `map` or `maybeMap`',
-    );
-  }
-
-  static MissingValueException<String> _methodNameException(String key) {
-    return MissingValueException(
-      'Missing value "$key"! Make sure you have '
-      'everything configured',
-    );
-  }
-
-  static MissingValueException<String> _defaultValueException(
-      String key, String typeKey, String methodName) {
-    return MissingValueException(
-      'Missing value "$key" in method "$methodName". '
-      'the "$key" is required if the "$typeKey" is `maybeMap`',
-    );
+    return data;
   }
 
   @override
   String toString() {
     return '''
-methodName: $methodName,
-valueType: $valueType,
-methodType: $methodType,
-defaultValue: $defaultValue,
-className: $className,
-valueClassType: $valueClassType,
-docCommentValue: $docComment,
+valueType: $valueType
+methodName: $methodName
+methodType: $methodType
+defaultValue: $defaultValue
+className: $className
+valueClassType: $valueClassType
+docComment: $docComment
 ''';
   }
-}
-
-bool _isMissingDefaultValue<T>(T defaultValue, MethodType methodType) {
-  return methodType.maybeMap(
-    orElse: () {
-      return false;
-    },
-    maybeMap: () {
-      if (defaultValue == null) return true;
-      return false;
-    },
-  )();
 }
