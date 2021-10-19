@@ -57,6 +57,7 @@ abstract class ExtensionTemplate extends TemplateCoreDetailed<_Item> {
   @protected
   final String docComment;
 
+  /// whether or not to return null values
   @protected
   final bool allowNulls;
 
@@ -85,16 +86,16 @@ abstract class ExtensionTemplate extends TemplateCoreDetailed<_Item> {
             body: (mapBuffer, mapTab) {
               if (_useOrElse) {
                 mapBuffer
-                    .writeln('orElse: $defaultValue${allowNulls ? '' : '!'},');
+                  ..writelnTab('// returns default value', mapTab)
+                  ..writelnTab(
+                      '//? if theres a provided value, it does nothing.',
+                      mapTab)
+                  ..writeln('orElse: $defaultValue${allowNulls ? '' : '!'},');
               }
               mapBuffer.writelnTab(
                 map((i) {
                   final value = returnValue(i.field);
                   final preparedValue = _checkValueAndPrepare(value, i.field);
-
-                  if (!allowNulls && preparedValue == null) {
-                    throw NullValueException(i.field.fieldName, methodName);
-                  }
 
                   return tabn(i.returnString(preparedValue), tab);
                 }),

@@ -1,8 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:test/test.dart';
 
-import 'integration/annotation_only.dart';
-import 'integration/util/util.dart';
+import '../integration/annotation_only.dart';
+import '../integration/util/util.dart';
 
 void main() {
   const fileName = 'annotation_only';

@@ -4,18 +4,18 @@ part 'example.ge.dart';
 
 @EnumAssist(
   serializedFormat: SerializedFormat.snake,
-  additionalExtensions: [MyExtension()],
 )
 enum Numbers {
   /// this is a fake 11
-  @EnumKey(extensionValues: [
-    MyExtensionValue('11'),
+  @EnumKey(extensions: [
+    MyExtension('11'),
+    OtherExtension(value: 12),
   ])
   onetyOne,
 
   /// this is a fake 22
-  @EnumKey(extensionValues: [
-    MyExtensionValue('22'),
+  @EnumKey(extensions: [
+    MyExtension('22'),
   ])
   twothyTwo,
 
@@ -27,17 +27,18 @@ enum Numbers {
   @EnumKey(
     name: 'threeThree',
     serializedValue: '1',
-    extensionValues: [
-      MyExtensionValue('33'),
+    extensions: [
+      MyExtension('33'),
     ],
   )
   threelyThree,
 }
 
-class MyExtension extends MapExtension<String, MyExtensionValue> {
-  const MyExtension() : super('myCoolMethod');
+class MyExtension extends MapExtension<String> {
+  const MyExtension(String value) : super(value, methodName: 'myCoolMethod');
 }
 
-class MyExtensionValue extends ExtensionValue<String> {
-  const MyExtensionValue(value) : super('myCoolMethod', value);
+class OtherExtension extends MapExtension<int?> {
+  const OtherExtension({int? value})
+      : super(value, methodName: 'nullableMethod', allowNulls: true);
 }

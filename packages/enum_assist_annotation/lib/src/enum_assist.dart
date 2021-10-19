@@ -1,5 +1,4 @@
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta_meta.dart';
 
 /// {@template enum_assist_annotation.enum_assist}
@@ -12,7 +11,6 @@ class EnumAssist {
     this.createJsonConv,
     this.serializedFormat,
     this.useDocCommentAsDescription,
-    this.additionalExtensions,
   });
 
   /// {@template enum_assist_annotation.enum_assist.create_json_conv}
@@ -47,10 +45,4 @@ class EnumAssist {
   /// __default:__ `true`
   /// {@endtemplate}
   final bool? useDocCommentAsDescription;
-
-  /// {@template enum_assist_annotation.enum_assist.additional_methods}
-  /// Additional methods to generate for the enum.
-  /// {@endtemplate}
-  @JsonKey(ignore: true)
-  final List<AdditionalExtension>? additionalExtensions;
 }

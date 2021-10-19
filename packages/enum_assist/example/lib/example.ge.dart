@@ -1,6 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: constant_identifier_names,prefer_const_declarations,unused_local_variable,prefer_int_literals,lines_longer_than_80_chars
+// ignore_for_file: constant_identifier_names,prefer_const_declarations,unused_local_variable,prefer_int_literals,lines_longer_than_80_chars,prefer_const_constructors
 
 part of 'example.dart';
 
@@ -99,6 +99,15 @@ and probably something else''',
       onetyOne: '11',
       twothyTwo: '22',
       threelyThree: '33',
+    );
+  }
+
+  /// @nodoc
+  int? get nullableMethod {
+    return map(
+      onetyOne: 12,
+      twothyTwo: null,
+      threelyThree: null,
     );
   }
 }

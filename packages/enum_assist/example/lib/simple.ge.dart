@@ -1,6 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: constant_identifier_names,prefer_const_declarations,unused_local_variable,prefer_int_literals,lines_longer_than_80_chars
+// ignore_for_file: constant_identifier_names,prefer_const_declarations,unused_local_variable,prefer_int_literals,lines_longer_than_80_chars,prefer_const_constructors
 
 part of 'simple.dart';
 
@@ -88,22 +88,23 @@ description''',
   }
 
   /// @nodoc
-  Duration? get myCoolMethod {
-    return maybeMap(
-      orElse: MyOtherExtension().defaultValue,
+  Duration get myCoolMethod {
+    return map(
       one: Duration(days: 1),
-      two: null,
-      three: null,
+      two: Duration(days: 1),
+      three: Duration(days: 1),
     );
   }
 
   /// @nodoc
-  Duration get myCoolMethod2 {
+  Duration? get myCoolMethod2 {
     return maybeMap(
-      orElse: MyExtension2().defaultValue!,
+      // returns default value
+      //? if theres a provided value, it does nothing.
+      orElse: MyValue2(value: Duration(days: 1)).defaultValue,
       one: Duration(days: 1),
       two: Duration(days: 1),
-      three: Duration(days: 1),
+      three: null,
     );
   }
 }

@@ -32,14 +32,11 @@ class Settings {
         json[useDocCommentAsDescriptionKey] as bool? ??
             defaultVal.useDocCommentAsDescription;
 
-    final additionalExtensionsValue = defaultVal.additionalExtensions;
-
     final config = ClassConfig(
       enumName: '',
       createJsonConv: createJsonConvValue,
       serializedFormat: serializedFormatValue,
       useDocCommentAsDescription: useDocCommentAsDescriptionValue,
-      additionalExtensions: additionalExtensionsValue,
     );
     return Settings._(config);
   }
