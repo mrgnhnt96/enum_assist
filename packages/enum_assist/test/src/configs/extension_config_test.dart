@@ -1,16 +1,34 @@
-import 'package:enum_assist/src/configs/additional_extension_config.dart';
+import 'package:enum_assist/src/configs/extension_config.dart';
 import 'package:test/test.dart';
 
 void main() {
+  group('@methodName', () {
+    test('should return formatted to camelCase', () {
+      expect(
+        ExtensionConfig.manual(methodName: 'get user').methodName,
+        'getUser',
+      );
+      expect(
+        ExtensionConfig.manual(methodName: 'getUser').methodName,
+        'getUser',
+      );
+      expect(
+        ExtensionConfig.manual(methodName: 'GetUser').methodName,
+        'getUser',
+      );
+    });
+  });
+
   group('#getDocComment', () {
     test('when null, return "/// @nodoc"', () {
-      final config = AdditionalExtensionConfig.manual();
+      final config = ExtensionConfig.manual(
+          docComment: null); // ignore: avoid_redundant_argument_values
 
       expect(config.getDocComment(), '/// @nodoc');
     });
 
     test('should add "///" to the start of line', () {
-      final config = AdditionalExtensionConfig.manual(
+      final config = ExtensionConfig.manual(
         docComment: 'Superman has always been cooler',
       );
 
@@ -18,7 +36,7 @@ void main() {
     });
 
     test('should add "///" to the start of each new line', () {
-      final config = AdditionalExtensionConfig.manual(
+      final config = ExtensionConfig.manual(
         docComment: '''
 Superman has always been cooler
 
@@ -30,22 +48,6 @@ No brah, its Batman foreva''',
       for (final line in lines) {
         expect(line, startsWith('///'));
       }
-    });
-  });
-
-  group('#isValueTypeNullable', () {
-    test('should return false when not nullable', () {
-      final config = AdditionalExtensionConfig.manual(valueType: 'int');
-
-      expect(config.isValueTypeNullable, isFalse);
-    });
-
-    test('should return true when nullable', () {
-      final config = AdditionalExtensionConfig.manual(
-        valueType: 'int?',
-      );
-
-      expect(config.isValueTypeNullable, isTrue);
     });
   });
 }

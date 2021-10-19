@@ -10,7 +10,7 @@ class EnumKey {
     this.description,
     this.serializedValue,
     this.useDocCommentAsDescription,
-    this.extensionValues,
+    this.extensions,
   });
 
   /// {@template enum_assist_annotation.enum_key.name}
@@ -46,5 +46,5 @@ class EnumKey {
   /// {@template enum_assist_annotation.extension_values}
   /// The extension values for the enum value
   /// {@endtemplate}
-  final List<ExtensionValue>? extensionValues;
+  final List<Extension>? extensions;
 }

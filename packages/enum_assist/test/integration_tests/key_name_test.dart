@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 
-import 'integration/key_annotation.dart';
+import '../integration/key_annotation.dart';
 
 void main() {
   group('#name', () {

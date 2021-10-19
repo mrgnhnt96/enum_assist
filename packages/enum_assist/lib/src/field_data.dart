@@ -1,6 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:enum_assist/src/configs/class_config.dart';
-import 'package:enum_assist/src/configs/extension_value_config.dart';
+import 'package:enum_assist/src/configs/extension_config.dart';
 import 'package:enum_assist/src/util/extensions.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:source_gen/source_gen.dart';
@@ -18,13 +18,13 @@ class FieldData {
     required this.assignedName,
     required this.serializedValue,
     required this.useDocCommentAsDescription,
-    required this.extensionValues,
+    required this.extensions,
     required this.serializedFormat,
   });
 
   /// {@macro enum_assist.enum_field}
   factory FieldData.config(FieldElement element, ClassConfig classConfig) {
-    final extensionsMap = _getExtValueConfig(element);
+    final extensions = ExtensionConfig.resolve(element);
 
     final object = enumKeyChecker.getObjectFromAnnotation(element);
     final reader = ConstantReader(object);
@@ -47,7 +47,7 @@ class FieldData {
       serializedValue: serializedValue,
       useDocCommentAsDescription:
           useDocCommentAsDescription ?? classConfig.useDocCommentAsDescription,
-      extensionValues: extensionsMap,
+      extensions: extensions,
       serializedFormat: classConfig.serializedFormat,
     );
 
@@ -67,7 +67,7 @@ class FieldData {
   final String enumName;
 
   /// {@macro enum_assist_annotation.enum_key.extension_values}
-  final Map<String, ExtensionValueConfig> extensionValues;
+  final Map<String, ExtensionConfig> extensions;
 
   /// {@macro enum_assist_annotation.enum_key.name}
   final String fieldName;
@@ -84,10 +84,10 @@ class FieldData {
   // -- getters --
 
   /// returns the config for the extension
-  ExtensionValueConfig? getExtensionValue(String methodName) {
-    if (extensionValues.isEmpty) return null;
+  ExtensionConfig? getExtension(String methodName) {
+    if (extensions.isEmpty) return null;
 
-    return extensionValues[methodName];
+    return extensions[methodName];
   }
 
   /// get the description of the enum value
@@ -101,6 +101,7 @@ class FieldData {
     if (useDocCommentAsDescription) {
       return docComment?.replaceAll(RegExp('///(?: *)'), '');
     }
+
     return null;
   }
 
@@ -160,7 +161,7 @@ class FieldData {
     String? docComment,
     String? description,
     String? enumName,
-    Map<String, ExtensionValueConfig>? extensionValues,
+    Map<String, ExtensionConfig>? extensions,
     String? fieldName,
     String? serializedValue,
     bool? useDocCommentAsDescription,
@@ -171,7 +172,7 @@ class FieldData {
       docComment: docComment ?? this.docComment,
       description: description ?? this.description,
       enumName: enumName ?? this.enumName,
-      extensionValues: extensionValues ?? this.extensionValues,
+      extensions: extensions ?? this.extensions,
       fieldName: fieldName ?? this.fieldName,
       serializedValue: serializedValue ?? this.serializedValue,
       useDocCommentAsDescription:
@@ -182,90 +183,4 @@ class FieldData {
 
   @override
   String toString() => fieldName;
-}
-
-Map<String, ExtensionValueConfig> _getExtValueConfig(FieldElement element) {
-  List<String> getDetailedExtensionValueAnnotation(ElementAnnotation data) {
-    const comparable = 'List<ExtensionValue<Object>> ';
-    const length = comparable.length;
-
-    final detailsRaw = '${data.computeConstantValue()}';
-
-    var details = detailsRaw.substring(detailsRaw.indexOf(comparable) + length);
-
-    details = details.substring(0, details.indexOf(']);'));
-
-    return details.split(', ');
-  }
-
-  List<String> getSimpleExtensionValueAnnotation(ElementAnnotation data) {
-    const comparable = 'extensionValues: [';
-    const length = comparable.length;
-
-    final detailsRaw = data.toSource();
-
-    var details = detailsRaw.substring(detailsRaw.indexOf(comparable) + length);
-
-    details = details.substring(0, details.indexOf(']'));
-
-    return details.split(', ');
-  }
-
-  /// returns Map<METHOD_NAME, List<0=TYPE, 1=VALUE>
-  Map<String, ExtensionValueConfig> getClassesAndValues(
-      List<String> extClasses, List<String> extDetails) {
-    final values = <String, ExtensionValueConfig>{};
-
-    // Map<TOP_LEVEL_NAME, VALUE>
-    final topLevel = <String, String>{};
-    for (final extClass in extClasses) {
-      final parenthesisPosition = extClass.indexOf('(');
-      final name = extClass.substring(0, parenthesisPosition);
-      final value =
-          extClass.substring(parenthesisPosition + 1, extClass.length - 1);
-      topLevel[name] = value;
-    }
-
-    // print(topLevel);
-
-    for (final detail in extDetails) {
-      final classAndValue = topLevel.entries
-          .firstWhere((element) => detail.contains(element.key));
-
-      const methodNameStr = "methodName = String ('";
-      var methodName = detail
-          .substring(detail.indexOf(methodNameStr) + methodNameStr.length);
-
-      methodName = methodName.substring(0, methodName.indexOf("')"));
-      methodName = methodName.toCamelCase();
-
-      const extensionValueStr = 'ExtensionValue<';
-      var valueType = detail.substring(
-          detail.indexOf(extensionValueStr) + extensionValueStr.length);
-
-      valueType = valueType.substring(0, valueType.indexOf('>'));
-
-      values[methodName] = ExtensionValueConfig(
-        methodName: methodName,
-        valueType: valueType,
-        valueClassName: classAndValue.key,
-        value: classAndValue.value,
-      );
-    }
-
-    // print(values);
-
-    return values;
-  }
-
-  final extensionsMap = <String, ExtensionValueConfig>{};
-
-  for (final data in element.metadata) {
-    final annotation = getSimpleExtensionValueAnnotation(data);
-    final details = getDetailedExtensionValueAnnotation(data);
-
-    extensionsMap.addAll(getClassesAndValues(annotation, details));
-  }
-
-  return extensionsMap;
 }

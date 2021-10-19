@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 
-import 'integration/doc_comments.dart';
+import '../integration/doc_comments.dart';
 
 void main() {
   test('should return all doc comments', () {

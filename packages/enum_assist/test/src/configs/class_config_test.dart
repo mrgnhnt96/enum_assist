@@ -17,9 +17,5 @@ void main() {
     test('useDocCommentAsDescription should return true', () {
       expect(defaults.useDocCommentAsDescription, isTrue);
     });
-
-    test('additionalExtensions should return empty list', () {
-      expect(defaults.additionalExtensions, isEmpty);
-    });
   });
 }

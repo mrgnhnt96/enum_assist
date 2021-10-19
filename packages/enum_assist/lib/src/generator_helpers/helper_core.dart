@@ -1,6 +1,7 @@
 // ignore_for_file: implementation_imports, comment_references
 import 'package:analyzer/dart/element/element.dart';
 import 'package:enum_assist/src/configs/class_config.dart';
+import 'package:enum_assist/src/configs/extension_config.dart';
 import 'package:enum_assist/src/field_data.dart';
 import 'package:meta/meta.dart';
 import 'package:source_helper/source_helper.dart';
@@ -49,4 +50,11 @@ abstract class HelperCore {
   @protected
   @visibleForTesting
   Iterable<String> get fieldNames => fieldData.map((e) => e.fieldName);
+
+  /// returns all extensions from all fields
+  Map<String, ExtensionConfig> get extensions {
+    return fieldData
+        .map((e) => e.extensions)
+        .fold<Map<String, ExtensionConfig>>({}, (m, e) => {...m, ...e});
+  }
 }
