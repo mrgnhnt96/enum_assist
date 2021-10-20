@@ -241,4 +241,80 @@ void main() {
       expect(bracket?.contents, content);
     });
   });
+
+  group('gets first complete set', () {
+    test('parenthesis', () {
+      const content = 'hello';
+      const str = '($content) (world)';
+
+      final bracket = matchBracket(str, ')', 0);
+
+      expect(bracket?.contents, content);
+    });
+
+    test('square brackets', () {
+      const content = 'hello';
+      const str = '[$content] [world]';
+
+      final bracket = matchBracket(str, ']', 0);
+
+      expect(bracket?.contents, content);
+    });
+
+    test('curly brackets', () {
+      const content = 'hello';
+      const str = '{$content} {world}';
+
+      final bracket = matchBracket(str, '}', 0);
+
+      expect(bracket?.contents, content);
+    });
+
+    test('carrot', () {
+      const content = 'hello';
+      const str = '<$content> <world>';
+
+      final bracket = matchBracket(str, '>', 0);
+
+      expect(bracket?.contents, content);
+    });
+
+    group('contains set within', () {
+      test('parenthesis', () {
+        const content = 'hello(awesome)';
+        const str = '($content) (world)';
+
+        final bracket = matchBracket(str, ')', 0);
+
+        expect(bracket?.contents, content);
+      });
+
+      test('square brackets', () {
+        const content = 'hello(awesome)';
+        const str = '[$content] [world]';
+
+        final bracket = matchBracket(str, ']', 0);
+
+        expect(bracket?.contents, content);
+      });
+
+      test('curly brackets', () {
+        const content = 'hello(awesome)';
+        const str = '{$content} {world}';
+
+        final bracket = matchBracket(str, '}', 0);
+
+        expect(bracket?.contents, content);
+      });
+
+      test('carrot', () {
+        const content = 'hello(awesome)';
+        const str = '<$content> <world>';
+
+        final bracket = matchBracket(str, '>', 0);
+
+        expect(bracket?.contents, content);
+      });
+    });
+  });
 }

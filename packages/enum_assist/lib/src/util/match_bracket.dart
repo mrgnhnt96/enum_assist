@@ -46,15 +46,16 @@ Bracket? matchBracket(String str, String bracket, [int? bracketIndex]) {
       if (symbols[opposite]!.isNotEmpty) {
         var returnNow = false;
         if (bracketIndex != null &&
-            symbols[opposite]!.length == bracketIndex + 1) {
+            symbols[opposite]!.length - 1 == bracketIndex &&
+            bracket == char) {
           returnNow = true;
         }
 
         final start = symbols[opposite]!.removeLast();
-        final bracket = Bracket(start, index, str);
-        closingSymbols[char] = bracket;
+        final _bracket = Bracket(start, index, str);
+        closingSymbols[char] = _bracket;
 
-        if (returnNow) return bracket;
+        if (returnNow) return _bracket;
       }
     } else if (quotesPattern.hasMatch(char)) {
       if (quotes.isEmpty) {
