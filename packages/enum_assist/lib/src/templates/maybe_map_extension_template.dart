@@ -31,7 +31,6 @@ class MaybeMapTemplate extends TemplateCoreSimple<_Item> {
         body: (mapBuff, bodyTab) {
           mapBuff
             ..writelnTab('var isNullable = true;', bodyTab)
-            ..writeln()
             ..writeobj('try', body: (tryBuff, tryTab) {
               tryBuff.writelnTab('final value = null as T;', tryTab);
             })
