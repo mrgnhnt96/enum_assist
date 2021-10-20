@@ -4,6 +4,8 @@ import 'package:enum_assist/src/util/util.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:meta/meta.dart';
 
+const unassigned = '__unassigned__';
+
 class _Item extends FieldTemplate<FieldData> {
   const _Item(String enumName, FieldData field) : super(enumName, field);
 
@@ -94,7 +96,12 @@ abstract class ExtensionTemplate extends TemplateCoreDetailed<_Item> {
               }
               mapBuffer.writelnTab(
                 map((i) {
-                  final value = returnValue(i.field);
+                  var value = returnValue(i.field);
+
+                  if (value == unassigned) {
+                    value = methodType.map(map: null, maybeMap: defaultValue);
+                  }
+
                   final preparedValue = _checkValueAndPrepare(value, i.field);
 
                   return tabn(i.returnString(preparedValue), tab);

@@ -1,6 +1,7 @@
 import 'package:enum_assist/src/field_data.dart';
 import 'package:enum_assist/src/generator_helpers/helper_core.dart';
 import 'package:enum_assist/src/templates/adaptive_template.dart';
+import 'package:enum_assist/src/templates/extension_template.dart';
 import 'package:enum_assist/src/util/exceptions.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 
@@ -48,7 +49,7 @@ abstract class AdditionalExtensionsGeneratorHelper implements HelperCore {
               getValue: (field) {
                 final extensionConfig =
                     field.getExtension(extension.methodName);
-                final returnValue = extensionConfig?.value;
+                final returnValue = extensionConfig?.value ?? unassigned;
 
                 return returnValue;
               },
