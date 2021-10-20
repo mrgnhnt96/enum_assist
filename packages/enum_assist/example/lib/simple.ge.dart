@@ -36,7 +36,6 @@ extension SimpleEnumX on SimpleEnum {
     T? three,
   }) {
     var isNullable = true;
-
     try {
       final value = null as T;
     } catch (_) {
@@ -104,7 +103,7 @@ description''',
       orElse: MyValue2(value: Duration(days: 1)).defaultValue,
       one: Duration(days: 1),
       two: Duration(days: 1),
-      three: null,
+      three: MyValue2(value: Duration(days: 1)).defaultValue,
     );
   }
 }

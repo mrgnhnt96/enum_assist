@@ -36,7 +36,6 @@ extension NumbersX on Numbers {
     T? threelyThree,
   }) {
     var isNullable = true;
-
     try {
       final value = null as T;
     } catch (_) {
