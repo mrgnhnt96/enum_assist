@@ -22,8 +22,8 @@ class FarMaybeExt extends MaybeExtension<double> {
         );
 }
 
-class NullFarMaybeExt extends MaybeExtension<double> {
-  const NullFarMaybeExt(double value)
+class NullFarMaybeExt extends MaybeExtension<double?> {
+  const NullFarMaybeExt([double? value])
       : super(value,
             methodName: 'very far', defaultValue: 12, allowNulls: true);
 }
