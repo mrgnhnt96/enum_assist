@@ -1,13 +1,12 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:test/test.dart';
 
-import '../integration/map_extension.dart';
-import '../integration/util/double_extension.dart';
+import '../integration/non_null_simple_map_ext.dart';
 import '../integration/util/util.dart';
 import '../util/nullable_values.dart';
 
 void main() {
-  const fileName = 'map_extension';
+  const fileName = 'non_null_simple_map_ext';
   late LibraryElement main;
 
   setUp(() async {
@@ -21,18 +20,18 @@ void main() {
   });
 
   group('$Animal', () {
-    group('#numExtension', () {
+    group('#smallNum', () {
       test('should return value from key annotation', () {
         int getValue(Animal value) {
           return value.map(
-            dog: 100,
+            dog: 20,
             cat: 200,
             mouse: 300,
           );
         }
 
         for (final value in Animal.values) {
-          expect(value.numExtension, getValue(value));
+          expect(value.smallNum, getValue(value));
         }
       });
     });
@@ -40,38 +39,14 @@ void main() {
     test('should return non nullable type', () {
       final value = Animal.values.first;
 
-      isNotNullable(value.numExtension);
-    });
-  });
-
-  group('$Letters', () {
-    group('#nullNumExtension', () {
-      test('should return value from key annotation', () {
-        int? getValue(Letters value) {
-          return value.map(
-            handWritten: null,
-            email: 200,
-            hate: null,
-          );
-        }
-
-        for (final value in Letters.values) {
-          expect(value.nullNumExtension, getValue(value));
-        }
-      });
-    });
-
-    test('should return nullable type', () {
-      final value = Letters.values.first;
-
-      isNullable(value.nullNumExtension);
+      isNotNullable(value.smallNum);
     });
   });
 
   group('$BodyParts', () {
     group('#veryFar', () {
       test('should return value from key annotation', () {
-        double? getValue(BodyParts value) {
+        double getValue(BodyParts value) {
           return value.map(
             head: 1.01,
             body: 2.01,
@@ -85,7 +60,7 @@ void main() {
       });
     });
 
-    test('should return nullable type', () {
+    test('should return non nullable type', () {
       final value = BodyParts.values.first;
 
       isNotNullable(value.veryFar);
@@ -93,7 +68,7 @@ void main() {
   });
 
   group('$Family', () {
-    group('#durationExtension', () {
+    group('#duration', () {
       test('should return value from key annotation', () {
         Duration getValue(Family value) {
           return value.map(
@@ -104,7 +79,7 @@ void main() {
         }
 
         for (final value in Family.values) {
-          expect(value.durationExtension, getValue(value));
+          expect(value.duration, getValue(value));
         }
       });
     });
@@ -112,31 +87,7 @@ void main() {
     test('should return non nullable type', () {
       final value = Family.values.first;
 
-      isNotNullable(value.durationExtension);
-    });
-  });
-
-  group('$Familia', () {
-    group('#myClassExtension', () {
-      test('should return value from key annotation', () {
-        MyClass getValue(Familia value) {
-          return value.map(
-            madre: const MyClass('mama'),
-            padre: const MyClass('papa'),
-            hijo: const MyClass('mijo'),
-          );
-        }
-
-        for (final value in Familia.values) {
-          expect(value.myClassExtension, getValue(value));
-        }
-      });
-    });
-
-    test('should return non nullable type', () {
-      final value = Familia.values.first;
-
-      isNotNullable(value.myClassExtension);
+      isNotNullable(value.duration);
     });
   });
 }

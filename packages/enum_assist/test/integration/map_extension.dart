@@ -1,23 +1,9 @@
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:meta/meta.dart';
 
-import 'util/double_extension.dart';
+import 'util/far_ext.dart';
 
 part 'map_extension.ge.dart';
-
-class NumExtension extends MapExtension<int> {
-  const NumExtension(int value) : super(value, methodName: 'Num Extension');
-}
-
-@EnumAssist()
-enum Animal {
-  @EnumKey(extensions: [NumExtension(100)])
-  dog,
-  @EnumKey(extensions: [NumExtension(200)])
-  cat,
-  @EnumKey(extensions: [NumExtension(300)])
-  mouse,
-}
 
 class NullNumExtension extends MapExtension<int?> {
   const NullNumExtension([int? value])
@@ -31,7 +17,7 @@ class NullNumExtension extends MapExtension<int?> {
 @EnumAssist()
 enum Letters {
   /// handWritten doc comment
-  @EnumKey(extensions: [NullNumExtension()])
+  @EnumKey()
   handWritten,
 
   /// email doc comment
@@ -41,31 +27,6 @@ enum Letters {
   /// hate doc comment
   @EnumKey(extensions: [NullNumExtension()])
   hate,
-}
-
-@EnumAssist()
-enum BodyParts {
-  @EnumKey(extensions: [DoubleExtension(1.01)])
-  head,
-  @EnumKey(extensions: [DoubleExtension(2.01)])
-  body,
-  @EnumKey(extensions: [DoubleExtension(3.01)])
-  leg,
-}
-
-class DurationExtension extends MapExtension<Duration> {
-  const DurationExtension(Duration value)
-      : super(value, methodName: 'Duration Extension');
-}
-
-@EnumAssist()
-enum Family {
-  @EnumKey(extensions: [DurationExtension(Duration(days: 1))])
-  mom,
-  @EnumKey(extensions: [DurationExtension(Duration(days: 2))])
-  dad,
-  @EnumKey(extensions: [DurationExtension(Duration(days: 3))])
-  kid,
 }
 
 @immutable
