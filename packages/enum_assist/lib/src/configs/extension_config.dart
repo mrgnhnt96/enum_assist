@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:analyzer/dart/element/element.dart';
 import 'package:enum_assist/src/field_data.dart';
 import 'package:enum_assist/src/util/enum_helpers.dart';
 import 'package:enum_assist/src/util/extensions.dart';
+import 'package:enum_assist/src/util/match_bracket.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
@@ -100,6 +103,23 @@ value: $value
       return details.split(', ');
     }
 
+    List<String> getExtension(String str) {
+      if (str.isEmpty) return [];
+
+      final bracket = matchBracket(str, '(', 0);
+      if (bracket == null) return [];
+
+      final extClass = str.substring(0, bracket.start);
+      final annotation = '$extClass(${bracket.contents})';
+      final remaining = str.substring(min(bracket.end + 3, str.length));
+
+      if (remaining.isEmpty) return [annotation];
+
+      final ext = getExtension(remaining);
+
+      return [annotation, ...ext];
+    }
+
     List<String> getExtensionAnnotation(ElementAnnotation data) {
       const comparable = 'extensions: [';
       const length = comparable.length;
@@ -111,9 +131,11 @@ value: $value
       var details =
           detailsRaw.substring(detailsRaw.indexOf(comparable) + length);
 
-      details = details.substring(0, details.indexOf(']'));
+      details = details.substring(0, details.lastIndexOf(']'));
 
-      return details.split(', ');
+      final extensions = getExtension(details);
+
+      return extensions;
     }
 
     /// returns Map<METHOD_NAME, List<0=TYPE, 1=VALUE>
@@ -126,12 +148,18 @@ value: $value
       for (final extClass in annotations) {
         final parenthesisPosition = extClass.indexOf('(');
 
+        // skip extensions with an empty list
+        if (parenthesisPosition == -1) continue;
+
         final name = extClass.substring(0, parenthesisPosition);
         var value =
             extClass.substring(parenthesisPosition + 1, extClass.length - 1);
 
+        // print('value: $value, class: $extClass');
+
         if (value == '') {
-          value = 'null';
+          topLevel[name] = 'null';
+          continue;
         }
 
         final namedArgPattern = RegExp(r'(\w+: )(?![^(]*\))');
@@ -162,10 +190,11 @@ value: $value
           var valueType = details
               .substring(details.indexOf(extensionStr) + extensionStr.length);
 
-          valueType = valueType.substring(0, valueType.indexOf('>'));
+          valueType = valueType.substring(0, valueType.indexOf('> ('));
 
           final extensionClassName =
               RegExp(r'^(\w+)').firstMatch(details)!.group(0)!;
+
           final methodName =
               extension.peek('methodName')?.stringValue.toCamelCase();
 
@@ -181,8 +210,18 @@ value: $value
           final methodTypeObj = extension.peek('methodType')?.objectValue;
           final methodType =
               getEnumFromDartObject(methodTypeObj, MethodType.values);
+          final fallbackValue = extension.peek('value')?.objectValue;
 
-          final value = topLevel[extensionClassName];
+          var value = topLevel[extensionClassName];
+          final isValueNull = value == 'null';
+          final isFallbackValueNull = fallbackValue?.isNull ?? true;
+
+          if (isValueNull && !isFallbackValueNull) {
+            value = '$extensionClassName().value';
+          }
+
+          //TODO: add "reserved keywords" check to method name.
+          // cannot be: map, maybeMap
 
           if (methodName == null ||
               methodType == null ||
