@@ -100,11 +100,11 @@ abstract class ExtensionTemplate extends TemplateCoreDetailed<_Item> {
 
                   if (value == unassigned) {
                     value = methodType.map(map: null, maybeMap: defaultValue);
+                  } else {
+                    value = _checkValueAndPrepare(value, i.field);
                   }
 
-                  final preparedValue = _checkValueAndPrepare(value, i.field);
-
-                  return tabn(i.returnString(preparedValue), tab);
+                  return tabn(i.returnString(value), tab);
                 }),
                 mapTab,
               );
