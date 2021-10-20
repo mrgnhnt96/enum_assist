@@ -12,17 +12,17 @@ part of 'example.dart';
 extension NumbersX on Numbers {
   /// Map of all values of the enum
   T map<T extends Object?>({
-    required T onetyOne,
-    required T twothyTwo,
-    required T threelyThree,
+    required T eleven,
+    required T twentyTwo,
+    required T thirtyThree,
   }) {
     switch (this) {
-      case Numbers.onetyOne:
-        return onetyOne;
-      case Numbers.twothyTwo:
-        return twothyTwo;
-      case Numbers.threelyThree:
-        return threelyThree;
+      case Numbers.eleven:
+        return eleven;
+      case Numbers.twentyTwo:
+        return twentyTwo;
+      case Numbers.thirtyThree:
+        return thirtyThree;
     }
   }
 
@@ -31,9 +31,9 @@ extension NumbersX on Numbers {
   /// default value is provided when value has not been mapped
   T maybeMap<T extends Object?>({
     required T orElse,
-    T? onetyOne,
-    T? twothyTwo,
-    T? threelyThree,
+    T? eleven,
+    T? twentyTwo,
+    T? thirtyThree,
   }) {
     var isNullable = true;
     try {
@@ -43,15 +43,15 @@ extension NumbersX on Numbers {
     }
 
     switch (this) {
-      case Numbers.onetyOne:
-        if (onetyOne == null && !isNullable) return orElse;
-        return onetyOne as T;
-      case Numbers.twothyTwo:
-        if (twothyTwo == null && !isNullable) return orElse;
-        return twothyTwo as T;
-      case Numbers.threelyThree:
-        if (threelyThree == null && !isNullable) return orElse;
-        return threelyThree as T;
+      case Numbers.eleven:
+        if (eleven == null && !isNullable) return orElse;
+        return eleven as T;
+      case Numbers.twentyTwo:
+        if (twentyTwo == null && !isNullable) return orElse;
+        return twentyTwo as T;
+      case Numbers.thirtyThree:
+        if (thirtyThree == null && !isNullable) return orElse;
+        return thirtyThree as T;
     }
   }
 
@@ -59,9 +59,9 @@ extension NumbersX on Numbers {
   /// in a human readable format.
   String get name {
     return map(
-      onetyOne: 'Onety One',
-      twothyTwo: 'Twothy Two',
-      threelyThree: 'threeThree',
+      eleven: 'Eleven',
+      twentyTwo: 'Twenty Two',
+      thirtyThree: 'threeThree',
     );
   }
 
@@ -70,43 +70,51 @@ extension NumbersX on Numbers {
   /// If the description is null, the doc comment of the enum field is returned.
   String? get description {
     return map(
-      onetyOne: '''
-this is a fake 11''',
-      twothyTwo: '''
-this is a fake 22''',
-      threelyThree: '''
-this is a fake 33
+      eleven: '''
+this is the number 11
 
-
-
-and probably something else''',
+just so you know''',
+      twentyTwo: null,
+      thirtyThree: null,
     );
   }
 
   /// Returns the serialized value of the enum field.
   String get serialized {
     return map(
-      onetyOne: NumbersConv._onetyOneName,
-      twothyTwo: NumbersConv._twothyTwoName,
-      threelyThree: NumbersConv._threelyThreeName,
+      eleven: NumbersConv._elevenName,
+      twentyTwo: NumbersConv._twentyTwoName,
+      thirtyThree: NumbersConv._thirtyThreeName,
     );
   }
 
-  /// @nodoc
-  String get myCoolMethod {
-    return map(
-      onetyOne: '11',
-      twothyTwo: '22',
-      threelyThree: '33',
+  /// this is a cool extension!
+  String get coolio {
+    return maybeMap(
+      // returns default value
+      //? if theres a provided value, it does nothing.
+      orElse: CoolExt('hi').defaultValue!,
+      eleven: 'sup',
+      twentyTwo: 'hi',
+      thirtyThree: CoolExt('hi').defaultValue,
     );
   }
 
-  /// @nodoc
-  int? get nullableMethod {
+  /// this is a doc comment
+  int get toNum {
     return map(
-      onetyOne: 12,
-      twothyTwo: null,
-      threelyThree: null,
+      eleven: 11,
+      twentyTwo: 22,
+      thirtyThree: 33,
+    );
+  }
+
+  /// this is a doc comment
+  int? get other {
+    return map(
+      eleven: null,
+      twentyTwo: null,
+      thirtyThree: OtherExt().value,
     );
   }
 }
@@ -131,19 +139,19 @@ class NumbersConv extends JsonConverter<Numbers, String> {
   /// {@macro numbers.json_converter_nullable}
   static const nullable = _NumbersNullableConv();
 
-  static const _onetyOneName = 'onety_one';
-  static const _twothyTwoName = 'twothy_two';
-  static const _threelyThreeName = '1';
+  static const _elevenName = 'eleven';
+  static const _twentyTwoName = 'twentyTwo';
+  static const _thirtyThreeName = '1';
 
   @override
   Numbers fromJson(String json) {
     switch (json) {
-      case _onetyOneName:
-        return Numbers.onetyOne;
-      case _twothyTwoName:
-        return Numbers.twothyTwo;
-      case _threelyThreeName:
-        return Numbers.threelyThree;
+      case _elevenName:
+        return Numbers.eleven;
+      case _twentyTwoName:
+        return Numbers.twentyTwo;
+      case _thirtyThreeName:
+        return Numbers.thirtyThree;
       default:
         if (defaultValue != null) return defaultValue!;
 
@@ -172,12 +180,12 @@ class _NumbersNullableConv extends JsonConverter<Numbers?, String?> {
   @override
   Numbers? fromJson(String? json) {
     switch (json) {
-      case NumbersConv._onetyOneName:
-        return Numbers.onetyOne;
-      case NumbersConv._twothyTwoName:
-        return Numbers.twothyTwo;
-      case NumbersConv._threelyThreeName:
-        return Numbers.threelyThree;
+      case NumbersConv._elevenName:
+        return Numbers.eleven;
+      case NumbersConv._twentyTwoName:
+        return Numbers.twentyTwo;
+      case NumbersConv._thirtyThreeName:
+        return Numbers.thirtyThree;
       default:
         return null;
     }

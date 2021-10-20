@@ -3,42 +3,66 @@ import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 part 'example.ge.dart';
 
 @EnumAssist(
-  serializedFormat: SerializedFormat.snake,
+  serializedFormat: SerializedFormat.none, // default
+  createJsonConv: true, // default
+  useDocCommentAsDescription: true, // default
 )
 enum Numbers {
-  /// this is a fake 11
-  @EnumKey(extensions: [
-    MyExtension('11'),
-    OtherExtension(value: 12),
-  ])
-  onetyOne,
+  /// this is the number 11
+  ///
+  /// just so you know
+  @EnumKey(
+    extensions: [
+      CoolExt('sup'),
+      ToNumExt(value: 11),
+    ],
+  )
+  eleven,
 
-  /// this is a fake 22
   @EnumKey(extensions: [
-    MyExtension('22'),
+    CoolExt('hi'),
+    ToNumExt(value: 22),
   ])
-  twothyTwo,
+  twentyTwo,
 
-  /// this is a fake 33
-  ///
-  ///
-  ///
-  /// and probably something else
   @EnumKey(
     name: 'threeThree',
     serializedValue: '1',
     extensions: [
-      MyExtension('33'),
+      ToNumExt(value: 33),
+      OtherExt(),
     ],
   )
-  threelyThree,
+  thirtyThree,
 }
 
-class MyExtension extends MapExtension<String> {
-  const MyExtension(String value) : super(value, methodName: 'myCoolMethod');
+class CoolExt extends MaybeExtension<String> {
+  const CoolExt(String value)
+      : super(
+          value,
+          methodName: 'coolio', // required
+          defaultValue: 'lol', // required
+          allowNulls: false, // default value
+          docComment: 'this is a cool extension!', // optional
+        );
 }
 
-class OtherExtension extends MapExtension<int?> {
-  const OtherExtension({int? value})
-      : super(value, methodName: 'nullableMethod', allowNulls: true);
+class ToNumExt extends MapExtension<int?> {
+  const ToNumExt({int? value})
+      : super(
+          value,
+          methodName: 'toNum', // required
+          allowNulls: false, // default value
+          docComment: 'this is a doc comment', // optional
+        );
+}
+
+class OtherExt extends MapExtension<int> {
+  const OtherExt({int value = 10})
+      : super(
+          value,
+          methodName: 'other', // required
+          allowNulls: true,
+          docComment: 'this is a doc comment', // optional
+        );
 }
