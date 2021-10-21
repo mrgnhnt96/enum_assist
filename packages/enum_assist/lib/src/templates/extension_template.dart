@@ -4,6 +4,7 @@ import 'package:enum_assist/src/util/util.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:meta/meta.dart';
 
+/// when a value is unassigned, and has a default value in the constructor
 const unassigned = '__unassigned__';
 
 class _Item extends FieldTemplate<FieldData> {
@@ -98,9 +99,12 @@ abstract class ExtensionTemplate extends TemplateCoreDetailed<_Item> {
                 map((i) {
                   var value = returnValue(i.field);
 
+                  final isValueFromExtClass =
+                      value?.endsWith('().value') ?? false;
+
                   if (value == unassigned) {
                     value = methodType.map(map: null, maybeMap: defaultValue);
-                  } else {
+                  } else if (!isValueFromExtClass) {
                     value = _checkValueAndPrepare(value, i.field);
                   }
 
