@@ -1,8 +1,6 @@
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:meta/meta.dart';
 
-import 'util/far_ext.dart';
-
 part 'map_extension.ge.dart';
 
 class NullNumExtension extends MapExtension<int?> {

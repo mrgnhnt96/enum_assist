@@ -3,20 +3,20 @@ import 'package:meta/meta.dart';
 
 part 'null_map_ext.ge.dart';
 
-class ListExt extends MapExtension<List<int>?> {
-  const ListExt([List<int>? value = const [20]])
+class ListIntExt extends MapExtension<List<int>?> {
+  const ListIntExt([List<int>? value = const [20]])
       : super(
           value,
-          methodName: 'list',
+          methodName: 'list int',
           allowNulls: true,
         );
 }
 
-class MapExt extends MapExtension<Map<String, int>?> {
-  const MapExt([Map<String, int>? value = const {'': 20}])
+class MapIntExt extends MapExtension<Map<String, int>?> {
+  const MapIntExt([Map<String, int>? value = const {'': 20}])
       : super(
           value,
-          methodName: 'mapExt',
+          methodName: 'map int',
           allowNulls: true,
         );
 }
@@ -24,18 +24,18 @@ class MapExt extends MapExtension<Map<String, int>?> {
 @EnumAssist()
 enum Animal {
   @EnumKey(extensions: [
-    ListExt(),
-    MapExt(),
+    ListIntExt(),
+    MapIntExt(),
   ])
   dog,
   @EnumKey(extensions: [
-    ListExt(null),
-    MapExt(null),
+    ListIntExt(null),
+    MapIntExt(null),
   ])
   cat,
   @EnumKey(extensions: [
-    ListExt([400, 500, 600]),
-    MapExt({'a': 400, 'b': 500, 'c': 600}),
+    ListIntExt([400, 500, 600]),
+    MapIntExt({'a': 400, 'b': 500, 'c': 600}),
   ])
   mouse,
 }
@@ -109,4 +109,81 @@ enum Familia {
     ApodoExt(null),
   ])
   hijo,
+}
+
+class BoolExt extends MapExtension<bool> {
+  const BoolExt()
+      : super(
+          true,
+          methodName: 'boolExt',
+          allowNulls: true,
+        );
+}
+
+class IntExt extends MapExtension<int> {
+  const IntExt()
+      : super(
+          1,
+          methodName: 'intExt',
+          allowNulls: true,
+        );
+}
+
+class DoubleExt extends MapExtension<double> {
+  const DoubleExt()
+      : super(
+          .5,
+          methodName: 'doubleExt',
+          allowNulls: true,
+        );
+}
+
+class StringExt extends MapExtension<String> {
+  const StringExt()
+      : super(
+          'value',
+          methodName: 'stringExt',
+          allowNulls: true,
+        );
+}
+
+class EnumExt extends MapExtension<Animal> {
+  const EnumExt()
+      : super(
+          Animal.cat,
+          methodName: 'enumExt',
+          allowNulls: true,
+        );
+}
+
+class ListExt extends MapExtension<List<int>> {
+  const ListExt()
+      : super(
+          const [1, 2, 3],
+          methodName: 'listExt',
+          allowNulls: true,
+        );
+}
+
+class MapExt extends MapExtension<Map<String, int>> {
+  const MapExt()
+      : super(
+          const {'a': 1, 'b': 2, 'c': 3},
+          methodName: 'mapExt',
+          allowNulls: true,
+        );
+}
+
+@EnumAssist()
+enum Superhero {
+  @EnumKey(extensions: [
+    BoolExt(),
+    IntExt(),
+    DoubleExt(),
+    StringExt(),
+    EnumExt(),
+    ListExt(),
+    MapExt(),
+  ])
+  superman,
 }

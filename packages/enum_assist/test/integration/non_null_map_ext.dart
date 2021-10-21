@@ -3,31 +3,31 @@ import 'package:meta/meta.dart';
 
 part 'non_null_map_ext.ge.dart';
 
-class ListExt extends MapExtension<List<int>> {
-  const ListExt([List<int> value = const [20]])
+class ListIntExt extends MapExtension<List<int>> {
+  const ListIntExt([List<int> value = const [20]])
       : super(value, methodName: 'list');
 }
 
-class MapExt extends MapExtension<Map<String, int>> {
-  const MapExt([Map<String, int> value = const {'': 20}])
-      : super(value, methodName: 'mapExt');
+class MapIntExt extends MapExtension<Map<String, int>> {
+  const MapIntExt([Map<String, int> value = const {'': 20}])
+      : super(value, methodName: 'mapInt');
 }
 
 @EnumAssist()
 enum Animal {
   @EnumKey(extensions: [
-    ListExt(),
-    MapExt(),
+    ListIntExt(),
+    MapIntExt(),
   ])
   dog,
   @EnumKey(extensions: [
-    ListExt([100, 200, 300]),
-    MapExt({'a': 100, 'b': 200, 'c': 300}),
+    ListIntExt([100, 200, 300]),
+    MapIntExt({'a': 100, 'b': 200, 'c': 300}),
   ])
   cat,
   @EnumKey(extensions: [
-    ListExt([400, 500, 600]),
-    MapExt({'a': 400, 'b': 500, 'c': 600}),
+    ListIntExt([400, 500, 600]),
+    MapIntExt({'a': 400, 'b': 500, 'c': 600}),
   ])
   mouse,
 }
@@ -92,4 +92,46 @@ enum Familia {
     ApodoExt([Apodo('moco'), Apodo('[{some cool{, } name}]')]),
   ])
   hijo,
+}
+
+class BoolExt extends MapExtension<bool> {
+  const BoolExt() : super(true, methodName: 'boolExt');
+}
+
+class IntExt extends MapExtension<int> {
+  const IntExt() : super(1, methodName: 'intExt');
+}
+
+class DoubleExt extends MapExtension<double> {
+  const DoubleExt() : super(.5, methodName: 'doubleExt');
+}
+
+class StringExt extends MapExtension<String> {
+  const StringExt() : super('value', methodName: 'stringExt');
+}
+
+class EnumExt extends MapExtension<Animal> {
+  const EnumExt() : super(Animal.cat, methodName: 'enumExt');
+}
+
+class ListExt extends MapExtension<List<int>> {
+  const ListExt() : super(const [1, 2, 3], methodName: 'listExt');
+}
+
+class MapExt extends MapExtension<Map<String, int>> {
+  const MapExt() : super(const {'a': 1, 'b': 2, 'c': 3}, methodName: 'mapExt');
+}
+
+@EnumAssist()
+enum Superhero {
+  @EnumKey(extensions: [
+    BoolExt(),
+    IntExt(),
+    DoubleExt(),
+    StringExt(),
+    EnumExt(),
+    ListExt(),
+    MapExt(),
+  ])
+  superman,
 }

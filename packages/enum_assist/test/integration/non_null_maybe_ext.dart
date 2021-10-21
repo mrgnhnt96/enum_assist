@@ -3,20 +3,20 @@ import 'package:meta/meta.dart';
 
 part 'non_null_maybe_ext.ge.dart';
 
-class ListExt extends MaybeExtension<List<int>> {
-  const ListExt([List<int> value = const [20]])
+class ListIntExt extends MaybeExtension<List<int>> {
+  const ListIntExt([List<int> value = const [20]])
       : super(
           value,
-          methodName: 'list',
+          methodName: 'list int',
           defaultValue: const [10],
         );
 }
 
-class MapExt extends MaybeExtension<Map<String, int>> {
-  const MapExt([Map<String, int> value = const {'': 20}])
+class MapIntExt extends MaybeExtension<Map<String, int>> {
+  const MapIntExt([Map<String, int> value = const {'': 20}])
       : super(
           value,
-          methodName: 'mapExt',
+          methodName: 'mapInt',
           defaultValue: const {'': 10},
         );
 }
@@ -26,13 +26,13 @@ enum Animal {
   @EnumKey(extensions: [])
   dog,
   @EnumKey(extensions: [
-    ListExt(),
-    MapExt(),
+    ListIntExt(),
+    MapIntExt(),
   ])
   cat,
   @EnumKey(extensions: [
-    ListExt([400, 500, 600]),
-    MapExt({'a': 400, 'b': 500, 'c': 600}),
+    ListIntExt([400, 500, 600]),
+    MapIntExt({'a': 400, 'b': 500, 'c': 600}),
   ])
   mouse,
 }
@@ -103,4 +103,81 @@ enum Familia {
     ApodoExt([Apodo('moco'), Apodo('[{some cool{, } name}]')]),
   ])
   hijo,
+}
+
+class BoolExt extends MaybeExtension<bool> {
+  const BoolExt()
+      : super(
+          true,
+          methodName: 'boolExt',
+          defaultValue: true,
+        );
+}
+
+class IntExt extends MaybeExtension<int> {
+  const IntExt()
+      : super(
+          1,
+          methodName: 'intExt',
+          defaultValue: 1,
+        );
+}
+
+class DoubleExt extends MaybeExtension<double> {
+  const DoubleExt()
+      : super(
+          .5,
+          methodName: 'doubleExt',
+          defaultValue: .5,
+        );
+}
+
+class StringExt extends MaybeExtension<String> {
+  const StringExt()
+      : super(
+          'value',
+          methodName: 'stringExt',
+          defaultValue: 'value',
+        );
+}
+
+class EnumExt extends MaybeExtension<Animal> {
+  const EnumExt()
+      : super(
+          Animal.cat,
+          methodName: 'enumExt',
+          defaultValue: Animal.cat,
+        );
+}
+
+class ListExt extends MaybeExtension<List<int>> {
+  const ListExt()
+      : super(
+          const [1, 2, 3],
+          methodName: 'listExt',
+          defaultValue: const [1, 2, 3],
+        );
+}
+
+class MapExt extends MaybeExtension<Map<String, int>> {
+  const MapExt()
+      : super(
+          const {'a': 1, 'b': 2, 'c': 3},
+          methodName: 'mapExt',
+          defaultValue: const {'a': 1, 'b': 2, 'c': 3},
+        );
+}
+
+@EnumAssist()
+enum Superhero {
+  @EnumKey(extensions: [
+    BoolExt(),
+    IntExt(),
+    DoubleExt(),
+    StringExt(),
+    EnumExt(),
+    ListExt(),
+    MapExt(),
+  ])
+  superman,
 }

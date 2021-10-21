@@ -3,21 +3,21 @@ import 'package:meta/meta.dart';
 
 part 'null_maybe_ext.ge.dart';
 
-class ListExt extends MaybeExtension<List<int>?> {
-  const ListExt([List<int>? value = const [20]])
+class ListInt extends MaybeExtension<List<int>?> {
+  const ListInt([List<int>? value = const [20]])
       : super(
           value,
-          methodName: 'list',
+          methodName: 'list int',
           allowNulls: true,
           defaultValue: const [10],
         );
 }
 
-class MaybeExt extends MaybeExtension<Map<String, int>?> {
-  const MaybeExt([Map<String, int>? value = const {'': 20}])
+class MapInt extends MaybeExtension<Map<String, int>?> {
+  const MapInt([Map<String, int>? value = const {'': 20}])
       : super(
           value,
-          methodName: 'mapExt',
+          methodName: 'map int',
           allowNulls: true,
           defaultValue: const {'': 10},
         );
@@ -26,13 +26,13 @@ class MaybeExt extends MaybeExtension<Map<String, int>?> {
 @EnumAssist()
 enum Animal {
   @EnumKey(extensions: [
-    ListExt(),
-    MaybeExt(),
+    ListInt(),
+    MapInt(),
   ])
   dog,
   @EnumKey(extensions: [
-    ListExt(null),
-    MaybeExt(null),
+    ListInt(null),
+    MapInt(null),
   ])
   cat,
   @EnumKey(extensions: [])
@@ -107,4 +107,88 @@ enum Familia {
   padre,
   @EnumKey(extensions: [])
   hijo,
+}
+
+class BoolExt extends MaybeExtension<bool> {
+  const BoolExt()
+      : super(
+          true,
+          methodName: 'boolExt',
+          defaultValue: true,
+          allowNulls: true,
+        );
+}
+
+class IntExt extends MaybeExtension<int> {
+  const IntExt()
+      : super(
+          1,
+          methodName: 'intExt',
+          defaultValue: 1,
+          allowNulls: true,
+        );
+}
+
+class DoubleExt extends MaybeExtension<double> {
+  const DoubleExt()
+      : super(
+          .5,
+          methodName: 'doubleExt',
+          defaultValue: .5,
+          allowNulls: true,
+        );
+}
+
+class StringExt extends MaybeExtension<String> {
+  const StringExt()
+      : super(
+          'value',
+          methodName: 'stringExt',
+          defaultValue: 'value',
+          allowNulls: true,
+        );
+}
+
+class EnumExt extends MaybeExtension<Animal> {
+  const EnumExt()
+      : super(
+          Animal.cat,
+          methodName: 'enumExt',
+          defaultValue: Animal.cat,
+          allowNulls: true,
+        );
+}
+
+class ListExt extends MaybeExtension<List<int>> {
+  const ListExt()
+      : super(
+          const [1, 2, 3],
+          methodName: 'listExt',
+          defaultValue: const [1, 2, 3],
+          allowNulls: true,
+        );
+}
+
+class MapExt extends MaybeExtension<Map<String, int>> {
+  const MapExt()
+      : super(
+          const {'a': 1, 'b': 2, 'c': 3},
+          methodName: 'mapExt',
+          defaultValue: const {'a': 1, 'b': 2, 'c': 3},
+          allowNulls: true,
+        );
+}
+
+@EnumAssist()
+enum Superhero {
+  @EnumKey(extensions: [
+    BoolExt(),
+    IntExt(),
+    DoubleExt(),
+    StringExt(),
+    EnumExt(),
+    ListExt(),
+    MapExt(),
+  ])
+  superman,
 }
