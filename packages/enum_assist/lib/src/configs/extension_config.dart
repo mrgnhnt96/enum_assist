@@ -2,12 +2,57 @@ import 'dart:math';
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:enum_assist/src/field_data.dart';
+import 'package:enum_assist/src/generator_helpers/generator_helpers.dart';
 import 'package:enum_assist/src/util/enum_helpers.dart';
+import 'package:enum_assist/src/util/exceptions.dart';
 import 'package:enum_assist/src/util/extensions.dart';
 import 'package:enum_assist/src/util/match_bracket.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
+
+const _reservedWords = {
+  'continue': '',
+  'false': '',
+  'new': '',
+  'this': '',
+  'default': '',
+  'final': '',
+  'null': '',
+  'throw': '',
+  'assert': '',
+  'finally': '',
+  'true': '',
+  'do': '',
+  'for': '',
+  'try': '',
+  'rethrow': '',
+  'else': '',
+  'if': '',
+  'return': '',
+  'var': '',
+  'break': '',
+  'enum': '',
+  'void': '',
+  'case': '',
+  'while': '',
+  'catch': '',
+  'in': '',
+  'super': '',
+  'with': '',
+  'class': '',
+  'extends': '',
+  'is': '',
+  'switch': '',
+  'const': '',
+  'bool': '',
+  'double': '',
+  'dynamic': '',
+  'int': '',
+  'num': '',
+  'map': '',
+  'maybeMap': '',
+};
 
 /// {@template enum_assist.extension_value_config}
 /// The configuration for the additional extension.
@@ -90,6 +135,9 @@ value: $value
     final object = FieldData.enumKeyChecker.getObjectFromAnnotation(element);
     final reader = ConstantReader(object);
 
+    final enumAndField =
+        '${element.getter?.declaration}'.replaceAll(' get ', '.');
+
     List<String> getDetailedExtension(ElementAnnotation data) {
       const comparable = 'List<Extension<Object>> ([';
 
@@ -138,13 +186,107 @@ value: $value
       return extensions;
     }
 
-    /// returns Map<METHOD_NAME, List<0=TYPE, 1=VALUE>
+    String checkMethodNameForReservedWords(String methodName) {
+      if (_reservedWords.containsKey(methodName)) {
+        final replacement = '${methodName}Ext';
+        GeneratorHelper.addToWarnings(
+          warning: 'Reserved Word in Method Name',
+          where: enumAndField,
+          what: 'The method name "$methodName" is a reserved word '
+              'and it cannot be used as a method name',
+          action: '"$methodName" will be RENAMED to "$replacement"',
+        );
+        return replacement;
+      }
+
+      return methodName;
+    }
+
     Map<String, ExtensionConfig> getClassesAndValues(
         List<String> annotations, List<String> details) {
-      final values = <String, ExtensionConfig>{};
+      final configs = <String, ExtensionConfig>{};
+
+      /// Map<CLASS_NAME, METHOD_NAME>
+      final classToMethod = <String, String>{};
+
+      void checkIfMethodNameIsUniqueToClass(
+        String className,
+        String methodName,
+      ) {
+        void checkIfMethodNameIsUnique() {
+          if (!classToMethod.containsValue(methodName)) {
+            classToMethod[className] = methodName;
+            return;
+          }
+
+          final classes = classToMethod.entries
+              .where((entry) => entry.value == methodName)
+              .map((entry) => entry.key)
+              .toList();
+
+          if (classes.length == 1) return;
+
+          final classesInError = classes.join(' & ');
+
+          throw EnumException(
+            error: 'Duplicated Method Name',
+            where: enumAndField,
+            what: 'The method "$methodName" has been '
+                'defined in $classesInError',
+            rule: 'Method names must be unique.',
+            fix: 'Double Check $classesInError, and change one of the '
+                'method names from "$methodName" and try again',
+          );
+        }
+
+        // if class doesn't exist, add it and move on
+        if (!classToMethod.containsKey(className)) {
+          classToMethod[className] = methodName;
+
+          checkIfMethodNameIsUnique();
+          return;
+        }
+
+        // get method name and check that is matches [methodName]
+        final existingMethodName = classToMethod[className];
+        if (existingMethodName == methodName) return;
+
+        // [methodName] did not match [existingMethodName]
+        throw EnumException(
+          error: 'Duplicated Method Name',
+          where: enumAndField,
+          what: '$className has different method names assigned, '
+              '"$existingMethodName" and "$methodName" were found',
+          rule: 'Method names must be unique for each `enum`',
+          fix: 'Double Check $className, and change one of the '
+              'method names from "$methodName" or $existingMethodName '
+              'and try again',
+        );
+      }
 
       // Map<TOP_LEVEL_NAME, VALUE>
       final topLevel = <String, String>{};
+
+      /// does nothing if key is not found
+      ///
+      /// throws error if key is found,
+      /// all methodNames must be unique
+      void checkIfExtClassExists(String extClassName) {
+        if (!topLevel.containsKey(extClassName)) return;
+
+        throw EnumException(
+          error: 'Duplicated Extension Declaration',
+          where: enumAndField,
+          what: 'The extension "$extClassName" has been '
+              'declared already for $enumAndField',
+          rule: 'Extensions can only be declared '
+              'once for a single enum field',
+          fix: 'Double check the arguement '
+              '`extensions: [...]` in $enumAndField '
+              '& change or remove a `$extClassName` declaration',
+        );
+      }
+
       for (final extClass in annotations) {
         final parenthesisPosition = extClass.indexOf('(');
 
@@ -152,6 +294,8 @@ value: $value
         if (parenthesisPosition == -1) continue;
 
         final name = extClass.substring(0, parenthesisPosition);
+        checkIfExtClassExists(name);
+
         var value =
             extClass.substring(parenthesisPosition + 1, extClass.length - 1);
 
@@ -195,7 +339,7 @@ value: $value
           final extensionClassName =
               RegExp(r'^(\w+)').firstMatch(details)!.group(0)!;
 
-          final methodName =
+          var methodName =
               extension.peek('methodName')?.stringValue.toCamelCase();
 
           final defaultAccess = annotations.firstWhere(
@@ -220,9 +364,6 @@ value: $value
             value = '$extensionClassName().value';
           }
 
-          //TODO: add "reserved keywords" check to method name.
-          // cannot be: map, maybeMap
-
           if (methodName == null ||
               methodType == null ||
               allowNulls == null ||
@@ -230,7 +371,10 @@ value: $value
             throw 'missing values!';
           }
 
-          values[methodName] = ExtensionConfig(
+          checkIfMethodNameIsUniqueToClass(extensionClassName, methodName);
+
+          methodName = checkMethodNameForReservedWords(methodName);
+          configs[methodName] = ExtensionConfig(
             methodName: methodName,
             valueClassName: extensionClassName,
             valueType: valueType,
@@ -243,7 +387,7 @@ value: $value
         }
       }
 
-      return values;
+      return configs;
     }
 
     final extensionsMap = <String, ExtensionConfig>{};
