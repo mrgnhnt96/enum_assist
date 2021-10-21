@@ -28,41 +28,46 @@ abstract class AdditionalExtensionsGeneratorHelper implements HelperCore {
         }
 
         if (field != null) {
-          throw '${field.wholeName} needs to have $name extension. (${value.valueClassName})';
+          throw EnumException(
+            error: 'Missing Declared Extension',
+            where: field.wholeName,
+            what: '${field.wholeName} is missing method "$name", '
+                'which comes from "${value.valueClassName}"',
+            rule: 'If the method is a type `MapExtension` and `allowNulls` is '
+                'equal to `false` (default), then each field must be annotated '
+                'with @EnumKey & contain the method within the '
+                '`extensions: [...]` argument',
+            fix: 'Make sure the `@EnumKey` annotation '
+                'is on "${field.wholeName}". Then '
+                'add the extension "$name" via '
+                'the class "${value.valueClassName}" '
+                'to the argument `extension: [...]`',
+          );
         }
       }
     }
 
     for (final extension in extensions.values) {
-      try {
-        buffer
-          ..write(
-            AdaptiveTemplate(
-              enumName,
-              fieldData,
-              methodName: extension.methodName,
-              docComment: extension.getDocComment(),
-              defaultValue: extension.defaultValue,
-              methodType: extension.methodType,
-              typeAsString: extension.valueType,
-              allowNulls: extension.allowNulls,
-              getValue: (field) {
-                final extensionConfig =
-                    field.getExtension(extension.methodName);
-                final returnValue = extensionConfig?.value ?? unassigned;
+      buffer
+        ..write(
+          AdaptiveTemplate(
+            enumName,
+            fieldData,
+            methodName: extension.methodName,
+            docComment: extension.getDocComment(),
+            defaultValue: extension.defaultValue,
+            methodType: extension.methodType,
+            typeAsString: extension.valueType,
+            allowNulls: extension.allowNulls,
+            getValue: (field) {
+              final extensionConfig = field.getExtension(extension.methodName);
+              final returnValue = extensionConfig?.value ?? unassigned;
 
-                return returnValue;
-              },
-            ).toString(),
-          )
-          ..writeln();
-      } on MissingExtensionValueException catch (e) {
-        print(e); // ignore: avoid_print
-        continue;
-      } on NullValueException catch (e) {
-        print(e); // ignore: avoid_print
-        continue;
-      }
+              return returnValue;
+            },
+          ).toString(),
+        )
+        ..writeln();
     }
 
     return buffer.toString();
