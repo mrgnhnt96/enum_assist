@@ -43,6 +43,7 @@ class EnumAssistGenerator extends GeneratorForAnnotation<EnumAssist> {
     }
 
     final helper = GeneratorHelper(_settings, element, annotation);
+
     return helper.generate();
   }
 }
