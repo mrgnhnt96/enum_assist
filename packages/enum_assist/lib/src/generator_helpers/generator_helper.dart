@@ -29,12 +29,63 @@ class GeneratorHelper extends HelperCore
           ),
         );
 
+  static final _warnings = <String>{};
+  static final _topics = <String>{};
+
+  /// warnings to be printed after generation
+  static void addToWarnings({
+    required String warning,
+    required String where,
+    required String what,
+    required String action,
+  }) {
+    where = where.contains('.') ? where.split('.')[0] : where;
+
+    final topic = what;
+
+    if (_topics.contains(topic)) return;
+
+    _topics.add(topic);
+
+    _warnings.add('''
+--- --- ---
+[WARNING]: $warning
+[WHERE]:   $where
+[WHAT]:    $what
+[ACTION]:  $action
+--- --- ---''');
+  }
+
   @override
   Iterable<String> generate() sync* {
-    yield generateExtensions(generateAdditionalExtensions);
+    void printWarnings() {
+      if (_warnings.isNotEmpty) {
+        final warnings = _warnings.join('\n');
 
-    if (config.createJsonConv) {
-      yield generateJsonConverter();
+        // ignore: avoid_print
+        print('''
+$warnings
+^^^ ^^^ ^^^
+Total Warnings: ${_warnings.length}
+''');
+        _warnings.clear();
+        _topics.clear();
+      }
     }
+
+    try {
+      yield generateExtensions(generateAdditionalExtensions);
+
+      if (config.createJsonConv) {
+        yield generateJsonConverter();
+      }
+    } catch (_) {
+      // clear warnings to give priority to the current error
+      printWarnings();
+
+      rethrow;
+    }
+
+    printWarnings();
   }
 }
