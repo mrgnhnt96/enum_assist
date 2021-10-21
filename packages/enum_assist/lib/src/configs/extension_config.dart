@@ -281,7 +281,7 @@ value: $value
               'declared already for $enumAndField',
           rule: 'Extensions can only be declared '
               'once for a single enum field',
-          fix: 'Double check the arguement '
+          fix: 'Double check the argument '
               '`extensions: [...]` in $enumAndField '
               '& change or remove a `$extClassName` declaration',
         );
@@ -364,11 +364,36 @@ value: $value
             value = '$extensionClassName().value';
           }
 
+          // should never throw, as all fields are required
+          // non-nullable fields
+          //
+          // but just in case (also helps with null safety!)
           if (methodName == null ||
               methodType == null ||
               allowNulls == null ||
               value == null) {
-            throw 'missing values!';
+            final missingFields = <String>[];
+
+            if (methodName == null) missingFields.add('methodName');
+            if (methodType == null) missingFields.add('methodType');
+            if (allowNulls == null) missingFields.add('allowNulls');
+            if (value == null) missingFields.add('value');
+
+            final whatsMissing = missingFields.join(', ');
+
+            throw EnumException(
+              error: 'Missing Required Fields',
+              where: enumAndField,
+              rule: 'All methods must have a method name [methodName], '
+                  'method type, a value, and whether `null`s may '
+                  'be a return value [allowNulls]',
+              what: 'The extension "$extensionClassName" is missing '
+                  'the following fields: $whatsMissing',
+              fix: 'Double check $extensionClassName, found in the argument '
+                  "`extensions: [...]` from $enumAndField's annotation. "
+                  'Make sure that the fields: $whatsMissing, '
+                  'are properly assigned',
+            );
           }
 
           checkIfMethodNameIsUniqueToClass(extensionClassName, methodName);
