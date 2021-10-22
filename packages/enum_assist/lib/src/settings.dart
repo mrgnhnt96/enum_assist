@@ -2,15 +2,17 @@ import 'package:enum_assist/src/configs/class_config.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 
 /// {@template enum_assist.settings}
-/// Represents the settings to use when generating code.
+/// Settings configured in the `build.yaml` file
 /// {@endtemplate}
 class Settings {
   /// {@macro enum_assist.settings}
   const Settings._(this._config);
 
-  /// Resolve the settings from the build.yaml file.
-  ///
   /// {@macro enum_assist.settings}
+  ///
+  /// Parses [json] to [Settings]
+  ///
+  /// If any property is null, [ClassConfig.defaults] will be used
   factory Settings.resolve(Map<String, dynamic> json) {
     const createJsonConvKey = 'create_json_conv';
     const serializedFormatKey = 'serialized_format';

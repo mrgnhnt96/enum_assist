@@ -6,7 +6,7 @@ import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
 /// {@template enum_assist.enum_field}
-/// A field & all its associated metadata.
+/// An enum field with all the information needed to generate the code.
 /// {@endtemplate}
 class FieldData {
   /// {@macro enum_assist.enum_field}
@@ -23,6 +23,8 @@ class FieldData {
   });
 
   /// {@macro enum_assist.enum_field}
+  ///
+  /// Retrieves data from the annotation & merges it with [classConfig]
   factory FieldData.config(FieldElement element, ClassConfig classConfig) {
     final extensions = ExtensionConfig.resolve(element);
 
@@ -54,43 +56,43 @@ class FieldData {
     return data;
   }
 
-  /// {@macro enum_assist_annotation.enum_key.name}
+  /// [EnumKey.name]
   final String? assignedName;
 
-  /// the documentation associated with this field
+  /// Doc comment of the field
   final String? docComment;
 
-  /// {@macro enum_assist_annotation.enum_key.description}
+  /// [EnumKey.description]
   final String? description;
 
-  /// the name of the enum the field is in
+  /// The name of the enum
   final String enumName;
 
-  /// {@macro enum_assist_annotation.enum_key.extension_values}
+  /// [EnumKey.extensions]
   final Map<String, ExtensionConfig> extensions;
 
-  /// {@macro enum_assist_annotation.enum_key.name}
+  /// The name of the field
   final String fieldName;
 
-  /// {@macro enum_assist_annotation.enum_key.serialized_value}
+  /// [EnumKey.serializedValue]
   final String? serializedValue;
 
-  /// {@macro enum_assist_annotation.enum_key.use_doc_comment_as_description}
+  /// [EnumKey.useDocCommentAsDescription]
   final bool useDocCommentAsDescription;
 
-  /// {@macro enum_assist_annotation.serialized_format}
+  /// [EnumAssist.serializedFormat]
   final SerializedFormat serializedFormat;
 
   // -- getters --
 
-  /// returns the config for the extension
+  /// Gets then [ExtensionConfig] from [methodName]
   ExtensionConfig? getExtension(String methodName) {
     if (extensions.isEmpty) return null;
 
     return extensions[methodName];
   }
 
-  /// get the description of the enum value
+  /// [EnumKey.description]
   ///
   /// _prioritizes by order:_
   /// - [description]
@@ -105,28 +107,33 @@ class FieldData {
     return null;
   }
 
-  /// retrieves the name
+  /// [EnumKey.name]
   ///
-  /// _prioritizes name from [EnumKey]_
+  /// _prioritizes by order:_
+  /// [assignedName]
+  /// [fieldName]
   ///
-  /// if name is not provided, returns the field name
-  /// formatted to Capital case
+  /// [fieldName] is formatted to capital case
   String get getName {
     if (assignedName != null) return assignedName!;
 
     return fieldName.toCapitalCase();
   }
 
-  /// gets the serialized form of the field's name
+  /// [EnumKey.serializedValue]
   ///
-  /// _prioritizes the [serializedValue]_
+  /// _prioritizes by order:_
+  /// [serializedValue]
+  /// [fieldName]
+  ///
+  /// [fieldName] is formatted by [EnumAssist.serializedFormat]
   String get getSerializedName {
     if (serializedValue != null) return serializedValue!;
 
     return _format(fieldName);
   }
 
-  /// the name of the field as a private member
+  /// [fieldName] as a private member
   String get privateName => '_${fieldName}Name';
 
   /// return the name of the enum & field as a string
@@ -134,7 +141,7 @@ class FieldData {
   /// e.g. `MyEnum.myField`
   String get wholeName => '$enumName.$fieldName';
 
-  /// type checker used to retrieve annotation
+  /// type checker for [EnumKey]
   static const enumKeyChecker = TypeChecker.fromRuntime(EnumKey);
 
   String _format(String s) {

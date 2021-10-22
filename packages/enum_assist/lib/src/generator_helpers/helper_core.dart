@@ -8,16 +8,16 @@ import 'package:source_helper/source_helper.dart';
 
 /// {@template enum_assist.helper_core}
 /// A helper class that provides the core functionality for generating
-/// [EnumHelper]s.
+/// extensions and classes for enums.
 /// {@endtemplate}
 abstract class HelperCore {
   /// {@macro enum_assist.helper_core}
   HelperCore(this.element, this.config) : assert(element.isEnum);
 
-  /// The [ClassElement] that this helper is for.
+  /// The enum ([ClassElement]) that this helper is generating code for.
   final ClassElement element;
 
-  /// The [ClassConfig] for this helper.
+  /// The [ClassConfig] for this generator.
   final ClassConfig config;
 
   /// The method to use for generating the code
@@ -28,9 +28,9 @@ abstract class HelperCore {
   @visibleForTesting
   String get enumName => element.name.nonPrivate;
 
-  /// Returns a [Set] of all instance [FieldElement] items for [element] and
-  /// super classes, sorted first by their location in the inheritance hierarchy
-  /// (super first) and then by their location in the source file.
+  /// Converts [FieldElement] to List<[FieldData]>
+  ///
+  /// Converts all [EnumKey] annotations to [FieldData]
   @protected
   Iterable<FieldData> get fieldData {
     final fields = <FieldData>[];
@@ -46,12 +46,14 @@ abstract class HelperCore {
     return fields;
   }
 
-  /// Returns the names of all fields
+  /// Returns all enum's field names, [FieldData.fieldName]
   @protected
   @visibleForTesting
   Iterable<String> get fieldNames => fieldData.map((e) => e.fieldName);
 
-  /// returns all extensions from all fields
+  /// __Returns__ Map<[ExtensionConfig.methodName], [ExtensionConfig]>
+  ///
+  /// Gets all the extensions that should be generated for this enum.
   Map<String, ExtensionConfig> get extensions {
     return fieldData
         .map((e) => e.extensions)

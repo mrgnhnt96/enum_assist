@@ -108,7 +108,7 @@ String? _getOpposite(String char) {
 }
 
 /// {@template bracket_matching}
-/// details of a set of brackets in a string
+/// Details of a set of brackets in a string
 /// {@endtemplate}
 @immutable
 class Bracket {

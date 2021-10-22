@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('#defaults', () {
-    final defaults = ClassConfig.defaults;
+    const defaults = ClassConfig.defaults;
 
     test('createJsonConv should return true', () {
       expect(defaults.createJsonConv, isTrue);

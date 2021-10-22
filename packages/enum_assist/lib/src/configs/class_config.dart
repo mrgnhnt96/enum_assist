@@ -20,9 +20,9 @@ class ClassConfig {
     required this.useDocCommentAsDescription,
   });
 
-  /// Merges [config] with [reader].annotation
+  /// Merges [config] and the [EnumAssist] annotation
   ///
-  /// priority is given to `annotation`
+  /// priority is given to the `annotation`
   factory ClassConfig.mergeConfigs(
       ClassElement element, ClassConfig config, ConstantReader reader) {
     final annotation = _getAnnotation(reader);
@@ -36,16 +36,16 @@ class ClassConfig {
     );
   }
 
-  ///
+  /// The name of the enum
   final String enumName;
 
-  /// {@macro enum_assist_annotation.enum_assist.create_json_conv}
+  /// [EnumAssist.createJsonConv]
   final bool createJsonConv;
 
-  /// {@macro enum_assist_annotation.enum_assist.serialized_format}
+  /// [EnumAssist.serializedFormat]
   final SerializedFormat serializedFormat;
 
-  /// {@macro enum_assist_annotation.enum_assist.use_doc_comment_as_description}
+  /// [EnumAssist.useDocCommentAsDescription]
   final bool useDocCommentAsDescription;
 
   /// all the default values for [ClassConfig]
