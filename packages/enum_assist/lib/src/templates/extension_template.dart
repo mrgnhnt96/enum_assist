@@ -91,7 +91,7 @@ abstract class ExtensionTemplate extends TemplateCoreDetailed<_Item> {
                 mapBuffer
                   ..writelnTab('// returns default value', mapTab)
                   ..writelnTab(
-                      '//? if theres a provided value, it does nothing.',
+                      '//? if theres an argument provided, it does nothing.',
                       mapTab)
                   ..writeln('orElse: $defaultValue${allowNulls ? '' : '!'},');
               }
