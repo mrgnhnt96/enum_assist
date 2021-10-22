@@ -1,6 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file:
+// ignore_for_file: constant_identifier_names,prefer_const_declarations,unused_local_variable,prefer_int_literals,lines_longer_than_80_chars,prefer_const_constructors
 
 part of 'enums.dart';
 
@@ -11,10 +11,12 @@ part of 'enums.dart';
 /// Extensions for the enum SerializedFormat
 extension SerializedFormatX on SerializedFormat {
   /// Map of all values of the enum
-  T map<T>({
+  T map<T extends Object?>({
     required T camel,
+    required T capital,
     required T constant,
     required T dot,
+    required T header,
     required T kebab,
     required T no,
     required T none,
@@ -23,16 +25,18 @@ extension SerializedFormatX on SerializedFormat {
     required T sentence,
     required T snake,
     required T swap,
-    required T capital,
-    required T header,
   }) {
     switch (this) {
       case SerializedFormat.camel:
         return camel;
+      case SerializedFormat.capital:
+        return capital;
       case SerializedFormat.constant:
         return constant;
       case SerializedFormat.dot:
         return dot;
+      case SerializedFormat.header:
+        return header;
       case SerializedFormat.kebab:
         return kebab;
       case SerializedFormat.no:
@@ -49,21 +53,19 @@ extension SerializedFormatX on SerializedFormat {
         return snake;
       case SerializedFormat.swap:
         return swap;
-      case SerializedFormat.capital:
-        return capital;
-      case SerializedFormat.header:
-        return header;
     }
   }
 
   /// Optionally map all values of the enum
   ///
   /// default value is provided when value has not been mapped
-  T maybeMap<T>({
+  T maybeMap<T extends Object?>({
     required T orElse,
     T? camel,
+    T? capital,
     T? constant,
     T? dot,
+    T? header,
     T? kebab,
     T? no,
     T? none,
@@ -72,49 +74,54 @@ extension SerializedFormatX on SerializedFormat {
     T? sentence,
     T? snake,
     T? swap,
-    T? capital,
-    T? header,
   }) {
+    var isNullable = true;
+    try {
+      final value = null as T;
+    } catch (_) {
+      isNullable = false;
+    }
+
     switch (this) {
       case SerializedFormat.camel:
-        if (camel == null) return orElse;
-        return camel;
-      case SerializedFormat.constant:
-        if (constant == null) return orElse;
-        return constant;
-      case SerializedFormat.dot:
-        if (dot == null) return orElse;
-        return dot;
-      case SerializedFormat.kebab:
-        if (kebab == null) return orElse;
-        return kebab;
-      case SerializedFormat.no:
-        if (no == null) return orElse;
-        return no;
-      case SerializedFormat.none:
-        if (none == null) return orElse;
-        return none;
-      case SerializedFormat.pascal:
-        if (pascal == null) return orElse;
-        return pascal;
-      case SerializedFormat.path:
-        if (path == null) return orElse;
-        return path;
-      case SerializedFormat.sentence:
-        if (sentence == null) return orElse;
-        return sentence;
-      case SerializedFormat.snake:
-        if (snake == null) return orElse;
-        return snake;
-      case SerializedFormat.swap:
-        if (swap == null) return orElse;
-        return swap;
+        if (camel == null && !isNullable) return orElse;
+        return camel as T;
       case SerializedFormat.capital:
-        if (capital == null) return orElse;
-        return capital;
+        if (capital == null && !isNullable) return orElse;
+        return capital as T;
+      case SerializedFormat.constant:
+        if (constant == null && !isNullable) return orElse;
+        return constant as T;
+      case SerializedFormat.dot:
+        if (dot == null && !isNullable) return orElse;
+        return dot as T;
       case SerializedFormat.header:
-        if (header == null) return orElse;
-        return header;
+        if (header == null && !isNullable) return orElse;
+        return header as T;
+      case SerializedFormat.kebab:
+        if (kebab == null && !isNullable) return orElse;
+        return kebab as T;
+      case SerializedFormat.no:
+        if (no == null && !isNullable) return orElse;
+        return no as T;
+      case SerializedFormat.none:
+        if (none == null && !isNullable) return orElse;
+        return none as T;
+      case SerializedFormat.pascal:
+        if (pascal == null && !isNullable) return orElse;
+        return pascal as T;
+      case SerializedFormat.path:
+        if (path == null && !isNullable) return orElse;
+        return path as T;
+      case SerializedFormat.sentence:
+        if (sentence == null && !isNullable) return orElse;
+        return sentence as T;
+      case SerializedFormat.snake:
+        if (snake == null && !isNullable) return orElse;
+        return snake as T;
+      case SerializedFormat.swap:
+        if (swap == null && !isNullable) return orElse;
+        return swap as T;
     }
   }
 
@@ -123,8 +130,10 @@ extension SerializedFormatX on SerializedFormat {
   String get name {
     return map(
       camel: 'Camel',
+      capital: 'Capital',
       constant: 'Constant',
       dot: 'Dot',
+      header: 'Header',
       kebab: 'Kebab',
       no: 'No',
       none: 'None',
@@ -133,8 +142,6 @@ extension SerializedFormatX on SerializedFormat {
       sentence: 'Sentence',
       snake: 'Snake',
       swap: 'Swap',
-      capital: 'Capital',
-      header: 'Header',
     );
   }
 
@@ -142,43 +149,43 @@ extension SerializedFormatX on SerializedFormat {
   ///
   /// If the description is null, the doc comment of the enum field is returned.
   String? get description {
-    return maybeMap(
-      orElse: null,
+    return map(
       camel: '''
 Converts to a string with the separators denoted
 by having the next letter capitalized
 
-example:
+(e.g. `'hello_world' -> 'helloWorld'`)
+''',
+      capital: '''
+Converts to a lowercased, first letter captialized word,
+space separated string of every word
 
-`'hello_world' -> 'helloWorld'`
+(e.g. `'hello world' -> 'Hello World'`)
 ''',
       constant: '''
 Converts to an upper case, underscore separated string
 
-example:
-
-`'hello world' -> 'HELLO_WORLD'`
+(e.g. `'hello world' -> 'HELLO_WORLD'`)
 ''',
       dot: '''
 Converts to a lower case period separated string
 
-example:
+(e.g. `'hello World' -> 'hello.World'`)
+''',
+      header: '''
+Converts to a captialized word, dash separated string
 
-`'hello World' -> 'hello.World'`
+(e.g. `'hello world' -> 'Hello-World'`)
 ''',
       kebab: '''
 Converts to a lower case, dash separated string
 
-example:
-
-`'hello World' -> 'hello-world'`
+(e.g. `'hello World' -> 'hello-world'`)
 ''',
       no: '''
 Converts the string without any casing (lower case, space separated)
 
-example:
-
-`'Hello-World' -> 'hello world'`
+(e.g. `'Hello-World' -> 'hello world'`)
 ''',
       none: '''
 does not format the value
@@ -188,53 +195,28 @@ does not format the value
 Converts to a string denoted in the same fashion as [camel]
 but with the first letter capitalized
 
-example:
-
-`'hello_world' -> 'HelloWorld'`
+(e.g. `'hello_world' -> 'HelloWorld'`)
 ''',
       path: '''
 Converts to a lower case, slash separated string
 
-example:
-
-`'hello World' -> 'hello/world'`
+(e.g. `'hello World' -> 'hello/world'`)
 ''',
       sentence: '''
 Converts to a lower case, space separated string
 with the first letter capitalized
 
-example:
-
-`'hello World' -> 'Hello world'`
+(e.g. `'hello World' -> 'Hello world'`)
 ''',
       snake: '''
 Converts to a lower case, underscore separated string
 
-example:
-
-`'hello World' -> 'hello_world'`
+(e.g. `'hello World' -> 'hello_world'`)
 ''',
       swap: '''
 Converts to a string with every character case reversed
 
-example:
-
-`'Hello World' -> 'hELLO wORLD'`
-''',
-      capital: '''
-Converts to a lowercased, first letter captialized word,
-space separated string of every word
-
-example:
-
-`'hello world' -> 'Hello World'`
-''',
-      header: '''
-Converts to a captialized word, dash separated string
-
-example:
-
-`'hello world' -> 'Hello-World'`
+(e.g. `'Hello World' -> 'hELLO wORLD'`)
 ''',
     );
   }
@@ -243,8 +225,10 @@ example:
   String get serialized {
     return map(
       camel: SerializedFormatConv._camelName,
+      capital: SerializedFormatConv._capitalName,
       constant: SerializedFormatConv._constantName,
       dot: SerializedFormatConv._dotName,
+      header: SerializedFormatConv._headerName,
       kebab: SerializedFormatConv._kebabName,
       no: SerializedFormatConv._noName,
       none: SerializedFormatConv._noneName,
@@ -253,8 +237,6 @@ example:
       sentence: SerializedFormatConv._sentenceName,
       snake: SerializedFormatConv._snakeName,
       swap: SerializedFormatConv._swapName,
-      capital: SerializedFormatConv._capitalName,
-      header: SerializedFormatConv._headerName,
     );
   }
 }
@@ -271,11 +253,19 @@ example:
 /// {@endtemplate}
 class SerializedFormatConv extends JsonConverter<SerializedFormat, String> {
   /// {@macro serialized_format.json_converter}
-  const SerializedFormatConv();
+  const SerializedFormatConv({this.defaultValue});
+
+  /// the value to be used when no match is found
+  final SerializedFormat? defaultValue;
+
+  /// {@macro serialized_format.json_converter_nullable}
+  static const nullable = _SerializedFormatNullableConv();
 
   static const _camelName = 'camel';
+  static const _capitalName = 'capital';
   static const _constantName = 'constant';
   static const _dotName = 'dot';
+  static const _headerName = 'header';
   static const _kebabName = 'kebab';
   static const _noName = 'no';
   static const _noneName = 'none';
@@ -284,19 +274,20 @@ class SerializedFormatConv extends JsonConverter<SerializedFormat, String> {
   static const _sentenceName = 'sentence';
   static const _snakeName = 'snake';
   static const _swapName = 'swap';
-  static const _titleName = 'title';
-  static const _capitalName = 'capital';
-  static const _headerName = 'header';
 
   @override
   SerializedFormat fromJson(String json) {
     switch (json) {
       case _camelName:
         return SerializedFormat.camel;
+      case _capitalName:
+        return SerializedFormat.capital;
       case _constantName:
         return SerializedFormat.constant;
       case _dotName:
         return SerializedFormat.dot;
+      case _headerName:
+        return SerializedFormat.header;
       case _kebabName:
         return SerializedFormat.kebab;
       case _noName:
@@ -313,11 +304,9 @@ class SerializedFormatConv extends JsonConverter<SerializedFormat, String> {
         return SerializedFormat.snake;
       case _swapName:
         return SerializedFormat.swap;
-      case _titleName:
-        return SerializedFormat.capital;
-      case _headerName:
-        return SerializedFormat.header;
       default:
+        if (defaultValue != null) return defaultValue!;
+
         throw Exception('Unknown field: $json');
     }
   }
@@ -326,10 +315,63 @@ class SerializedFormatConv extends JsonConverter<SerializedFormat, String> {
   String toJson(SerializedFormat object) => object.serialized;
 }
 
+/// {@template serialized_format.json_converter_nullable}
+/// Serializes [SerializedFormat?] to and from json
+///
+/// Can be used as annotation for `json_serializable` classes
+///
+/// ```dart
+/// @SerializedFormatConv.nullable
+/// final SerializedFormat? myEnum;
+/// ```
+/// {@endtemplate}
+class _SerializedFormatNullableConv
+    extends JsonConverter<SerializedFormat?, String?> {
+  /// {@macro serialized_format.json_converter}
+  const _SerializedFormatNullableConv();
+
+  @override
+  SerializedFormat? fromJson(String? json) {
+    switch (json) {
+      case SerializedFormatConv._camelName:
+        return SerializedFormat.camel;
+      case SerializedFormatConv._capitalName:
+        return SerializedFormat.capital;
+      case SerializedFormatConv._constantName:
+        return SerializedFormat.constant;
+      case SerializedFormatConv._dotName:
+        return SerializedFormat.dot;
+      case SerializedFormatConv._headerName:
+        return SerializedFormat.header;
+      case SerializedFormatConv._kebabName:
+        return SerializedFormat.kebab;
+      case SerializedFormatConv._noName:
+        return SerializedFormat.no;
+      case SerializedFormatConv._noneName:
+        return SerializedFormat.none;
+      case SerializedFormatConv._pascalName:
+        return SerializedFormat.pascal;
+      case SerializedFormatConv._pathName:
+        return SerializedFormat.path;
+      case SerializedFormatConv._sentenceName:
+        return SerializedFormat.sentence;
+      case SerializedFormatConv._snakeName:
+        return SerializedFormat.snake;
+      case SerializedFormatConv._swapName:
+        return SerializedFormat.swap;
+      default:
+        return null;
+    }
+  }
+
+  @override
+  String? toJson(SerializedFormat? object) => object?.serialized;
+}
+
 /// Extensions for the enum MethodType
 extension MethodTypeX on MethodType {
   /// Map of all values of the enum
-  T map<T>({
+  T map<T extends Object?>({
     required T map,
     required T maybeMap,
   }) {
@@ -344,18 +386,25 @@ extension MethodTypeX on MethodType {
   /// Optionally map all values of the enum
   ///
   /// default value is provided when value has not been mapped
-  T maybeMap<T>({
+  T maybeMap<T extends Object?>({
     required T orElse,
     T? map,
     T? maybeMap,
   }) {
+    var isNullable = true;
+    try {
+      final value = null as T;
+    } catch (_) {
+      isNullable = false;
+    }
+
     switch (this) {
       case MethodType.map:
-        if (map == null) return orElse;
-        return map;
+        if (map == null && !isNullable) return orElse;
+        return map as T;
       case MethodType.maybeMap:
-        if (maybeMap == null) return orElse;
-        return maybeMap;
+        if (maybeMap == null && !isNullable) return orElse;
+        return maybeMap as T;
     }
   }
 
@@ -364,7 +413,7 @@ extension MethodTypeX on MethodType {
   String get name {
     return map(
       map: 'Map',
-      maybeMap: 'maybeMap',
+      maybeMap: 'Maybe Map',
     );
   }
 
@@ -372,16 +421,18 @@ extension MethodTypeX on MethodType {
   ///
   /// If the description is null, the doc comment of the enum field is returned.
   String? get description {
-    return maybeMap(
-      orElse: null,
+    return map(
       map: '''
 The generated method will be `map(...)`.
 
-requires annotation [EnumKey] on all enum values''',
+requires annotation [EnumKey] on all enum values
+unless return value can be null''',
       maybeMap: '''
 The generated method will be `maybeMap(...)`.
 
-__does not__ require annotation [EnumKey] all enum values''',
+__does not__ require annotation [EnumKey] all enum values
+
+can return default value, or null if `allowNulls` is true''',
     );
   }
 
@@ -406,7 +457,13 @@ __does not__ require annotation [EnumKey] all enum values''',
 /// {@endtemplate}
 class MethodTypeConv extends JsonConverter<MethodType, String> {
   /// {@macro method_type.json_converter}
-  const MethodTypeConv();
+  const MethodTypeConv({this.defaultValue});
+
+  /// the value to be used when no match is found
+  final MethodType? defaultValue;
+
+  /// {@macro method_type.json_converter_nullable}
+  static const nullable = _MethodTypeNullableConv();
 
   static const _mapName = 'map';
   static const _maybeMapName = 'maybeMap';
@@ -419,10 +476,42 @@ class MethodTypeConv extends JsonConverter<MethodType, String> {
       case _maybeMapName:
         return MethodType.maybeMap;
       default:
+        if (defaultValue != null) return defaultValue!;
+
         throw Exception('Unknown field: $json');
     }
   }
 
   @override
   String toJson(MethodType object) => object.serialized;
+}
+
+/// {@template method_type.json_converter_nullable}
+/// Serializes [MethodType?] to and from json
+///
+/// Can be used as annotation for `json_serializable` classes
+///
+/// ```dart
+/// @MethodTypeConv.nullable
+/// final MethodType? myEnum;
+/// ```
+/// {@endtemplate}
+class _MethodTypeNullableConv extends JsonConverter<MethodType?, String?> {
+  /// {@macro method_type.json_converter}
+  const _MethodTypeNullableConv();
+
+  @override
+  MethodType? fromJson(String? json) {
+    switch (json) {
+      case MethodTypeConv._mapName:
+        return MethodType.map;
+      case MethodTypeConv._maybeMapName:
+        return MethodType.maybeMap;
+      default:
+        return null;
+    }
+  }
+
+  @override
+  String? toJson(MethodType? object) => object?.serialized;
 }

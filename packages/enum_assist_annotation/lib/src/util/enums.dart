@@ -3,7 +3,7 @@ import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 part 'enums.ge.dart';
 
 /// {@template enum_assist_annotation.serialized_format}
-/// Formats the field name when serializing.
+/// The serialized format of the enum's fields
 /// {@endtemplate}
 @EnumAssist()
 enum SerializedFormat {
@@ -11,9 +11,7 @@ enum SerializedFormat {
   /// Converts to a string with the separators denoted
   /// by having the next letter capitalized
   ///
-  /// example:
-  ///
-  /// `'hello_world' -> 'helloWorld'`
+  /// (e.g. `'hello_world' -> 'helloWorld'`)
   /// {@endtemplate}
   camel,
 
@@ -21,54 +19,42 @@ enum SerializedFormat {
   /// Converts to a lowercased, first letter captialized word,
   /// space separated string of every word
   ///
-  /// example:
-  ///
-  /// `'hello world' -> 'Hello World'`
+  /// (e.g. `'hello world' -> 'Hello World'`)
   /// {@endtemplate}
   capital,
 
   /// {@template enum_assist_annotation.serialized_format.constant}
   /// Converts to an upper case, underscore separated string
   ///
-  /// example:
-  ///
-  /// `'hello world' -> 'HELLO_WORLD'`
+  /// (e.g. `'hello world' -> 'HELLO_WORLD'`)
   /// {@endtemplate}
   constant,
 
   /// {@template enum_assist_annotation.serialized_format.dot}
   /// Converts to a lower case period separated string
   ///
-  /// example:
-  ///
-  /// `'hello World' -> 'hello.World'`
+  /// (e.g. `'hello World' -> 'hello.World'`)
   /// {@endtemplate}
   dot,
 
   /// {@template enum_assist_annotation.serialized_format.header}
   /// Converts to a captialized word, dash separated string
   ///
-  /// example:
-  ///
-  /// `'hello world' -> 'Hello-World'`
+  /// (e.g. `'hello world' -> 'Hello-World'`)
   /// {@endtemplate}
   header,
 
   /// {@template enum_assist_annotation.serialized_format.kebab}
   /// Converts to a lower case, dash separated string
   ///
-  /// example:
-  ///
-  /// `'hello World' -> 'hello-world'`
+  /// (e.g. `'hello World' -> 'hello-world'`)
   /// {@endtemplate}
   kebab,
 
   /// {@template enum_assist_annotation.serialized_format.no}
   /// Converts the string without any casing (lower case, space separated)
   ///
-  /// example:
-  ///
-  /// `'Hello-World' -> 'hello world'`
+  /// (e.g. `'Hello-World' -> 'hello world'`)
   /// {@endtemplate}
   no,
 
@@ -82,18 +68,14 @@ enum SerializedFormat {
   /// Converts to a string denoted in the same fashion as [camel]
   /// but with the first letter capitalized
   ///
-  /// example:
-  ///
-  /// `'hello_world' -> 'HelloWorld'`
+  /// (e.g. `'hello_world' -> 'HelloWorld'`)
   /// {@endtemplate}
   pascal,
 
   /// {@template enum_assist_annotation.serialized_format.path}
   /// Converts to a lower case, slash separated string
   ///
-  /// example:
-  ///
-  /// `'hello World' -> 'hello/world'`
+  /// (e.g. `'hello World' -> 'hello/world'`)
   /// {@endtemplate}
   path,
 
@@ -101,43 +83,53 @@ enum SerializedFormat {
   /// Converts to a lower case, space separated string
   /// with the first letter capitalized
   ///
-  /// example:
-  ///
-  /// `'hello World' -> 'Hello world'`
+  /// (e.g. `'hello World' -> 'Hello world'`)
   /// {@endtemplate}
   sentence,
 
   /// {@template enum_assist_annotation.serialized_format.snake}
   /// Converts to a lower case, underscore separated string
   ///
-  /// example:
-  ///
-  /// `'hello World' -> 'hello_world'`
+  /// (e.g. `'hello World' -> 'hello_world'`)
   /// {@endtemplate}
   snake,
 
   /// {@template enum_assist_annotation.serialized_format.swap}
   /// Converts to a string with every character case reversed
   ///
-  /// example:
-  ///
-  /// `'Hello World' -> 'hELLO wORLD'`
+  /// (e.g. `'Hello World' -> 'hELLO wORLD'`)
   /// {@endtemplate}
   swap,
 }
 
-/// {@template enum_assist.method_type}
-/// Determines how to set up the generated method.
+/// {@template enum_assist_annotation.method_type}
+/// Specifies how the generated method will be created
 /// {@endtemplate}
+///
+/// ### Map
+/// {@macro enum_assist_annotation.method_type.map}
+///
+/// ### Maybe Map
+/// {@macro enum_assist_annotation.method_type.maybe_map}
 @EnumAssist()
 enum MethodType {
+  /// {@template enum_assist_annotation.method_type.map}
   /// The generated method will be `map(...)`.
   ///
-  /// requires annotation [EnumKey] on all enum values
+  /// Requires an extension declaration in [EnumKey.extensions]
+  /// on __ALL__ enum fields
+  /// ___except when___ [Extension.allowNulls] is set to `true`
+  /// {@endtemplate}
   map,
 
+  /// {@template enum_assist_annotation.method_type.maybe_map}
   /// The generated method will be `maybeMap(...)`.
   ///
-  /// __does not__ require annotation [EnumKey] all enum values
+  /// Requires at least one extension declaration in the [EnumKey.extensions]
+  /// annotation on any enum field
+  ///
+  /// Returns [Extension.defaultValue], or `null`
+  /// if [Extension.allowNulls] is `true`
+  /// {@endtemplate}
   maybeMap,
 }

@@ -3,6 +3,31 @@ import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 /// {@template enum_assist_annotation.enum_key}
 /// Annotation to assist in generating code for enum values.
 /// {@endtemplate}
+///
+/// ---
+///
+/// ## Name
+/// {@macro enum_assist_annotation.enum_key.name}
+///
+/// ---
+///
+/// ## Description
+/// {@macro enum_assist_annotation.enum_key.description}
+///
+/// ---
+///
+/// ## Serialized Value
+/// {@macro enum_assist_annotation.enum_key.serialized_value}
+///
+/// ---
+///
+/// ## Use Doc Comment As Description
+/// {@macro enum_assist_annotation.enum_assist.use_doc_comment_as_description}
+///
+/// ---
+///
+/// ## Extensions
+/// {@macro enum_assist_annotation.enum_key.extensions}
 class EnumKey {
   /// {@macro enum_assist_annotation.enum_key}
   const EnumKey({
@@ -14,37 +39,58 @@ class EnumKey {
   });
 
   /// {@template enum_assist_annotation.enum_key.name}
-  /// The name of the enum value, should be formatted as a human readable name.
+  /// The name of the enum value, should be formatted as a human readable name
   ///
-  /// (e.g. `isNotAvailable` could be formatted as `Is Not Available`)
+  /// Extension Method: `name`
   ///
-  /// Used for the getter `name` extension method.
+  /// __default:__ The name will be converted to Capital Case
   ///
-  /// If not specified, the `describeEnum` will be used.
+  /// (e.g. `isNotAvailable` => `Is Not Available`)
   /// {@endtemplate}
   final String? name;
 
   /// {@template enum_assist_annotation.enum_key.description}
   /// The description of the enum value
   ///
-  /// Used for the getter `description` extension method.
+  /// Extension Method: `description`
   ///
-  /// If not specified, will `.description` return null for this value.
+  /// __default:__ The description will be generated from the doc comment
+  /// or `null` if [EnumAssist.useDocCommentAsDescription] is set to `false`\
+  /// (either annotation or build.yaml file)
   /// {@endtemplate}
   final String? description;
 
   /// {@template enum_assist_annotation.enum_key.serialized_value}
-  /// The serialized value of the enum
+  /// The serialized represenation of the enum value.
   ///
-  /// To be used only if the desired value cannot be
-  /// achieved by using `EnumAssist.serializedFormat`
+  /// Can be manipulated via [EnumAssist.serializedFormat]\
+  /// (either annotation or build.yaml file)
+  ///
+  /// Extension Method: `serialized`\
+  /// Classes Where Referenced: `ExampleConv` & `_ExampleNullableConv`
+  ///
+  /// __default:__ Non-formatted name of the enum value
+  /// {@endtemplate}
   final String? serializedValue;
 
-  /// {@macro enum_assist_annotation.enum_assist.use_doc_comment_as_description}
+  /// {@template enum_assist_annotation.enum_key.use_doc_comment_as_description}
+  /// Whether to use the doc comment of the enum for the `description` method.
+  ///
+  /// [EnumKey.description] will override the doc comment description.
+  ///
+  /// If false, the description will return `null`
+  /// unless overridden by [EnumKey.description].
+  ///
+  /// __default:__ `true`
+  /// {@endtemplate}
   final bool? useDocCommentAsDescription;
 
-  /// {@template enum_assist_annotation.extension_values}
-  /// The extension values for the enum value
+  /// {@template enum_assist_annotation.enum_key.extensions}
+  /// Methods to be generated for the enum
+  ///
+  /// Defined classes must extend [MapExtension] or [MaybeExtension]
+  ///
+  /// __default:__ []
   /// {@endtemplate}
   final List<Extension>? extensions;
 }
