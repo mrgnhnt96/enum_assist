@@ -245,6 +245,8 @@ _default_: The doc comment of the enum value
 
 _type_: `String`
 
+__Note:__ if [createJsonConv](#create-json-conv) is set to false, this field will be ignored.
+
 Provides the serialized representation of the enum value.
 
 Used by the [serialized](#serialized) method & [json converter classes](#json-converter-classes)
