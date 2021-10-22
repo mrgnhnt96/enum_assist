@@ -425,14 +425,19 @@ extension MethodTypeX on MethodType {
       map: '''
 The generated method will be `map(...)`.
 
-requires annotation [EnumKey] on all enum values
-unless return value can be null''',
+Requires an extension declaration in [EnumKey.extensions]
+on __ALL__ enum fields
+___except when___ [Extension.allowNulls] is set to `true`
+''',
       maybeMap: '''
 The generated method will be `maybeMap(...)`.
 
-__does not__ require annotation [EnumKey] all enum values
+Requires at least one extension declaration in the [EnumKey.extensions]
+annotation on any enum field
 
-can return default value, or null if `allowNulls` is true''',
+Returns [Extension.defaultValue], or `null`
+if [Extension.allowNulls] is `true`
+''',
     );
   }
 
