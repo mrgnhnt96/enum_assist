@@ -296,21 +296,21 @@ value: $value
         final name = extClass.substring(0, parenthesisPosition);
         checkIfExtClassExists(name);
 
-        var value =
-            extClass.substring(parenthesisPosition + 1, extClass.length - 1);
-
-        // print('value: $value, class: $extClass');
+        var value = extClass.substring(
+          parenthesisPosition + 1,
+          extClass.length - 1,
+        );
 
         if (value == '') {
           topLevel[name] = 'null';
           continue;
         }
 
+        // splits the arguments by ": "
         final namedArgPattern = RegExp(r'(\w+: )(?![^(]*\))');
         if (namedArgPattern.hasMatch(value)) {
           // can't really know exactly where the value is,
           // so just assume its the first one...
-
           final args = value.split(namedArgPattern)
             ..removeWhere((e) => e.isEmpty);
 
@@ -322,94 +322,94 @@ value: $value
 
       final extensions = reader.peek('extensions')?.listValue;
 
-      if (extensions != null) {
-        for (final entry in extensions) {
-          final extension = ConstantReader(entry);
-          final details = '${extension.objectValue}';
+      if (extensions == null) return configs;
 
-          const extensionStr = 'Extension<';
+      for (final entry in extensions) {
+        final extension = ConstantReader(entry);
+        final details = '${extension.objectValue}';
 
-          if (!details.contains(extensionStr)) continue;
+        const extensionStr = 'Extension<';
 
-          var valueType = details
-              .substring(details.indexOf(extensionStr) + extensionStr.length);
+        if (!details.contains(extensionStr)) continue;
 
-          valueType = valueType.substring(0, valueType.indexOf('> ('));
+        var valueType = details.substring(
+          details.indexOf(extensionStr) + extensionStr.length,
+        );
 
-          final extensionClassName =
-              RegExp(r'^(\w+)').firstMatch(details)!.group(0)!;
+        valueType = valueType.substring(0, valueType.indexOf('> ('));
 
-          var methodName =
-              extension.peek('methodName')?.stringValue.toCamelCase();
+        final extensionClassName =
+            RegExp(r'^(\w+)').firstMatch(details)!.group(0)!;
 
-          final defaultAccess = annotations.firstWhere(
-              (element) => element.startsWith(extensionClassName), orElse: () {
-            throw Exception(
-                'No default accessor found for $extensionClassName');
-          });
+        var methodName =
+            extension.peek('methodName')?.stringValue.toCamelCase();
 
-          final defaultValue = '$defaultAccess.defaultValue';
-          final docComment = extension.peek('docComment')?.stringValue;
-          final allowNulls = extension.peek('allowNulls')?.boolValue;
-          final methodTypeObj = extension.peek('methodType')?.objectValue;
-          final methodType =
-              getEnumFromDartObject(methodTypeObj, MethodType.values);
-          final fallbackValue = extension.peek('value')?.objectValue;
+        final defaultAccess = annotations.firstWhere(
+            (element) => element.startsWith(extensionClassName), orElse: () {
+          throw Exception('No default accessor found for $extensionClassName');
+        });
 
-          var value = topLevel[extensionClassName];
-          final isValueNull = value == 'null';
-          final isFallbackValueNull = fallbackValue?.isNull ?? true;
+        final defaultValue = '$defaultAccess.defaultValue';
+        final docComment = extension.peek('docComment')?.stringValue;
+        final allowNulls = extension.peek('allowNulls')?.boolValue;
+        final methodTypeObj = extension.peek('methodType')?.objectValue;
+        final methodType =
+            getEnumFromDartObject(methodTypeObj, MethodType.values);
+        final fallbackValue = extension.peek('value')?.objectValue;
 
-          if (isValueNull && !isFallbackValueNull) {
-            value = '$extensionClassName().value';
-          }
+        var value = topLevel[extensionClassName];
+        final isValueNull = value == 'null';
+        final isFallbackValueNull = fallbackValue?.isNull ?? true;
 
-          // should never throw, as all fields are required
-          // non-nullable fields
-          //
-          // but just in case (also helps with null safety!)
-          if (methodName == null ||
-              methodType == null ||
-              allowNulls == null ||
-              value == null) {
-            final missingFields = <String>[];
+        if (isValueNull && !isFallbackValueNull) {
+          value = '$extensionClassName().value';
+        }
 
-            if (methodName == null) missingFields.add('methodName');
-            if (methodType == null) missingFields.add('methodType');
-            if (allowNulls == null) missingFields.add('allowNulls');
-            if (value == null) missingFields.add('value');
+        // should never throw, as all fields are required
+        // non-nullable fields
+        //
+        // but just in case (also helps with null safety!)
+        if (methodName == null ||
+            methodType == null ||
+            allowNulls == null ||
+            value == null) {
+          final missingFields = <String>[];
 
-            final whatsMissing = missingFields.join(', ');
+          if (methodName == null) missingFields.add('methodName');
+          if (methodType == null) missingFields.add('methodType');
+          if (allowNulls == null) missingFields.add('allowNulls');
+          if (value == null) missingFields.add('value');
 
-            throw EnumException(
-              error: 'Missing Required Fields',
-              where: enumAndField,
-              rule: 'All methods must have a method name [methodName], '
-                  'method type, a value, and whether `null`s may '
-                  'be a return value [allowNulls]',
-              what: 'The extension "$extensionClassName" is missing '
-                  'the following fields: $whatsMissing',
-              fix: 'Double check $extensionClassName, found in the argument '
-                  "`extensions: [...]` from $enumAndField's annotation. "
-                  'Make sure that the fields: $whatsMissing, '
-                  'are properly assigned',
-            );
-          }
+          final whatsMissing = missingFields.join(', ');
 
-          checkIfMethodNameIsUniqueToClass(extensionClassName, methodName);
-
-          methodName = checkMethodNameForReservedWords(methodName);
-          configs[methodName] = ExtensionConfig(
-            methodName: methodName,
-            valueClassName: extensionClassName,
-            valueType: valueType,
-            value: value,
-            methodType: methodType,
-            allowNulls: allowNulls,
-            defaultValue: defaultValue,
-            docComment: docComment,
+          throw EnumException(
+            error: 'Missing Required Fields',
+            where: enumAndField,
+            rule: 'All methods must have a method name [methodName], '
+                'method type, a value, and whether `null`s may '
+                'be a return value [allowNulls]',
+            what: 'The extension "$extensionClassName" is missing '
+                'the following fields: $whatsMissing',
+            fix: 'Double check $extensionClassName, found in the argument '
+                "`extensions: [...]` from $enumAndField's annotation. "
+                'Make sure that the fields: $whatsMissing, '
+                'are properly assigned',
           );
         }
+
+        checkIfMethodNameIsUniqueToClass(extensionClassName, methodName);
+
+        methodName = checkMethodNameForReservedWords(methodName);
+        configs[methodName] = ExtensionConfig(
+          methodName: methodName,
+          valueClassName: extensionClassName,
+          valueType: valueType,
+          value: value,
+          methodType: methodType,
+          allowNulls: allowNulls,
+          defaultValue: defaultValue,
+          docComment: docComment,
+        );
       }
 
       return configs;
