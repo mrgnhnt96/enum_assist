@@ -18,7 +18,6 @@ targets:
           # - sentence
           # - snake
           # - swap
-          # - title
           # default: none
           serialized_format: none
 
