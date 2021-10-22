@@ -142,6 +142,7 @@ targets:
           # - header
           # - kebab
           # - no
+          # - none
           # - pascal
           # - path
           # - sentence
