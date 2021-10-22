@@ -13,37 +13,39 @@ abstract class AdditionalExtensionsGeneratorHelper implements HelperCore {
 
     for (final entry in extensions.entries) {
       final name = entry.key;
-      final value = entry.value;
+      final extension = entry.value;
 
       final notNullableAndIsMap =
-          !value.allowNulls && value.methodType == MethodType.map;
+          !extension.allowNulls && extension.methodType == MethodType.map;
 
       if (notNullableAndIsMap) {
         FieldData? field;
         try {
+          // check all fields to make sure they have
+          // the required extension
           field = fieldData.firstWhere(
               (element) => element.extensions.containsKey(name) == false);
         } catch (_) {
           // do nothing, all fields have the required extension
         }
 
-        if (field != null) {
-          throw EnumException(
-            error: 'Missing Declared Extension',
-            where: field.wholeName,
-            what: '${field.wholeName} is missing method "$name", '
-                'which comes from "${value.valueClassName}"',
-            rule: 'If the method is a type `MapExtension` and `allowNulls` is '
-                'equal to `false` (default), then each field must be annotated '
-                'with @EnumKey & contain the method within the '
-                '`extensions: [...]` argument',
-            fix: 'Make sure the `@EnumKey` annotation '
-                'is on "${field.wholeName}". Then '
-                'add the extension "$name" via '
-                'the class "${value.valueClassName}" '
-                'to the argument `extension: [...]`',
-          );
-        }
+        if (field == null) continue;
+
+        throw EnumException(
+          error: 'Missing Declared Extension',
+          where: field.wholeName,
+          what: '${field.wholeName} is missing method "$name", '
+              'which comes from "${extension.valueClassName}"',
+          rule: 'If the method is a type `MapExtension` and `allowNulls` is '
+              'equal to `false` (default), then each field must be annotated '
+              'with @EnumKey & contain the method within the '
+              '`extensions: [...]` argument',
+          fix: 'Make sure the `@EnumKey` annotation '
+              'is on "${field.wholeName}". Then '
+              'add the extension "$name" via '
+              'the class "${extension.valueClassName}" '
+              'to the argument `extension: [...]`',
+        );
       }
     }
 
