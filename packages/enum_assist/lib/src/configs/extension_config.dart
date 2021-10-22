@@ -12,6 +12,7 @@ import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
 const _reservedWords = {
+  // dart specific
   'continue': '',
   'false': '',
   'new': '',
@@ -50,8 +51,12 @@ const _reservedWords = {
   'dynamic': '',
   'int': '',
   'num': '',
+  // enum_assist specific
   'map': '',
   'maybeMap': '',
+  'name': '',
+  'description': '',
+  'serialized': '',
 };
 
 /// {@template enum_assist.extension_value_config}
@@ -86,7 +91,7 @@ class ExtensionConfig {
   /// The name of the class that represents the value.
   final String methodName;
 
-  /// The name of the top level class in the `EnumKey` annotation
+  /// The name of the top level class in the [EnumKey] annotation
   final String valueClassName;
 
   /// The type of the value.
