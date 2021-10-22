@@ -40,7 +40,7 @@ void main() {
     }
   });
 
-  test('should return except for overriden descriptions', () {
+  test('should return except for overridden descriptions', () {
     const comments = {
       BodyParts.head: 'head doc comment',
       BodyParts.arm: 'My arms look tiny',
