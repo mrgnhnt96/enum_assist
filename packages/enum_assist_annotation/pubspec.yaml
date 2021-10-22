@@ -1,8 +1,8 @@
 name: enum_assist_annotation
 description: >-
-  Classes and helper functions that support JSON code generation via the
-  `json_serializable` package.
+  Annotations for the `enum_assist` code-generator.
 repository: https://github.com/mrgnhnt96/enum_assist/enum_assist_annotation
+homepage: https://github.com/mrgnhnt96/enum_assist
 version: 0.0.0
 
 environment:
