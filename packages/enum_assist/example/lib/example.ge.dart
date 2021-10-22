@@ -61,7 +61,7 @@ extension NumbersX on Numbers {
     return map(
       eleven: 'Eleven',
       twentyTwo: 'Twenty Two',
-      thirtyThree: 'threeThree',
+      thirtyThree: 'Thirty Three',
     );
   }
 
@@ -71,9 +71,7 @@ extension NumbersX on Numbers {
   String? get description {
     return map(
       eleven: '''
-this is the number 11
-
-just so you know''',
+11 is also a girl from Stranger Things''',
       twentyTwo: null,
       thirtyThree: null,
     );
@@ -88,33 +86,24 @@ just so you know''',
     );
   }
 
-  /// this is a cool extension!
-  String get coolio {
+  /// converts value to a map
+  Map<String, int> get toMap {
+    return map(
+      eleven: {'eleven': 11},
+      twentyTwo: {'twenty-two': 22},
+      thirtyThree: {'thirty-three': 33},
+    );
+  }
+
+  /// whether the value is prime
+  bool get isPrime {
     return maybeMap(
       // returns default value
-      //? if theres a provided value, it does nothing.
-      orElse: CoolExt('hi').defaultValue!,
-      eleven: 'sup',
-      twentyTwo: 'hi',
-      thirtyThree: CoolExt('hi').defaultValue,
-    );
-  }
-
-  /// this is a doc comment
-  int get toNum {
-    return map(
-      eleven: 11,
-      twentyTwo: 22,
-      thirtyThree: 33,
-    );
-  }
-
-  /// this is a doc comment
-  int? get other {
-    return map(
-      eleven: null,
-      twentyTwo: null,
-      thirtyThree: OtherExt().value,
+      //? if theres an argument provided, it does nothing.
+      orElse: IsPrime(true).defaultValue!,
+      eleven: true,
+      twentyTwo: IsPrime(true).defaultValue,
+      thirtyThree: IsPrime(true).defaultValue,
     );
   }
 }
@@ -141,7 +130,7 @@ class NumbersConv extends JsonConverter<Numbers, String> {
 
   static const _elevenName = 'eleven';
   static const _twentyTwoName = 'twentyTwo';
-  static const _thirtyThreeName = '1';
+  static const _thirtyThreeName = 'thirtyThree';
 
   @override
   Numbers fromJson(String json) {

@@ -2,6 +2,27 @@ import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 
 part 'example.ge.dart';
 
+class IsPrime extends MaybeExtension<bool> {
+  const IsPrime(bool value)
+      : super(
+          value,
+          methodName: 'is prime', // required
+          defaultValue: false, // required
+          allowNulls: false, // default value
+          docComment: 'whether the value is prime', // optional
+        );
+}
+
+class ToMap extends MapExtension<Map<String, int>> {
+  const ToMap(Map<String, int> value)
+      : super(
+          value,
+          methodName: 'toMap', // required
+          allowNulls: false, // default value
+          docComment: 'converts value to a map', // optional
+        );
+}
+
 @EnumAssist(
   serializedFormat: SerializedFormat.none, // default
   createJsonConv: true, // default
@@ -10,59 +31,30 @@ part 'example.ge.dart';
 enum Numbers {
   /// this is the number 11
   ///
-  /// just so you know
+  /// and its prime!
   @EnumKey(
+    description: '11 is also a girl from Stranger Things', // optional
+    name: 'Eleven', // default (field name formatted to Capital Case)
+    serializedValue: 'eleven', // default (field name formatted as is)
+    useDocCommentAsDescription: true, // default
     extensions: [
-      CoolExt('sup'),
-      ToNumExt(value: 11),
+      ToMap({'eleven': 11}),
+      IsPrime(true)
     ],
   )
   eleven,
 
-  @EnumKey(extensions: [
-    CoolExt('hi'),
-    ToNumExt(value: 22),
-  ])
+  @EnumKey(
+    extensions: [
+      ToMap({'twenty-two': 22})
+    ],
+  )
   twentyTwo,
 
   @EnumKey(
-    name: 'threeThree',
-    serializedValue: '1',
     extensions: [
-      ToNumExt(value: 33),
-      OtherExt(),
+      ToMap({'thirty-three': 33}),
     ],
   )
   thirtyThree,
-}
-
-class CoolExt extends MaybeExtension<String> {
-  const CoolExt(String value)
-      : super(
-          value,
-          methodName: 'coolio', // required
-          defaultValue: 'lol', // required
-          allowNulls: false, // default value
-          docComment: 'this is a cool extension!', // optional
-        );
-}
-
-class ToNumExt extends MapExtension<int?> {
-  const ToNumExt({int? value})
-      : super(
-          value,
-          methodName: 'toNum', // required
-          allowNulls: false, // default value
-          docComment: 'this is a doc comment', // optional
-        );
-}
-
-class OtherExt extends MapExtension<int> {
-  const OtherExt({int value = 10})
-      : super(
-          value,
-          methodName: 'other', // required
-          allowNulls: true,
-          docComment: 'this is a doc comment', // optional
-        );
 }
