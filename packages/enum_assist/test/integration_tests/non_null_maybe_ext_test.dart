@@ -20,6 +20,28 @@ void main() {
   });
 
   group('$Animal', () {
+    group('#nullInt', () {
+      test('should return value from key annotation', () {
+        int getValue(Animal value) {
+          return value.map(
+            dog: 10,
+            cat: 10,
+            mouse: 10,
+          );
+        }
+
+        for (final value in Animal.values) {
+          expect(value.nullInt, getValue(value));
+        }
+      });
+
+      test('should return non nullable type', () {
+        final value = Animal.values.first;
+
+        isNotNullable(value.nullInt);
+      });
+    });
+
     group('#list', () {
       test('should return value from key annotation', () {
         List<int> getValue(Animal value) {
@@ -34,12 +56,12 @@ void main() {
           expect(value.listInt, getValue(value));
         }
       });
-    });
 
-    test('should return non nullable type', () {
-      final value = Animal.values.first;
+      test('should return non nullable type', () {
+        final value = Animal.values.first;
 
-      isNotNullable(value.listInt);
+        isNotNullable(value.listInt);
+      });
     });
 
     group('#mapExt', () {

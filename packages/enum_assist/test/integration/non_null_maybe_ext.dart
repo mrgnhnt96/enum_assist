@@ -12,6 +12,15 @@ class ListIntExt extends MaybeExtension<List<int>> {
         );
 }
 
+class NullableExt extends MaybeExtension<int?> {
+  const NullableExt()
+      : super(
+          null,
+          methodName: 'null int',
+          defaultValue: 10,
+        );
+}
+
 class MapIntExt extends MaybeExtension<Map<String, int>> {
   const MapIntExt([Map<String, int> value = const {'': 20}])
       : super(
@@ -28,6 +37,7 @@ enum Animal {
   @EnumKey(extensions: [
     ListIntExt(),
     MapIntExt(),
+    NullableExt(),
   ])
   cat,
   @EnumKey(extensions: [
