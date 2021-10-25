@@ -6,11 +6,20 @@ import 'package:enum_assist/src/templates/map_template.dart';
 /// {@endtemplate}
 class SerializedTemplate extends MapTemplate {
   /// {@macro enum_assist.description_template}
-  SerializedTemplate(String enumName, Iterable<FieldData> fields)
-      : super(
+  SerializedTemplate(
+    String enumName,
+    Iterable<FieldData> fields, {
+    required bool createJsonConv,
+  }) : super(
           enumName,
           fields,
-          getValue: (field) => '${field.enumName}Conv._${field.fieldName}Name',
+          getValue: (field) {
+            if (createJsonConv) {
+              return '${field.enumName}Conv._${field.fieldName}Name';
+            } else {
+              return "'${field.getSerializedName}'";
+            }
+          },
           methodName: 'serialized',
           typeAsString: '$String',
           allowNulls: false,
