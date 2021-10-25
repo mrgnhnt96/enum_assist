@@ -175,6 +175,18 @@ value: $value
         methodType!;
         allowNulls!;
 
+        // make sure we aren't returnning a null value
+        // when the return type cannot be null
+        //
+        // applies to [MethodType.map]
+        _throwIfNullValueOnNonNullReturn(
+          value: value,
+          allowNulls: allowNulls,
+          methodType: methodType,
+          enumAndField: enumAndField,
+          extensionClassName: extensionClassName,
+        );
+
         // make sure [methodName] is not duplicated
         // between extension class declarations
         _checkIfMethodNameIsUniqueToClass(

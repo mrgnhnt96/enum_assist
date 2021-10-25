@@ -293,3 +293,34 @@ void _throwIfMissingField({
     );
   }
 }
+
+/// make sure we aren't returnning a null value
+/// when the return type cannot be null
+///
+/// applies to [MethodType.map]
+void _throwIfNullValueOnNonNullReturn({
+  required String value,
+  required bool allowNulls,
+  required MethodType methodType,
+  required String enumAndField,
+  required String extensionClassName,
+}) {
+  final isValueNull = value == 'null';
+
+  if (!isValueNull) return;
+
+  if (allowNulls) return;
+
+  // nulls are allowed for maybeMap
+  if (methodType.map(map: false, maybeMap: true)) return;
+
+  throw EnumException(
+    error: 'Null Value on Non-Null Return Type',
+    where: enumAndField,
+    rule: 'On `.map()` methods, return `null` only when [allowNulls] is `true`',
+    what: 'The value defined by extension "$extensionClassName"  is `null`, '
+        'but the return type is not nullable',
+    fix: 'Set "$extensionClassName" the return type to a non-null value OR '
+        'Set [allowNulls] to `true` for extension "$extensionClassName"',
+  );
+}
