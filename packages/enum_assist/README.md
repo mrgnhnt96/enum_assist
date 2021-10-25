@@ -1,11 +1,15 @@
-# Enum Assist
+<p align="center">
+<h1 align="center">Enum Assist</h1>
+<h3 align="center">Seamlessly generate extension methods and json conversion classes for your enums!</h3>
+</p>
 
-[![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
-[![License: MIT][license_badge]][license_link]
-
-> Seamlessly generate extension methods and json conversion classes for your enums using [enum_assist]
-
----
+<p align="center">
+<a href="https://pub.dev/packages/enum_assist"><img src="https://img.shields.io/pub/v/enum_assist.svg" alt="Pub"></a>
+<a href="https://github.com/mrgnhnt96/enum_assist"><img src="https://img.shields.io/github/stars/mrgnhnt96/enum_assist.svg?style=flat&logo=github&colorB=deeppink&label=stars" alt="Star on Github"></a>
+<a href="https://pub.dev/packages/very_good_analysis"><img src="https://img.shields.io/badge/style-very_good_analysis-B22C89.svg" alt="Very Good Analysis"></a>
+<a href="https://github.com/tenhobi/effective_dart"><img src="https://img.shields.io/badge/style-effective_dart-40c4ff.svg" alt="style: effective dart"></a>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
+</p>
 
 # Motivation
 
@@ -22,7 +26,6 @@ Check out [the example] or [the index](#index) to see what it can do.
 
 # Index
 
-- [Enum Assist](#enum-assist)
 - [Motivation](#motivation)
 - [Index](#index)
 - [How to use](#how-to-use)
@@ -167,6 +170,9 @@ Sets the format you want the values of the enum to be serialized to.
 _field_: `useDocCommentAsDescription`
 - _type_: `bool`
 - _default_: `true`
+
+Used By:
+- [description](#description-1)
 
 Whether or not to use the enum value's doc comment as the [description](#description-1) of the enum value.
 
@@ -318,12 +324,12 @@ enum Greeting {
   var greet = Greeting.friendly;
 
   final whatDoYouSay = greet.map(
-          professional: 'Hello Sir',
-          friendly: 'Hello',
-          relaxed: 'Saaa dude!',
-      );
+      professional: 'Hello Sir',
+      friendly: 'Hello',
+      relaxed: 'Saaa dude!',
+  );
 
-  whatDoYouSay); // Hello
+  whatDoYouSay; // Hello
   ```
 
 ### Maybe Map
@@ -335,11 +341,11 @@ enum Greeting {
 var greet = Greeting.friendly;
 
 final whatDoYouSay = greet.maybeMap(
-        orElse: '*blank stare*',
-        professional: 'Hello Sir',
-    );
+    orElse: '*blank stare*',
+    professional: 'Hello Sir',
+);
 
-whatDoYouSay); // *blank stare*
+whatDoYouSay; // *blank stare*
 ```
 
 ### Return Type
@@ -355,11 +361,11 @@ Defining the return type protects you by forcing a specific return type.
   var greet = Greeting.friendly;
 
   final whatDoYouSay = greet.map<String>(
-          professional: 'Hello Sir',
-          friendly: 'Hello',
-          // relaxed: 123, // compile error: `123` is not a type String
-          relaxed: 'Saaa dude!',
-      );
+      professional: 'Hello Sir',
+      friendly: 'Hello',
+      // relaxed: 123, // compile error: `123` is not a type String
+      relaxed: 'Saaa dude!',
+  );
 
   whatDoYouSay.runtimeType; // String
   ```
@@ -372,10 +378,10 @@ Here are a couple of examples of inferred return types:
   var greet = Greeting.friendly;
 
   final whatDoYouSay = greet.map(
-          professional: 'Hello Sir',
-          friendly: 'Hello',
-          relaxed: 'Saaa dude!',
-      );
+      professional: 'Hello Sir',
+      friendly: 'Hello',
+      relaxed: 'Saaa dude!',
+  );
 
   whatDoYouSay.runtimeType; // String
   ```
@@ -386,10 +392,10 @@ Here are a couple of examples of inferred return types:
   var greet = Greeting.friendly;
 
   final whatDoYouSay = greet.map(
-          professional: 'Hello Sir',
-          friendly: null,
-          relaxed: 'Saaa dude!',
-      );
+      professional: 'Hello Sir',
+      friendly: null,
+      relaxed: 'Saaa dude!',
+  );
 
   whatDoYouSay.runtimeType; // String?
   ```
@@ -400,10 +406,10 @@ Here are a couple of examples of inferred return types:
   var greet = Greeting.friendly;
 
   final whatDoYouSay = greet.map(
-          professional: 'Hello Sir',
-          friendly: null,
-          relaxed: 3,
-      );
+      professional: 'Hello Sir',
+      friendly: null,
+      relaxed: 3,
+  );
 
   whatDoYouSay.runtimeType; // Object?
   ```
@@ -417,7 +423,7 @@ The following methods will be generated with every enum annotated with [`EnumAss
 
 ### Name
 
-<sub>_type_: `String`</sub>
+_type_: `String`
 
 Returns the [EnumKey.name](#name) of the enum value in a human readable format.
 
@@ -429,7 +435,7 @@ greet.name; // Friendly
 
 ### Description
 
-<sub>_type_: `String?`</sub>
+_type_: `String?`
 
 Returns the [EnumKey.description](#description) of the enum value in a human readable format.
 
@@ -441,8 +447,8 @@ greet.description; // A friendly greeting
 
 ### Serialized
 
-<sub>_type_: `String`\
-Specific case formatting can be done with [serializedFormat](#serialized-format) (either [`EnumAssist`] or [`build.yaml`])</sub>
+_type_: `String`\
+Specific case formatting can be done with [serializedFormat](#serialized-format) (either [`EnumAssist`] or [`build.yaml`])
 
 Returns the [EnumKey.serializedValue](#serialized-value) of the enum value.
 
@@ -484,12 +490,12 @@ An example:
 ```dart
 class MyExt extends MapExtension<String> {
   const MyExt(String value)
-      : super(
-          value,
-          methodName: 'myExt',
-          docComment: 'This is my extension',
-          allowNulls: false, // default
-        );
+    : super(
+        value,
+        methodName: 'myExt',
+        docComment: 'This is my extension',
+        allowNulls: false, // default
+      );
 }
 ```
 
@@ -516,22 +522,22 @@ The 5th argument is:
 Expected return values:
 - `defaultValue`:
   - If the extension value is not defined
-  - If the extension value is `null` __AND__ `allowNulls` is false
+  - If the extension value is `null` __AND__ `allowNulls` is `false`
 - `null`
-  - If the extension value is `null` __AND__ `allowNulls` is true
+  - If the extension value is `null` __AND__ `allowNulls` is `true`
 - Defined value
   - If the extension value is defined
 
 ```dart
 class MyExt extends MaybeExtension<String?> {
   const MyExt(String? value)
-      : super(
-          value,
-          methodName: 'myExt',
-          docComment: 'This is my extension',
-          defaultValue: 'default',
-          allowNulls: true,
-        );
+    : super(
+        value,
+        methodName: 'myExt',
+        docComment: 'This is my extension',
+        defaultValue: 'default',
+        allowNulls: true,
+      );
 }
 ```
 
@@ -550,7 +556,7 @@ String get myExt {
 > __Notice This__:\
 For the generated code to access the `defaultValue`, it must create an instance of the
 extension class. If there is a required argument, the arg must be passed to avoid
-exceptions. In this case, the required arg will be ___provided___ & ___ignored___ to return default value.
+exceptions. Therefore, the required arg will be ___provided___ & ___ignored___ to return default value.
 
 ## Json Converter Classes
 
@@ -576,12 +582,12 @@ __Using [json_serializable]__, You can annotate a model class, like so:
 ```dart
 @JsonSerializable()
 class Person {
-    const Person({
-        required this.greeting,
-    });
+  const Person({
+    required this.greeting,
+  });
 
-    @GreetingConv()
-    final Greeting greeting;
+  @GreetingConv()
+  final Greeting greeting;
 }
 ```
 
@@ -596,21 +602,21 @@ __Or__ You can convert to and from json manually, like so:
 
 ```dart
 Person.fromJson(Map<String, dynamic> json) {
-    final conv = GreetingConv();
+  final conv = GreetingConv();
 
-    return Person(
-        greeting: conv.fromJson(json['greeting'])
-    );
+  return Person(
+    greeting: conv.fromJson(json['greeting'])
+  );
 }
 
 static Map<String, dynamic> fromJson(Person object) {
-    final conv = GreetingConv();
+  final conv = GreetingConv();
 
-    // using the conv class to convert
-    return conv.toJson(object.greeting);
+  // using the conv class to convert
+  return conv.toJson(object.greeting);
 
-    // or using the [serialized] method
-    return object.greeting.serialized;
+  // or using the [serialized] method
+  return object.greeting.serialized;
 }
 ```
 
@@ -626,11 +632,11 @@ We first need to create our extension class.
 ```dart
 class ResponseExt extends MapExtension<String> {
   const ResponseExt(String value)
-      : super(
-          value,
-          methodName: 'response',
-          docComment: 'The response to a greeting',
-        );
+    : super(
+        value,
+        methodName: 'response',
+        docComment: 'The response to a greeting',
+      );
 }
 ```
 
@@ -676,6 +682,7 @@ After the [build_runner](#build-runner-commands) has run, you can now access the
 
 ```dart
 var greet = Greeting.friendly;
+
 greet.response; // Hey! Hows it going?
 
 Greeting.relaxed.response; // Whats up my dude!?
@@ -691,12 +698,12 @@ We first need to create our extension class.
 ```dart
 class IsCoolExt extends MaybeExtension<bool> {
   const IsCoolExt(bool value)
-      : super(
-          value,
-          methodName: 'isCool',
-          defaultValue: false,
-          docComment: 'Is this a cool greeting?',
-        );
+    : super(
+        value,
+        methodName: 'isCool',
+        defaultValue: false,
+        docComment: 'Is this a cool greeting?',
+      );
 }
 ```
 
@@ -761,7 +768,6 @@ Greeting.professional.isCool; // false
 [enum_assist_repo]: https://github.com/mrgnhnt96/enum_assist
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license_link]: https://opensource.org/licenses/MIT
-[very_good_analysis_badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg
 [very_good_analysis_link]: https://pub.dev/packages/very_good_analysis
 [json_serializable]: https://pub.dev/packages/json_serializable
 [json_annotation]: https://pub.dev/packages/json_annotation
