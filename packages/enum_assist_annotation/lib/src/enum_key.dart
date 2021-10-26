@@ -31,7 +31,7 @@ import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 class EnumKey {
   /// {@macro enum_assist_annotation.enum_key}
   const EnumKey({
-    this.name,
+    this.readable,
     this.description,
     this.serializedValue,
     this.useDocCommentAsDescription,
@@ -41,13 +41,13 @@ class EnumKey {
   /// {@template enum_assist_annotation.enum_key.name}
   /// The name of the enum value, should be formatted as a human readable name
   ///
-  /// Extension Method: `name`
+  /// Extension Method: `readable`
   ///
   /// __default:__ The name will be converted to Capital Case
   ///
   /// (e.g. `isNotAvailable` => `Is Not Available`)
   /// {@endtemplate}
-  final String? name;
+  final String? readable;
 
   /// {@template enum_assist_annotation.enum_key.description}
   /// The description of the enum value

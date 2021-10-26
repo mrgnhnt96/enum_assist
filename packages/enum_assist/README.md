@@ -33,31 +33,32 @@ Check out [the example] or [the index](#index) to see what it can do.
   - [Generating the Code](#generating-the-code)
   - [Build Runner Commands](#build-runner-commands)
   - [File Setup](#file-setup)
-- [Annotations](#annotations)
-  - [EnumAssist](#enumassist)
-    - [Create Json Conv](#create-json-conv)
-    - [Serialized Format](#serialized-format)
-    - [Use Doc Comment As Description](#use-doc-comment-as-description)
-  - [EnumAssist - build.yaml](#enumassist---buildyaml)
-  - [EnumKey](#enumkey)
+- [Features](#features)
+  - [Default Extension Methods](#default-extension-methods)
     - [Name](#name)
     - [Description](#description)
-    - [Serialized Value](#serialized-value)
-    - [Use Doc Comment As Description](#use-doc-comment-as-description-1)
-    - [Extensions](#extensions)
-- [Features](#features)
+    - [Readable Name](#readable-name)
+    - [Serialized](#serialized)
   - [map/maybeMap](#mapmaybemap)
     - [Map](#map)
     - [Maybe Map](#maybe-map)
     - [Return Type](#return-type)
-  - [Default Extension Methods](#default-extension-methods)
-    - [Name](#name-1)
-    - [Description](#description-1)
-    - [Serialized](#serialized)
   - [Custom Extensions](#custom-extensions)
     - [Map Extension](#map-extension)
     - [Maybe Extension](#maybe-extension)
   - [Json Converter Classes](#json-converter-classes)
+- [Annotations](#annotations)
+  - [EnumAssist](#enumassist)
+    - [Create Json Conversion](#create-json-conversion)
+    - [Serialized Format](#serialized-format)
+    - [Use Doc Comment As Description](#use-doc-comment-as-description)
+  - [EnumAssist - build.yaml](#enumassist---buildyaml)
+  - [EnumKey](#enumkey)
+    - [Readable Name](#readable-name-1)
+    - [Description](#description-1)
+    - [Serialized Value](#serialized-value)
+    - [Use Doc Comment As Description](#use-doc-comment-as-description-1)
+    - [Extensions](#extensions)
 - [Examples](#examples)
   - [Map Example](#map-example)
   - [MaybeMap Example](#maybemap-example)
@@ -130,174 +131,53 @@ enum SuperHero {
 }
 ```
 
-# Annotations
+# Features
 
-## EnumAssist
+## Default Extension Methods
 
-Used to specify the enum you want to generate code for
-
-### Create Json Conv
-
-_field_: `createJsonConv`
-- _type_: `bool`
-- _default_: `true`
-
-Whether or not to create a [json converter class](#json-converter-classes) (non-nullable & nullable) for your enum.
-
-[enum_assist_annotation] depends on [json_annotation] to generate [`JsonConverter`] classes.\
-  _Even if you do not use [json_serializable] or [json_annotation] in your project, you can still use the generated conversion classes in your code._
-
-### Serialized Format
-
-_field_: `serializedFormat`
-- _type_:
-  - [enum_assist] : [SerializedFormat]
-  - [`build.yaml`] : `String`
-- _default_:
-  - [`EnumAssist`] : [SerializedFormat]`.none`
-  - [`build.yaml`] : `none`
-
-Used By:
-- [serialized](#serialized)
-
-Sets the format you want the values of the enum to be serialized to.
-
-[enum_assist] depends on [change_case] to format the serialized value.\
-  The possible values for the [`build.yaml`] file is any value from the [SerializedFormat] enum
-
-### Use Doc Comment As Description
-
-_field_: `useDocCommentAsDescription`
-- _type_: `bool`
-- _default_: `true`
-
-Used By:
-- [description](#description-1)
-
-Whether or not to use the enum value's doc comment as the [description](#description-1) of the enum value.
-
-If set to `false`, the [description](#description-1) will return `null`, unless defined via [EnumKey.description](#description).
-
-## EnumAssist - build.yaml
-
-If you want to customize the [settings](#enumassist) for each enum, you can specify it inside your `build.yaml` file.
-
-For example:
-
-```yaml
-targets:
-  $default:
-    builders:
-      enum_assist:
-        enabled: true
-        options:
-          # - camel
-          # - capital
-          # - constant
-          # - dot
-          # - header
-          # - kebab
-          # - no
-          # - none
-          # - pascal
-          # - path
-          # - sentence
-          # - snake
-          # - swap
-          # default: none
-          serialized_format: none
-
-          # possible values:
-          # - true
-          # - false
-          # default: true
-          use_doc_comment_as_description: true
-
-          # possible values:
-          # - true
-          # - false
-          # default: true
-          create_json_conv: true
-```
-
-## EnumKey
-
-The [`EnumKey`] annotation is used to customize the generator for a specific enum value.
+The following methods will be generated with every enum annotated with [`EnumAssist`]
 
 ### Name
 
-_field_: `name`
-- _type_: [String]
-- _default_: The name of the enum value, formatted to [Capital Case]
+Returns the [EnumKey.name] of the enum value.
 
-Used By:
-- [name](#name-1)
+```dart
+var greet = Greeting.friendly;
 
-Provides the name for the [name](#name-1) of the enum value.
-The name should be a human readable format.\
-For Example: `Example.isReallyCool` could be formatted as `Is Really Cool`
+greet.name; // friendly
+```
 
 ### Description
 
-_field_: `description`
-- _type_: `String?`
-- _default_: The doc comment of the enum value (`null` of no doc comment is found)
+Returns the [EnumKey.description](#description-1) of the enum value in a human readable format.
 
-Used By:
-- [description](#description-1)
+```dart
+var greet = Greeting.friendly;
 
-Provides the description for the [description](#description-1) of the enum value.
+greet.description; // A friendly greeting
+```
 
-The description should be a human readable format.\
-For Example: for `Example.isReallyCool`, the description could be `The example is really cool!`
+### Readable Name
 
-Expected Return Value:
-- Doc Comment of the enum value
-- `null` if the [EnumKey](#use-doc-comment-as-description), [EnumAssist, or build.yaml](#use-doc-comment-as-description) `useDocCommentAsDescription` fields are set to false
-- Value of [EnumKey.description](#description) (regardless of `useDocCommentAsDescription`'s value)
+Returns the [EnumKey.readableName](#readable-name-1) of the enum value in a human readable format.
 
-### Serialized Value
+```dart
+var greet = Greeting.friendly;
 
-_field_: `serializedValue`
-- _type_: `String`
-- _default_: The name of the enum value, no format changes
-  - Specific case formatting can be done with [serializedFormat](#serialized-format) (either [`EnumAssist`] or [`build.yaml`])
+greet.readable; // Friendly
+```
 
-Used By:
-- [serialized](#serialized)
-- [json converter classes](#json-converter-classes)
+### Serialized
 
-Provides the serialized representation of the enum value.
+Specific case formatting can be done with [serializedFormat](#serialized-format) (either [`EnumAssist`] or [`build.yaml`])
 
-### Use Doc Comment As Description
+Returns the [EnumKey.serializedValue](#serialized-value) of the enum value.
 
-_field_: `useDocCommentAsDescription`
-- _type_: `bool`
-- _default_: `true`
+```dart
+var greet = Greeting.friendly;
 
-Used By:
-- [description](#description-1)
-
-Whether or not to use the enum value's doc comment as the [description](#description-1) of the enum value.
-
-If set to `false`, the [description](#description-1) will return `null`, unless defined via [EnumKey.description](#description).
-
-### Extensions
-
-_field_: `extensions`
-- _type_: `List<Extension>`
-- _default_: `[]`
-
-Used By:
-- [Custom Extension Methods](#custom-extensions)
-
-[Custom Extension Methods](#custom-extensions) to be created for the enum, specified with the value of the enum field.
-
-Extension classes must extend
-- [`MapExtension`], representing the [`.map(...)`](#mapmaybemap) method
-- [`MaybeExtension`], representing the [`.maybeMap(...)`](#mapmaybemap) method
-
-# Features
+greet.serialized; // friendly
+```
 
 ## map/maybeMap
 
@@ -416,47 +296,6 @@ Here are a couple of examples of inferred return types:
 
   > <sub>_Note: Just because you can, doesn't mean you should..._\
   _With great power, comes great responsibility_</sub>
-
-## Default Extension Methods
-
-The following methods will be generated with every enum annotated with [`EnumAssist`]
-
-### Name
-
-_type_: `String`
-
-Returns the [EnumKey.name](#name) of the enum value in a human readable format.
-
-```dart
-var greet = Greeting.friendly;
-
-greet.name; // Friendly
-```
-
-### Description
-
-_type_: `String?`
-
-Returns the [EnumKey.description](#description) of the enum value in a human readable format.
-
-```dart
-var greet = Greeting.friendly;
-
-greet.description; // A friendly greeting
-```
-
-### Serialized
-
-_type_: `String`\
-Specific case formatting can be done with [serializedFormat](#serialized-format) (either [`EnumAssist`] or [`build.yaml`])
-
-Returns the [EnumKey.serializedValue](#serialized-value) of the enum value.
-
-```dart
-var greet = Greeting.friendly;
-
-greet.serialized; // friendly
-```
 
 ## Custom Extensions
 
@@ -619,6 +458,154 @@ static Map<String, dynamic> fromJson(Person object) {
   return object.greeting.serialized;
 }
 ```
+
+# Annotations
+
+## EnumAssist
+
+Used to specify the enum you want to generate code for
+
+### Create Json Conversion
+
+_field_: `createJsonConv`
+
+Whether or not to create a [json converter class](#json-converter-classes) (non-nullable & nullable) for your enum.
+
+[enum_assist_annotation] depends on [json_annotation] to generate [`JsonConverter`] classes.\
+  _Even if you do not use [json_serializable] or [json_annotation] in your project, you can still use the generated conversion classes in your code._
+
+### Serialized Format
+
+_field_: `serializedFormat`
+
+Used By:
+- [serialized](#serialized)
+
+Sets the format you want the values of the enum to be serialized to.
+
+[enum_assist] depends on [change_case] to format the serialized value.\
+  The possible values for the [`build.yaml`] file is any value from the [SerializedFormat] enum
+
+### Use Doc Comment As Description
+
+_field_: `useDocCommentAsDescription`
+
+Used By:
+- [description](#description-1)
+
+Whether or not to use the enum value's doc comment as the [description](#description-1) of the enum value.
+
+If set to `false`, the [description](#description-1) will return `null`, unless defined via [EnumKey.description](#description).
+
+## EnumAssist - build.yaml
+
+If you want to customize the [settings](#enumassist) for each enum, you can specify it inside your `build.yaml` file.
+
+For example:
+
+```yaml
+targets:
+  $default:
+    builders:
+      enum_assist:
+        enabled: true
+        options:
+          # - camel
+          # - capital
+          # - constant
+          # - dot
+          # - header
+          # - kebab
+          # - no
+          # - none
+          # - pascal
+          # - path
+          # - sentence
+          # - snake
+          # - swap
+          # default: none
+          serialized_format: none
+
+          # possible values:
+          # - true
+          # - false
+          # default: true
+          use_doc_comment_as_description: true
+
+          # possible values:
+          # - true
+          # - false
+          # default: true
+          create_json_conv: true
+```
+
+## EnumKey
+
+The [`EnumKey`] annotation is used to customize the generator for a specific enum value.
+
+### Readable Name
+
+_field_: `readableName`
+
+Used By:
+- [readableName](#readable-name)
+
+Provides the name for [readableName](#readable-name) of the enum value.
+The name should be a human readable format.\
+For Example: `Example.isReallyCool` could be formatted as `Is Really Cool`
+
+### Description
+
+_field_: `description`
+
+Used By:
+- [description](#description)
+
+Provides the description for the [description](#description) of the enum value.
+
+The description should be a human readable format.\
+For Example: for `Example.isReallyCool`, the description could be `The example is really cool!`
+
+Expected Return Value:
+- Doc Comment of the enum value
+- `null` if the [EnumKey](#use-doc-comment-as-description), [EnumAssist, or build.yaml](#use-doc-comment-as-description) `useDocCommentAsDescription` fields are set to false
+- Value of [EnumKey.description](#description) (regardless of `useDocCommentAsDescription`'s value)
+
+### Serialized Value
+
+_field_: `serializedValue`
+
+Used By:
+- [serialized](#serialized)
+- [json converter classes](#json-converter-classes)
+
+Provides the serialized representation of the enum value.
+
+Specific case formatting can be done with [serializedFormat](#serialized-format) (either [`EnumAssist`] or [`build.yaml`])
+
+### Use Doc Comment As Description
+
+_field_: `useDocCommentAsDescription`
+
+Used By:
+- [description](#description-1)
+
+Whether or not to use the enum value's doc comment as the [description](#description-1) of the enum value.
+
+If set to `false`, the [description](#description-1) will return `null`, unless defined via [EnumKey.description](#description).
+
+### Extensions
+
+_field_: `extensions`
+
+Used By:
+- [Custom Extension Methods](#custom-extensions)
+
+[Custom Extension Methods](#custom-extensions) to be created for the enum, specified with the value of the enum field.
+
+Extension classes must extend
+- [`MapExtension`], representing the [`.map(...)`](#mapmaybemap) method
+- [`MaybeExtension`], representing the [`.maybeMap(...)`](#mapmaybemap) method
 
 # Examples
 

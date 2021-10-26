@@ -9,7 +9,7 @@ part 'enum_assist_example.ge.dart';
 )
 enum Example {
   @EnumKey(
-    name: 'One', // default
+    readable: 'One', // default
     description: 'one description', // default (uses doc comment)
     extensions: [], // default
     serializedValue: 'one', // default
@@ -20,7 +20,7 @@ enum Example {
   one,
 
   @EnumKey(
-    name: 'Two', // default
+    readable: 'Two', // default
     description:
         null, // default (uses nothing because [useDocCommentAsDescription] is false)
     extensions: [], // default
@@ -31,7 +31,7 @@ enum Example {
   two,
 
   @EnumKey(
-    name: 'Threeeeee', // overridden
+    readable: 'Threeeeee', // overridden
     description: 'three is the best', // overridden
     extensions: [], // default
     serializedValue: '3', // overridden

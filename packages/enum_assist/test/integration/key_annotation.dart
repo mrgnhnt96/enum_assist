@@ -5,19 +5,19 @@ part 'key_annotation.ge.dart';
 @EnumAssist()
 enum Animal {
   @EnumKey(
-    name: 'Doggy',
+    readable: 'Doggy',
     description: 'Doggy description',
     serializedValue: 'doggy',
   )
   dog,
   @EnumKey(
-    name: 'Kitty',
+    readable: 'Kitty',
     description: 'Kitty description',
     serializedValue: 'kitty',
   )
   cat,
   @EnumKey(
-    name: 'Mousy',
+    readable: 'Mousy',
     description: 'Mousy description',
     serializedValue: 'mousy',
   )

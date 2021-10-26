@@ -44,6 +44,7 @@ const _reservedWords = {
   'map': '',
   'maybeMap': '',
   'name': '',
+  'readable': '',
   'description': '',
   'serialized': '',
 };

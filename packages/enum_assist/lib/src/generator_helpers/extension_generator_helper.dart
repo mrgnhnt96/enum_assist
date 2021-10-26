@@ -3,6 +3,7 @@ import 'package:enum_assist/src/templates/description_extension_template.dart';
 import 'package:enum_assist/src/templates/map_extension_template.dart';
 import 'package:enum_assist/src/templates/maybe_map_extension_template.dart';
 import 'package:enum_assist/src/templates/name_template.dart';
+import 'package:enum_assist/src/templates/readable_template.dart';
 import 'package:enum_assist/src/templates/serialized_extension_template.dart';
 
 /// A generator class for enum extensions
@@ -16,6 +17,7 @@ abstract class ExtensionGeneratorHelper implements HelperCore {
       ..writeln(MapTemplate(enumName, fieldNames).toString())
       ..writeln(MaybeMapTemplate(enumName, fieldNames).toString())
       ..writeln(NameTemplate(enumName, fieldData).toString())
+      ..writeln(ReadableTemplate(enumName, fieldData).toString())
       ..writeln(DescriptionTemplate(enumName, fieldData).toString())
       ..writeln(SerializedTemplate(
         enumName,

@@ -15,7 +15,7 @@ class FieldData {
     required this.docComment,
     required this.description,
     required this.fieldName,
-    required this.assignedName,
+    required this.readableName,
     required this.serializedValue,
     required this.useDocCommentAsDescription,
     required this.extensions,
@@ -31,7 +31,7 @@ class FieldData {
     final object = enumKeyChecker.getObjectFromAnnotation(element);
     final reader = ConstantReader(object);
 
-    final name = reader.peek('name')?.stringValue;
+    final readable = reader.peek('readable')?.stringValue;
 
     final description = reader.peek('description')?.stringValue;
 
@@ -45,7 +45,7 @@ class FieldData {
       docComment: element.documentationComment,
       description: description,
       fieldName: element.name,
-      assignedName: name,
+      readableName: readable,
       serializedValue: serializedValue,
       useDocCommentAsDescription:
           useDocCommentAsDescription ?? classConfig.useDocCommentAsDescription,
@@ -56,8 +56,8 @@ class FieldData {
     return data;
   }
 
-  /// [EnumKey.name]
-  final String? assignedName;
+  /// [EnumKey.readable]
+  final String? readableName;
 
   /// Doc comment of the field
   final String? docComment;
@@ -107,15 +107,15 @@ class FieldData {
     return null;
   }
 
-  /// [EnumKey.name]
+  /// [EnumKey.readable]
   ///
   /// _prioritizes by order:_
-  /// [assignedName]
+  /// [readableName]
   /// [fieldName]
   ///
   /// [fieldName] is formatted to capital case
   String get getName {
-    if (assignedName != null) return assignedName!;
+    if (readableName != null) return readableName!;
 
     return fieldName.toCapitalCase();
   }
@@ -175,7 +175,7 @@ class FieldData {
     SerializedFormat? serializedFormat,
   }) {
     return FieldData(
-      assignedName: assignedName ?? this.assignedName,
+      readableName: assignedName ?? this.readableName,
       docComment: docComment ?? this.docComment,
       description: description ?? this.description,
       enumName: enumName ?? this.enumName,

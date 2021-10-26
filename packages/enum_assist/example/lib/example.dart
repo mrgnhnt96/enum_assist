@@ -34,7 +34,7 @@ enum Numbers {
   /// and its prime!
   @EnumKey(
     description: '11 is also a girl from Stranger Things', // optional
-    name: 'Eleven', // default (field name formatted to Capital Case)
+    readable: 'Eleven', // default (field name formatted to Capital Case)
     serializedValue: 'eleven', // default (field name formatted as is)
     useDocCommentAsDescription: true, // default
     extensions: [
