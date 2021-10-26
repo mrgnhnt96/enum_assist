@@ -126,8 +126,27 @@ extension SerializedFormatX on SerializedFormat {
   }
 
   /// Returns the name of the enum field
-  /// in a human readable format.
   String get name {
+    return map(
+      camel: 'camel',
+      capital: 'capital',
+      constant: 'constant',
+      dot: 'dot',
+      header: 'header',
+      kebab: 'kebab',
+      no: 'no',
+      none: 'none',
+      pascal: 'pascal',
+      path: 'path',
+      sentence: 'sentence',
+      snake: 'snake',
+      swap: 'swap',
+    );
+  }
+
+  /// Returns the name of the enum field
+  /// In a human readable format
+  String get readable {
     return map(
       camel: 'Camel',
       capital: 'Capital',
@@ -409,8 +428,16 @@ extension MethodTypeX on MethodType {
   }
 
   /// Returns the name of the enum field
-  /// in a human readable format.
   String get name {
+    return map(
+      map: 'map',
+      maybeMap: 'maybeMap',
+    );
+  }
+
+  /// Returns the name of the enum field
+  /// In a human readable format
+  String get readable {
     return map(
       map: 'Map',
       maybeMap: 'Maybe Map',

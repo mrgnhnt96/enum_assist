@@ -56,8 +56,17 @@ extension NumbersX on Numbers {
   }
 
   /// Returns the name of the enum field
-  /// in a human readable format.
   String get name {
+    return map(
+      eleven: 'eleven',
+      twentyTwo: 'twentyTwo',
+      thirtyThree: 'thirtyThree',
+    );
+  }
+
+  /// Returns the name of the enum field
+  /// In a human readable format
+  String get readable {
     return map(
       eleven: 'Eleven',
       twentyTwo: 'Twenty Two',

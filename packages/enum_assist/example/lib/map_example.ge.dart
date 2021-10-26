@@ -56,8 +56,17 @@ extension ExampleX on Example {
   }
 
   /// Returns the name of the enum field
-  /// in a human readable format.
   String get name {
+    return map(
+      one: 'one',
+      two: 'two',
+      three: 'three',
+    );
+  }
+
+  /// Returns the name of the enum field
+  /// In a human readable format
+  String get readable {
     return map(
       one: 'One',
       two: 'Two',
