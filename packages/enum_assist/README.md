@@ -37,7 +37,7 @@ Check out [the example] or [the index](#index) to see what it can do.
   - [Default Extension Methods](#default-extension-methods)
     - [Name](#name)
     - [Description](#description)
-    - [Readable Name](#readable-name)
+    - [Readable](#readable)
     - [Serialized](#serialized)
   - [map/maybeMap](#mapmaybemap)
     - [Map](#map)
@@ -54,7 +54,7 @@ Check out [the example] or [the index](#index) to see what it can do.
     - [Use Doc Comment As Description](#use-doc-comment-as-description)
   - [EnumAssist - build.yaml](#enumassist---buildyaml)
   - [EnumKey](#enumkey)
-    - [Readable Name](#readable-name-1)
+    - [Readable](#readable-1)
     - [Description](#description-1)
     - [Serialized Value](#serialized-value)
     - [Use Doc Comment As Description](#use-doc-comment-as-description-1)
@@ -157,9 +157,9 @@ var greet = Greeting.friendly;
 greet.description; // A friendly greeting
 ```
 
-### Readable Name
+### Readable
 
-Returns the [EnumKey.readableName](#readable-name-1) of the enum value in a human readable format.
+Returns the [EnumKey.readable](#readable-1) of the enum value in a human readable format.
 
 ```dart
 var greet = Greeting.friendly;
@@ -543,14 +543,14 @@ targets:
 
 The [`EnumKey`] annotation is used to customize the generator for a specific enum value.
 
-### Readable Name
+### Readable
 
-_field_: `readableName`
+_field_: `readable`
 
 Used By:
-- [readableName](#readable-name)
+- [readable](#readable)
 
-Provides the name for [readableName](#readable-name) of the enum value.
+Provides the name for [readable](#readable) of the enum value.
 The name should be a human readable format.\
 For Example: `Example.isReallyCool` could be formatted as `Is Really Cool`
 
