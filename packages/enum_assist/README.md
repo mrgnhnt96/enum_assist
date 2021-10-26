@@ -13,14 +13,12 @@
 
 # Motivation
 
-Using enums can be a bit tedious to work with. Like serializing them to/from json, using
-switch statements based off their values, or using `describeEnum` or `split('.')` to get the value's name.
+Dart enums can be a bit tedious to work with. Serializing them to/from json, using
+switch statements based off their values, or using `describeEnum` or `split('.')` to get the value's name are a couple of examples where working with enums could be improved.
 
-Writing extensions has been a great way to add extra functionality. Though, you'll find yourself
-writing the same extensions over and over again. I was getting tired of copying and pasting code and changing a couple of things whenever I created a new enum. So I did what any other sane developer would do, I took a couple of weeks to create an automation tool to save me time. 🤪
+Writing extensions has been a great way to add extra functionality to classes & enums. Though, you'll find yourself writing the same extensions over and over again. I was getting tired of copying and pasting code and changing a couple of things whenever I created a new enum. So I did what any other sane developer would do, I took a couple of weeks to create an automation tool to save me time. 🤪
 
-__So welcome [enum_assist] into your ~~life~~project!__ The fastest way to writing extension methods
-and json conversion classes for your enums!
+__So welcome [enum_assist] into your ~~life~~project!__ The fastest way to writing extension methods and json conversion classes for your enums!
 
 Check out [the example] or [the index](#index) to see what it can do.
 
@@ -139,7 +137,7 @@ The following methods will be generated with every enum annotated with [`EnumAss
 
 ### Name
 
-Returns the [EnumKey.name] of the enum value.
+Returns the name of the enum value.
 
 ```dart
 var greet = Greeting.friendly;
@@ -169,9 +167,9 @@ greet.readable; // Friendly
 
 ### Serialized
 
-Specific case formatting can be done with [serializedFormat](#serialized-format) (either [`EnumAssist`] or [`build.yaml`])
-
 Returns the [EnumKey.serializedValue](#serialized-value) of the enum value.
+
+Specific case formatting can be done with [serializedFormat](#serialized-format) (either [`EnumAssist`] or [`build.yaml`])
 
 ```dart
 var greet = Greeting.friendly;
@@ -354,9 +352,9 @@ String get myExt {
 There are 5 arguments, 4 are the same as [MapExtension](#map-extension)
 
 The 5th argument is:
-- `defaultValue` (required), the `orElse` callback value.
+- `defaultValue` (required), used as the `orElse` callback value.
   - Can be any `const` value
-  - Type is inferred from the class's type arguments
+  - Type is inferred from the class's type argument
 
 Expected return values:
 - `defaultValue`:
@@ -474,6 +472,8 @@ Whether or not to create a [json converter class](#json-converter-classes) (non-
 [enum_assist_annotation] depends on [json_annotation] to generate [`JsonConverter`] classes.\
   _Even if you do not use [json_serializable] or [json_annotation] in your project, you can still use the generated conversion classes in your code._
 
+> Go to [Json Converter Classes](#json-converter-classes) for an example
+
 ### Serialized Format
 
 _field_: `serializedFormat`
@@ -486,6 +486,19 @@ Sets the format you want the values of the enum to be serialized to.
 [enum_assist] depends on [change_case] to format the serialized value.\
   The possible values for the [`build.yaml`] file is any value from the [SerializedFormat] enum
 
+Here's an example:
+- [SerializedFormat].none (default)
+
+  ```dart
+  static const _professionalName = 'professional';
+  ```
+
+- [SerializedFormat].snake
+
+  ```dart
+  static const _veryProfessionalName = 'very_professional';
+  ```
+
 ### Use Doc Comment As Description
 
 _field_: `useDocCommentAsDescription`
@@ -496,6 +509,33 @@ Used By:
 Whether or not to use the enum value's doc comment as the [description](#description-1) of the enum value.
 
 If set to `false`, the [description](#description-1) will return `null`, unless defined via [EnumKey.description](#description).
+
+Enum:
+
+```dart
+@EnumAssist()
+enum Greeting {
+  /// A professional greeting
+  professional,
+  /// A friendly greeting
+  friendly,
+  /// A relaxed greeting
+  ///
+  /// Which is my favorite!
+  relaxed,
+}
+```
+
+```dart
+final greet = Greeting.friendly;
+
+greet.description; // A friendly greeting
+
+// "A relaxed greeting
+//
+// Which is my favorite!"
+Greeting.relaxed.description;
+```
 
 ## EnumAssist - build.yaml
 
@@ -545,21 +585,28 @@ The [`EnumKey`] annotation is used to customize the generator for a specific enu
 
 ### Readable
 
-_field_: `readable`
-
-Used By:
-- [readable](#readable)
-
 Provides the name for [readable](#readable) of the enum value.
-The name should be a human readable format.\
-For Example: `Example.isReallyCool` could be formatted as `Is Really Cool`
+The name should be a human readable format.
+
+```dart
+@EnumAssist()
+enum Greeting {
+  @EnumKey(readable: 'Formal')
+  professional,
+  friendly,
+  relaxed,
+}
+```
+
+```dart
+final greet = Greeting.friendly;
+
+greet.readable; // Friendly
+
+Greeting.professional.readable; // Formal
+```
 
 ### Description
-
-_field_: `description`
-
-Used By:
-- [description](#description)
 
 Provides the description for the [description](#description) of the enum value.
 
@@ -571,41 +618,85 @@ Expected Return Value:
 - `null` if the [EnumKey](#use-doc-comment-as-description), [EnumAssist, or build.yaml](#use-doc-comment-as-description) `useDocCommentAsDescription` fields are set to false
 - Value of [EnumKey.description](#description) (regardless of `useDocCommentAsDescription`'s value)
 
+```dart
+@EnumAssist()
+enum Greeting {
+  /// A professional greeting
+  @EnumKey(description: 'Recommended to use in the work place')
+  professional,
+  /// A friendly greeting
+  friendly,
+  relaxed,
+}
+```
+
+```dart
+final greet = Greeting.friendly;
+
+greet.description; // A friendly greeting
+
+Greeting.professional.description; // Recommended to use in the work place
+```
+
 ### Serialized Value
 
-_field_: `serializedValue`
-
-Used By:
-- [serialized](#serialized)
-- [json converter classes](#json-converter-classes)
-
-Provides the serialized representation of the enum value.
+Provides the serialized representation of the enum value for [serialized](#serialized) and [json converter classes](#json-converter-classes).
 
 Specific case formatting can be done with [serializedFormat](#serialized-format) (either [`EnumAssist`] or [`build.yaml`])
 
+```dart
+@EnumAssist()
+enum Greeting {
+  @EnumKey(serializedValue: 'formal')
+  professional,
+  friendly,
+  relaxed,
+}
+```
+
+```dart
+final greet = Greeting.friendly;
+
+greet.serialized; // friendly
+
+Greeting.professional.serialized; // formal
+```
+
 ### Use Doc Comment As Description
-
-_field_: `useDocCommentAsDescription`
-
-Used By:
-- [description](#description-1)
 
 Whether or not to use the enum value's doc comment as the [description](#description-1) of the enum value.
 
 If set to `false`, the [description](#description-1) will return `null`, unless defined via [EnumKey.description](#description).
 
+```dart
+@EnumAssist()
+enum Greeting {
+  /// A professional greeting
+  @EnumKey(useDocCommentAsDescription: false)
+  professional,
+  /// A friendly greeting
+  friendly,
+  relaxed,
+}
+```
+
+```dart
+final greet = Greeting.friendly;
+
+greet.description; // A friendly greeting
+
+Greeting.professional.description; // null
+```
+
 ### Extensions
-
-_field_: `extensions`
-
-Used By:
-- [Custom Extension Methods](#custom-extensions)
 
 [Custom Extension Methods](#custom-extensions) to be created for the enum, specified with the value of the enum field.
 
 Extension classes must extend
 - [`MapExtension`], representing the [`.map(...)`](#mapmaybemap) method
 - [`MaybeExtension`], representing the [`.maybeMap(...)`](#mapmaybemap) method
+
+> Go to [Examples](#examples) for an example of how to create custom extensions.
 
 # Examples
 
