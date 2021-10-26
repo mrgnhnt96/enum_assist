@@ -91,6 +91,22 @@ void main() {
     test('returns the field name in title case', () {
       String getName(Animal animal) {
         return animal.map(
+          dog: 'dog',
+          cat: 'cat',
+          mouse: 'mouse',
+        );
+      }
+
+      for (final value in Animal.values) {
+        expect(value.name, getName(value));
+      }
+    });
+  });
+
+  group('#readable', () {
+    test('returns the field name in title case', () {
+      String getName(Animal animal) {
+        return animal.map(
           dog: 'Dog',
           cat: 'Cat',
           mouse: 'Mouse',
@@ -98,7 +114,7 @@ void main() {
       }
 
       for (final value in Animal.values) {
-        expect(value.name, getName(value));
+        expect(value.readable, getName(value));
       }
     });
   });

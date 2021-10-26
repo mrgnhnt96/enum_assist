@@ -3,7 +3,7 @@ import 'package:test/test.dart';
 
 import '../integration/non_null_simple_map_ext.dart';
 import '../integration/util/util.dart';
-import '../util/nullable_values.dart';
+import '../src/util/nullable_values.dart';
 
 void main() {
   const fileName = 'non_null_simple_map_ext';

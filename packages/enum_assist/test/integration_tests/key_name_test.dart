@@ -7,6 +7,22 @@ void main() {
     test('should return value from key annotation', () {
       String getName(Animal value) {
         return value.map(
+          dog: 'dog',
+          cat: 'cat',
+          mouse: 'mouse',
+        );
+      }
+
+      for (final value in Animal.values) {
+        expect(value.name, getName(value));
+      }
+    });
+  });
+
+  group('#readable', () {
+    test('should return value from key annotation', () {
+      String getName(Animal value) {
+        return value.map(
           dog: 'Doggy',
           cat: 'Kitty',
           mouse: 'Mousy',
@@ -14,7 +30,7 @@ void main() {
       }
 
       for (final value in Animal.values) {
-        expect(value.name, getName(value));
+        expect(value.readable, getName(value));
       }
     });
   });
