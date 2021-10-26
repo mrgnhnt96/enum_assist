@@ -10,12 +10,11 @@ class NameTemplate extends MapTemplate {
       : super(
           enumName,
           fields,
-          getValue: (field) => field.getName,
+          getValue: (field) => field.fieldName,
           methodName: 'name',
           typeAsString: '$String',
           allowNulls: false,
           docComment: '''
-/// Returns the name of the enum field
-/// in a human readable format.''',
+/// Returns the name of the enum field''',
         );
 }
