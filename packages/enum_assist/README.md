@@ -44,22 +44,25 @@ Check out [the example] or [the index](#index) to see what it can do.
   - [Custom Extensions](#custom-extensions)
     - [Map Extension](#map-extension)
     - [Maybe Extension](#maybe-extension)
-  - [Json Converter Classes](#json-converter-classes)
+  - [Json Converter](#json-converter)
+- [Examples](#examples)
+  - [Map Example](#map-example)
+  - [MaybeMap Example](#maybemap-example)
+  - [toJson & fromJson](#tojson--fromjson)
+    - [Using [json_serializable]](#using-json_serializable)
+    - [Manually Serializing](#manually-serializing)
+- [Build Configuration](#build-configuration)
 - [Annotations](#annotations)
-  - [EnumAssist](#enumassist)
+  - [Enum Assist](#enum-assist)
     - [Create Json Conversion](#create-json-conversion)
     - [Serialized Format](#serialized-format)
     - [Use Doc Comment As Description](#use-doc-comment-as-description)
-  - [EnumAssist - build.yaml](#enumassist---buildyaml)
-  - [EnumKey](#enumkey)
+  - [Enum Key](#enum-key)
     - [Readable](#readable-1)
     - [Description](#description-1)
     - [Serialized Value](#serialized-value)
     - [Use Doc Comment As Description](#use-doc-comment-as-description-1)
     - [Extensions](#extensions)
-- [Examples](#examples)
-  - [Map Example](#map-example)
-  - [MaybeMap Example](#maybemap-example)
 
 # How to use
 
@@ -395,308 +398,29 @@ For the generated code to access the `defaultValue`, it must create an instance 
 extension class. If there is a required argument, the arg must be passed to avoid
 exceptions. Therefore, the required arg will be ___provided___ & ___ignored___ to return default value.
 
-## Json Converter Classes
+## Json Converter
 
-A class to help with the serialization of your enum.\
-The class will be named `${enumName}Conv`
+Serializing enums almost always requires a switch statement.\
+Mistakes can easily be made when converting from a `String` (or other types) to an enum.
 
-[enum_assist_annotation] depends on [json_annotation] to generate [`JsonConverter`] classes.\
-  _Even if you do not use [json_serializable] or [json_annotation] in your project, you can still use the generated conversion classes in your code._
+The Json converter class is a great way to handle your enums' serialization.
 
-For example, with:
+The name of json converter class will be `${NAME_OF_ENUM}Conv`
 
-```dart
-@EnumAssist()
-enum Greeting {
-  professional,
-  friendly,
-  relaxed,
-}
-```
+For a detailed example, go to [toJson/fromJson](#tojson--fromjson)
 
-__Using [json_serializable]__, You can annotate a model class, like so:
+Here's a quick example:
 
 ```dart
-@JsonSerializable()
-class Person {
-  const Person({
-    required this.greeting,
-  });
+// Generated Json Converter class
+final conv = GreetingConv();
 
-  @GreetingConv()
-  final Greeting greeting;
-}
+final greet = Greeting.professional;
+conv.toJson(greet); // professional
+
+final greetJson = 'professional';
+conv.fromJson(greetJson); // Greeting.professional
 ```
-
-- if the field is nullable, change the annotation to:
-
-  ```dart
-  @GreetingConv.nullable
-  final Greeting? greeting;
-  ```
-
-__Or__ You can convert to and from json manually, like so:
-
-```dart
-Person.fromJson(Map<String, dynamic> json) {
-  final conv = GreetingConv();
-
-  return Person(
-    greeting: conv.fromJson(json['greeting'])
-  );
-}
-
-static Map<String, dynamic> fromJson(Person object) {
-  final conv = GreetingConv();
-
-  // using the conv class to convert
-  return conv.toJson(object.greeting);
-
-  // or using the [serialized] method
-  return object.greeting.serialized;
-}
-```
-
-# Annotations
-
-## EnumAssist
-
-Used to specify the enum you want to generate code for
-
-### Create Json Conversion
-
-_field_: `createJsonConv`
-
-Whether or not to create a [json converter class](#json-converter-classes) (non-nullable & nullable) for your enum.
-
-[enum_assist_annotation] depends on [json_annotation] to generate [`JsonConverter`] classes.\
-  _Even if you do not use [json_serializable] or [json_annotation] in your project, you can still use the generated conversion classes in your code._
-
-> Go to [Json Converter Classes](#json-converter-classes) for an example
-
-### Serialized Format
-
-_field_: `serializedFormat`
-
-Used By:
-- [serialized](#serialized)
-
-Sets the format you want the values of the enum to be serialized to.
-
-[enum_assist] depends on [change_case] to format the serialized value.\
-  The possible values for the [`build.yaml`] file is any value from the [SerializedFormat] enum
-
-Here's an example:
-- [SerializedFormat].none (default)
-
-  ```dart
-  static const _professionalName = 'professional';
-  ```
-
-- [SerializedFormat].snake
-
-  ```dart
-  static const _veryProfessionalName = 'very_professional';
-  ```
-
-### Use Doc Comment As Description
-
-_field_: `useDocCommentAsDescription`
-
-Used By:
-- [description](#description-1)
-
-Whether or not to use the enum value's doc comment as the [description](#description-1) of the enum value.
-
-If set to `false`, the [description](#description-1) will return `null`, unless defined via [EnumKey.description](#description).
-
-Enum:
-
-```dart
-@EnumAssist()
-enum Greeting {
-  /// A professional greeting
-  professional,
-  /// A friendly greeting
-  friendly,
-  /// A relaxed greeting
-  ///
-  /// Which is my favorite!
-  relaxed,
-}
-```
-
-```dart
-final greet = Greeting.friendly;
-
-greet.description; // A friendly greeting
-
-// "A relaxed greeting
-//
-// Which is my favorite!"
-Greeting.relaxed.description;
-```
-
-## EnumAssist - build.yaml
-
-If you want to customize the [settings](#enumassist) for each enum, you can specify it inside your `build.yaml` file.
-
-For example:
-
-```yaml
-targets:
-  $default:
-    builders:
-      enum_assist:
-        enabled: true
-        options:
-          # - camel
-          # - capital
-          # - constant
-          # - dot
-          # - header
-          # - kebab
-          # - no
-          # - none
-          # - pascal
-          # - path
-          # - sentence
-          # - snake
-          # - swap
-          # default: none
-          serialized_format: none
-
-          # possible values:
-          # - true
-          # - false
-          # default: true
-          use_doc_comment_as_description: true
-
-          # possible values:
-          # - true
-          # - false
-          # default: true
-          create_json_conv: true
-```
-
-## EnumKey
-
-The [`EnumKey`] annotation is used to customize the generator for a specific enum value.
-
-### Readable
-
-Provides the name for [readable](#readable) of the enum value.
-The name should be a human readable format.
-
-```dart
-@EnumAssist()
-enum Greeting {
-  @EnumKey(readable: 'Formal')
-  professional,
-  friendly,
-  relaxed,
-}
-```
-
-```dart
-final greet = Greeting.friendly;
-
-greet.readable; // Friendly
-
-Greeting.professional.readable; // Formal
-```
-
-### Description
-
-Provides the description for the [description](#description) of the enum value.
-
-The description should be a human readable format.\
-For Example: for `Example.isReallyCool`, the description could be `The example is really cool!`
-
-Expected Return Value:
-- Doc Comment of the enum value
-- `null` if the [EnumKey](#use-doc-comment-as-description), [EnumAssist, or build.yaml](#use-doc-comment-as-description) `useDocCommentAsDescription` fields are set to false
-- Value of [EnumKey.description](#description) (regardless of `useDocCommentAsDescription`'s value)
-
-```dart
-@EnumAssist()
-enum Greeting {
-  /// A professional greeting
-  @EnumKey(description: 'Recommended to use in the work place')
-  professional,
-  /// A friendly greeting
-  friendly,
-  relaxed,
-}
-```
-
-```dart
-final greet = Greeting.friendly;
-
-greet.description; // A friendly greeting
-
-Greeting.professional.description; // Recommended to use in the work place
-```
-
-### Serialized Value
-
-Provides the serialized representation of the enum value for [serialized](#serialized) and [json converter classes](#json-converter-classes).
-
-Specific case formatting can be done with [serializedFormat](#serialized-format) (either [`EnumAssist`] or [`build.yaml`])
-
-```dart
-@EnumAssist()
-enum Greeting {
-  @EnumKey(serializedValue: 'formal')
-  professional,
-  friendly,
-  relaxed,
-}
-```
-
-```dart
-final greet = Greeting.friendly;
-
-greet.serialized; // friendly
-
-Greeting.professional.serialized; // formal
-```
-
-### Use Doc Comment As Description
-
-Whether or not to use the enum value's doc comment as the [description](#description-1) of the enum value.
-
-If set to `false`, the [description](#description-1) will return `null`, unless defined via [EnumKey.description](#description).
-
-```dart
-@EnumAssist()
-enum Greeting {
-  /// A professional greeting
-  @EnumKey(useDocCommentAsDescription: false)
-  professional,
-  /// A friendly greeting
-  friendly,
-  relaxed,
-}
-```
-
-```dart
-final greet = Greeting.friendly;
-
-greet.description; // A friendly greeting
-
-Greeting.professional.description; // null
-```
-
-### Extensions
-
-[Custom Extension Methods](#custom-extensions) to be created for the enum, specified with the value of the enum field.
-
-Extension classes must extend
-- [`MapExtension`], representing the [`.map(...)`](#mapmaybemap) method
-- [`MaybeExtension`], representing the [`.maybeMap(...)`](#mapmaybemap) method
-
-> Go to [Examples](#examples) for an example of how to create custom extensions.
 
 # Examples
 
@@ -836,6 +560,445 @@ greet.isCool; // true
 Greeting.professional.isCool; // false
 ```
 
+## toJson & fromJson
+
+Serializing enums almost always requires a switch statement.\
+Mistakes can easily be made when converting from a string to an enum.
+
+[Json Converter Classes](#json-converter-class) are a great way to handle this.
+
+Let's create an enum for the two examples below, [Using json_serializable](#using-json_serializable) & [Manually Serializing](#manually-serializing).
+
+```dart
+@EnumAssist()
+enum SuperHeroes {
+  @EnumKey(serializedValue: 'Capitan America')
+  capitanAmerica,
+
+  @EnumKey(serializedValue: 'Black Widow')
+  blackWidow,
+
+  @EnumKey(serializedValue: 'Dr. Strange')
+  drStrange,
+}
+```
+
+### Using [json_serializable]
+
+[json_serializable] will automatically serialize enums to json by using [describeEnum](https://api.flutter.dev/flutter/foundation/describeEnum.html). This is great if your enum's values are exactly the same as the json values. But that is not always the case, just like our `SuperHeroes` enum.
+
+Let's use our generated class `SuperHeroesConv` fix that problem!
+
+Here is our example class, annotated with `JsonSerializable`
+
+```dart
+@JsonSerializable()
+class Character {
+  const Character(
+    this.secretIdentity,
+    this.hero,
+    this.powerLevel,
+  );
+
+  final String secretIdentity;
+  final SuperHeroes hero;
+
+  factory Character.fromJson(Map<String, dynamic> json) =>
+      _$CharacterFromJson(json);
+}
+```
+
+By default, [json_serializable] will serialize our hero field using the literal enum value as a `String`.
+
+```dart
+final steve = Character('Steve Rogers', SuperHeroes.capitanAmerica);
+
+final json = steve.toJson();
+
+print(json['hero']); //capitanAmerica
+```
+
+To tell [json_serializable] to convert the `hero` field with the values provided by `EnumKey.serializedValue`, you'll need to annotated the field in your class
+
+```dart
+  final String secretIdentity;
+
+  @SuperHeroesConv()
+  final SuperHeroes hero;
+```
+
+__Note__:
+If `hero` were nullable, you would need to annotate the field with a nullable converter
+
+```dart
+  final String secretIdentity;
+
+  @SuperHeroesConv.nullable
+  final SuperHeroes hero;
+```
+
+After you run the [build_runner], the json value for the `hero` field will now be
+
+```dart
+final steve = Character('Steve Rogers', SuperHeroes.capitanAmerica);
+
+final json = steve.toJson();
+
+print(json['hero']); // Capitan America
+```
+
+### Manually Serializing
+
+Here is an example of what your class could look like
+
+```dart
+class Character {
+  const Character(
+    this.secretIdentity,
+    this.hero,
+  );
+
+  final String secretIdentity;
+  final SuperHeroes hero;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'secretIdentity': secretIdentity,
+      'hero': superHeroToJson(hero),
+    };
+  }
+
+  factory Character.fromJson(Map<String, dynamic> json) {
+    return Character(
+      json['secretIdentity'] as String,
+      superHeroFromJson(json['hero'] as String),
+    );
+  }
+}
+
+String superHeroToJson(SuperHeroes hero) {
+  switch (hero) {
+    case SuperHeroes.capitanAmerica:
+      return 'Capitan America';
+    case SuperHeroes.blackWidow:
+      return 'Black Widow';
+    case SuperHeroes.drStrange:
+      return 'Dr. Strange';
+  }
+}
+
+SuperHeroes superHeroFromJson(String hero) {
+  switch (hero) {
+    case 'Capitan America':
+      return SuperHeroes.capitanAmerica;
+    case 'Black Widow':
+      return SuperHeroes.blackWidow;
+    case 'Dr. Strange':
+      return SuperHeroes.drStrange;
+    default:
+      throw Exception('Could not find superhero for $hero');
+  }
+}
+```
+
+It's a lot of work to just convert an enum to json!\
+Thankfully, the generated class `SuperHeroConv` can do all of the work here
+
+Our `toJson` and `fromJson` methods will now look like this
+
+```dart
+class Character {
+  const Character(
+    this.secretIdentity,
+    this.hero,
+  );
+
+  final String secretIdentity;
+  final SuperHeroes hero;
+
+  static const _conv = SuperHeroesConv();
+
+  Map<String, dynamic> toJson() {
+    return {
+      'secretIdentity': secretIdentity,
+      'hero': _conv.toJson(hero),
+
+      // you could also use the `serialized` method here
+      // which is the same as _conv.toJson(hero)
+      //
+      // 'hero': hero.serialized,
+    };
+  }
+
+  factory Character.fromJson(Map<String, dynamic> json) {
+    return Character(
+      json['secretIdentity'] as String,
+      _conv.fromJson(json['hero'] as String),
+    );
+  }
+}
+```
+
+And that's it!
+
+And here is what the `hero`'s value would look like
+
+```dart
+final steve = Character('Steve Rogers', SuperHeroes.capitanAmerica);
+
+final json = steve.toJson();
+
+print(json['hero']); // Capitan America
+```
+
+# Build Configuration
+
+If you want to customize the [settings](#enum-assist) for each enum, you can specify it inside your `build.yaml` file.
+
+For example:
+
+```yaml
+targets:
+  $default:
+    builders:
+      enum_assist:
+        enabled: true
+        options:
+          # - camel
+          # - capital
+          # - constant
+          # - dot
+          # - header
+          # - kebab
+          # - no
+          # - none
+          # - pascal
+          # - path
+          # - sentence
+          # - snake
+          # - swap
+          # default: none
+          serialized_format: none
+
+          # possible values:
+          # - true
+          # - false
+          # default: true
+          use_doc_comment_as_description: true
+
+          # possible values:
+          # - true
+          # - false
+          # default: true
+          create_json_conv: true
+```
+
+# Annotations
+
+## Enum Assist
+
+<details>
+<summary>Used to specify the enum you want to generate code for</summary>
+
+### Create Json Conversion
+
+_field_: `createJsonConv`
+
+Whether or not to create a [json converter class](#json-converter-class) (non-nullable & nullable) for your enum.
+
+[enum_assist_annotation] depends on [json_annotation] to generate [`JsonConverter`] classes.\
+  _Even if you do not use [json_serializable] or [json_annotation] in your project, you can still use the generated conversion classes in your code._
+
+> Go to [Json Converter Classes](#json-converter-class) for an example
+
+### Serialized Format
+
+_field_: `serializedFormat`
+
+Used By:
+- [serialized](#serialized)
+
+Sets the format you want the values of the enum to be serialized to.
+
+[enum_assist] depends on [change_case] to format the serialized value.\
+  The possible values for the [`build.yaml`] file is any value from the [SerializedFormat] enum
+
+Here's an example:
+- [SerializedFormat].none (default)
+
+  ```dart
+  static const _professionalName = 'professional';
+  ```
+
+- [SerializedFormat].snake
+
+  ```dart
+  static const _veryProfessionalName = 'very_professional';
+  ```
+
+### Use Doc Comment As Description
+
+_field_: `useDocCommentAsDescription`
+
+Used By:
+- [description](#description-1)
+
+Whether or not to use the enum value's doc comment as the [description](#description-1) of the enum value.
+
+If set to `false`, the [description](#description-1) will return `null`, unless defined via [EnumKey.description](#description).
+
+Enum:
+
+```dart
+@EnumAssist()
+enum Greeting {
+  /// A professional greeting
+  professional,
+  /// A friendly greeting
+  friendly,
+  /// A relaxed greeting
+  ///
+  /// Which is my favorite!
+  relaxed,
+}
+```
+
+```dart
+final greet = Greeting.friendly;
+
+greet.description; // A friendly greeting
+
+// "A relaxed greeting
+//
+// Which is my favorite!"
+Greeting.relaxed.description;
+```
+
+</details>
+
+## Enum Key
+
+<details>
+<summary>Used to customize the generator for a specific enum value.</summary>
+
+### Readable
+
+Provides the name for [readable](#readable) of the enum value.
+The name should be a human readable format.
+
+```dart
+@EnumAssist()
+enum Greeting {
+  @EnumKey(readable: 'Formal')
+  professional,
+  friendly,
+  relaxed,
+}
+```
+
+```dart
+final greet = Greeting.friendly;
+
+greet.readable; // Friendly
+
+Greeting.professional.readable; // Formal
+```
+
+### Description
+
+Provides the description for the [description](#description) of the enum value.
+
+The description should be a human readable format.\
+For Example: for `Example.isReallyCool`, the description could be `The example is really cool!`
+
+Expected Return Value:
+- Doc Comment of the enum value
+- `null` if the [EnumKey](#use-doc-comment-as-description), [EnumAssist, or build.yaml](#use-doc-comment-as-description) `useDocCommentAsDescription` fields are set to false
+- Value of [EnumKey.description](#description) (regardless of `useDocCommentAsDescription`'s value)
+
+```dart
+@EnumAssist()
+enum Greeting {
+  /// A professional greeting
+  @EnumKey(description: 'Recommended to use in the work place')
+  professional,
+  /// A friendly greeting
+  friendly,
+  relaxed,
+}
+```
+
+```dart
+final greet = Greeting.friendly;
+
+greet.description; // A friendly greeting
+
+Greeting.professional.description; // Recommended to use in the work place
+```
+
+### Serialized Value
+
+Provides the serialized representation of the enum value for [serialized](#serialized) and [json converter classes](#json-converter-class).
+
+Specific case formatting can be done with [serializedFormat](#serialized-format) (either [`EnumAssist`] or [`build.yaml`])
+
+```dart
+@EnumAssist()
+enum Greeting {
+  @EnumKey(serializedValue: 'formal')
+  professional,
+  friendly,
+  relaxed,
+}
+```
+
+```dart
+final greet = Greeting.friendly;
+
+greet.serialized; // friendly
+
+Greeting.professional.serialized; // formal
+```
+
+### Use Doc Comment As Description
+
+Whether or not to use the enum value's doc comment as the [description](#description-1) of the enum value.
+
+If set to `false`, the [description](#description-1) will return `null`, unless defined via [EnumKey.description](#description).
+
+```dart
+@EnumAssist()
+enum Greeting {
+  /// A professional greeting
+  @EnumKey(useDocCommentAsDescription: false)
+  professional,
+  /// A friendly greeting
+  friendly,
+  relaxed,
+}
+```
+
+```dart
+final greet = Greeting.friendly;
+
+greet.description; // A friendly greeting
+
+Greeting.professional.description; // null
+```
+
+### Extensions
+
+[Custom Extension Methods](#custom-extensions) to be created for the enum, specified with the value of the enum field.
+
+Extension classes must extend
+- [`MapExtension`], representing the [`.map(...)`](#mapmaybemap) method
+- [`MaybeExtension`], representing the [`.maybeMap(...)`](#mapmaybemap) method
+
+> Go to [Examples](#examples) for an example of how to create custom extensions.
+
+</details>
+
+
 [`EnumAssist`]: https://github.com/mrgnhnt96/enum_assist/blob/main/packages/enum_assist_annotation/lib/src/enum_assist.dart
 [`EnumKey`]: https://github.com/mrgnhnt96/enum_assist/blob/main/packages/enum_assist_annotation/lib/src/enum_key.dart
 [commands & options]: https://pub.dev/packages/build_runner#built-in-commands
@@ -855,4 +1018,4 @@ Greeting.professional.isCool; // false
 [`MapExtension`]: https://github.com/mrgnhnt96/enum_assist/blob/main/packages/enum_assist_annotation/lib/src/map_extension.dart
 [`MaybeExtension`]: https://github.com/mrgnhnt96/enum_assist/blob/main/packages/enum_assist_annotation/lib/src/maybe_extension.dart
 [`JsonConverter`]: https://github.com/google/json_serializable.dart/blob/master/json_annotation/lib/src/json_converter.dart
-[`build.yaml`]: #enumassist---buildyaml
+[`build.yaml`]: #build-configuration
