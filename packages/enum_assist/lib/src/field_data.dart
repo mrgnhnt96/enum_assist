@@ -114,7 +114,7 @@ class FieldData {
   /// [fieldName]
   ///
   /// [fieldName] is formatted to capital case
-  String get getName {
+  String get getReadable {
     if (readableName != null) return readableName!;
 
     return fieldName.toCapitalCase();
@@ -164,7 +164,7 @@ class FieldData {
 
   /// @nodoc
   FieldData copyWith({
-    String? assignedName,
+    String? readableName,
     String? docComment,
     String? description,
     String? enumName,
@@ -175,7 +175,7 @@ class FieldData {
     SerializedFormat? serializedFormat,
   }) {
     return FieldData(
-      readableName: assignedName ?? this.readableName,
+      readableName: readableName ?? this.readableName,
       docComment: docComment ?? this.docComment,
       description: description ?? this.description,
       enumName: enumName ?? this.enumName,

@@ -10,7 +10,7 @@ class ReadableTemplate extends MapTemplate {
       : super(
           enumName,
           fields,
-          getValue: (field) => field.getName,
+          getValue: (field) => field.getReadable,
           methodName: 'readable',
           typeAsString: '$String',
           allowNulls: false,
