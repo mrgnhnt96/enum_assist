@@ -948,6 +948,7 @@ enum Greeting {
   @EnumKey(serializedValue: 'formal')
   professional,
   friendly,
+  @EnumKey(serializedValue: 3) // serializedValue accepts type Object?
   relaxed,
 }
 ```
@@ -958,6 +959,8 @@ final greet = Greeting.friendly;
 greet.serialized; // friendly
 
 Greeting.professional.serialized; // formal
+
+Gretting.relaxed.serialized; // 3
 ```
 
 ### Use Doc Comment As Description
