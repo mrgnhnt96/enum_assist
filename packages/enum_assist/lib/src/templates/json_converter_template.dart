@@ -132,7 +132,7 @@ class _Item extends FieldTemplate<FieldData> {
 
   String get privateField => field.privateName;
   String get privateFieldGetter =>
-      "static const $privateField = '${field.getSerializedName}';";
+      "static const $privateField = '${field.getSerializedValue}';";
 
   String get _className => isNullable ? '${enumName}Conv.' : '';
 

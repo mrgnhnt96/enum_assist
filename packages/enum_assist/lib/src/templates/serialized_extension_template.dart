@@ -17,11 +17,11 @@ class SerializedTemplate extends MapTemplate {
             if (createJsonConv) {
               return '${field.enumName}Conv._${field.fieldName}Name';
             } else {
-              return "'${field.getSerializedName}'";
+              return "'${field.getSerializedValue}'";
             }
           },
           methodName: 'serialized',
-          typeAsString: '$String',
+          typeAsString: '$Object',
           allowNulls: false,
           docComment: '''
 /// Returns the serialized value of the enum field.''',

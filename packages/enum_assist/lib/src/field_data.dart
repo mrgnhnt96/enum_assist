@@ -35,7 +35,7 @@ class FieldData {
 
     final description = reader.peek('description')?.stringValue;
 
-    final serializedValue = reader.peek('serializedValue')?.stringValue;
+    final serializedValue = reader.peek('serializedValue')?.literalValue;
 
     final useDocCommentAsDescription =
         reader.peek('useDocCommentAsDescription')?.boolValue;
@@ -75,7 +75,7 @@ class FieldData {
   final String fieldName;
 
   /// [EnumKey.serializedValue]
-  final String? serializedValue;
+  final Object? serializedValue;
 
   /// [EnumKey.useDocCommentAsDescription]
   final bool useDocCommentAsDescription;
@@ -127,7 +127,7 @@ class FieldData {
   /// [fieldName]
   ///
   /// [fieldName] is formatted by [EnumAssist.serializedFormat]
-  String get getSerializedName {
+  Object get getSerializedValue {
     if (serializedValue != null) return serializedValue!;
 
     return _format(fieldName);
@@ -170,7 +170,7 @@ class FieldData {
     String? enumName,
     Map<String, ExtensionConfig>? extensions,
     String? fieldName,
-    String? serializedValue,
+    Object? serializedValue,
     bool? useDocCommentAsDescription,
     SerializedFormat? serializedFormat,
   }) {

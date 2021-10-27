@@ -1,5 +1,18 @@
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 
+// TODO: Add `toInt` method
+// it would be 0 indexed & increment based off of the previous enum field value
+
+/*
+enum Test {one, two = 200, three, four}
+
+I'd expect this to print like this
+print(Test.one.index); // 0
+print(Test.two.index); // 200
+print(Test.three.index); // 201
+print(Test.four.index); // 202
+*/
+
 /// {@template enum_assist_annotation.enum_key}
 /// Annotation to assist in generating code for enum values.
 /// {@endtemplate}
@@ -71,7 +84,7 @@ class EnumKey {
   ///
   /// __default:__ Non-formatted name of the enum value
   /// {@endtemplate}
-  final String? serializedValue;
+  final Object? serializedValue;
 
   /// {@template enum_assist_annotation.enum_key.use_doc_comment_as_description}
   /// Whether to use the doc comment of the enum for the `description` method.
