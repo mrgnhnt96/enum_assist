@@ -42,6 +42,7 @@ enum Vehicle {
   /// train doc comment
   train,
 }
+
 @EnumAssist()
 enum BodyParts {
   /// head doc comment
