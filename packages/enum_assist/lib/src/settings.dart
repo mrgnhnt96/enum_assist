@@ -17,11 +17,16 @@ class Settings {
     const createJsonConvKey = 'create_json_conv';
     const serializedFormatKey = 'serialized_format';
     const useDocCommentAsDescriptionKey = 'use_doc_comment_as_description';
+    const useIntValueForSerialization = 'use_int_value_for_serialization';
 
     const defaultVal = ClassConfig.defaults;
 
     final createJsonConvValue =
         json[createJsonConvKey] as bool? ?? defaultVal.createJsonConv;
+
+    final useIntForSerializedValue =
+        json[useIntValueForSerialization] as bool? ??
+            defaultVal.useIntValueForSerialization;
 
     final serializedFormatString = json[serializedFormatKey] as String?;
 
@@ -35,11 +40,13 @@ class Settings {
             defaultVal.useDocCommentAsDescription;
 
     final config = ClassConfig(
-      enumName: '',
+      enumName: defaultVal.enumName,
       createJsonConv: createJsonConvValue,
       serializedFormat: serializedFormatValue,
       useDocCommentAsDescription: useDocCommentAsDescriptionValue,
+      useIntValueForSerialization: useIntForSerializedValue,
     );
+
     return Settings._(config);
   }
 

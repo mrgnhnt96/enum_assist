@@ -1,3 +1,4 @@
+// ignore_for_file: comment_references
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:meta/meta_meta.dart';
 
@@ -10,14 +11,17 @@ import 'package:meta/meta_meta.dart';
 ///
 /// - maybeMap
 ///    - Same as `map`, but doesn't require all callbacks to be specified
-///    - Returns `orElse` value, or null if `{ExampleExt}.allowNulls` is true
+///    - Returns `orElse` value, or null if [MaybeExtension.allowNulls] is true
 ///
 /// - name
 ///    - Returns the name of the enum value
 ///    - Formats the field to capital case unless overridden with @EnumKey.name
 ///
+/// - toInt
+///   - Returns the int value of the enum field
+///
 /// - description
-///    - Returns the description of the enum value
+///    - Returns the description of the enum field
 ///    - Uses the doc comment of the field unless overridden with
 ///        @EnumKey.description or
 ///        @EnumAssist.useDocCommentAsDescription is set to false
@@ -25,7 +29,7 @@ import 'package:meta/meta_meta.dart';
 ///    - Uses the @EnumKey.description if overridden in annotation
 ///
 /// - serialized
-///    - Returns the serialized value of the enum value, the default
+///    - Returns the serialized value of the enum field, the default
 ///        format is the name of the enum value
 ///    - Uses the @EnumKey.serialized if overridden in annotation
 ///    - Can be formatted via @EnumAssist.serializedFormat
@@ -57,6 +61,7 @@ class EnumAssist {
     this.createJsonConv,
     this.serializedFormat,
     this.useDocCommentAsDescription,
+    this.useIntValueForSerialization,
   });
 
   /// {@template enum_assist_annotation.enum_assist.create_json_conv}
@@ -94,4 +99,14 @@ class EnumAssist {
   /// __default:__ `true`
   /// {@endtemplate}
   final bool? useDocCommentAsDescription;
+
+  /// {@template enum_assist_annotation.enum_assist.use_to_int_for_serialized}
+  /// Whether to use the `toInt` value of the enum field for toJson/fromJson
+  /// & `serialized` method.
+  ///
+  /// Setting this to `true` will override the [EnumKey.serialized] value.
+  ///
+  /// __default:__ `false`
+  /// {@endtemplate}
+  final bool? useIntValueForSerialization;
 }

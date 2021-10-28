@@ -6,11 +6,19 @@ abstract class JsonConverterGeneratorHelper implements HelperCore {
   /// generates extensions code
   String generateJsonConverter() {
     final buffer = StringBuffer()
-      ..writeln(JsonConverterTemplate(enumName, fieldData, isNullable: false)
-          .toString())
+      ..writeln(JsonConverterTemplate(
+        enumName,
+        fieldData,
+        isNullable: false,
+        useIntValueForSerialization: config.useIntValueForSerialization,
+      ).toString())
       ..writeln()
-      ..writeln(JsonConverterTemplate(enumName, fieldData, isNullable: true)
-          .toString());
+      ..writeln(JsonConverterTemplate(
+        enumName,
+        fieldData,
+        isNullable: true,
+        useIntValueForSerialization: config.useIntValueForSerialization,
+      ).toString());
 
     return '$buffer';
   }

@@ -18,6 +18,7 @@ class ClassConfig {
     required this.createJsonConv,
     required this.serializedFormat,
     required this.useDocCommentAsDescription,
+    required this.useIntValueForSerialization,
   });
 
   /// Merges [config] and the [EnumAssist] annotation
@@ -33,6 +34,8 @@ class ClassConfig {
       serializedFormat: annotation.serializedFormat ?? config.serializedFormat,
       useDocCommentAsDescription: annotation.useDocCommentAsDescription ??
           config.useDocCommentAsDescription,
+      useIntValueForSerialization: annotation.useIntValueForSerialization ??
+          defaults.useIntValueForSerialization,
     );
   }
 
@@ -48,12 +51,16 @@ class ClassConfig {
   /// [EnumAssist.useDocCommentAsDescription]
   final bool useDocCommentAsDescription;
 
+  /// [EnumAssist.useIntValueForSerialization]
+  final bool useIntValueForSerialization;
+
   /// all the default values for [ClassConfig]
   static const defaults = ClassConfig(
     enumName: '',
     createJsonConv: true,
     serializedFormat: SerializedFormat.none,
     useDocCommentAsDescription: true,
+    useIntValueForSerialization: false,
   );
 
   @override
@@ -63,6 +70,7 @@ ClassConfig{
   createJsonConv: $createJsonConv,
   serializedFormat: $serializedFormat,
   useDocCommentAsDescription: $useDocCommentAsDescription,
+  useIntValueForSerialization: $useIntValueForSerialization,
 }
 ''';
   }
@@ -80,9 +88,13 @@ EnumAssist _getAnnotation(ConstantReader reader) {
   final useDocCommentAsDescription =
       reader.peek('useDocCommentAsDescription')?.boolValue;
 
+  final useIntValueForSerialization =
+      reader.peek('useIntValueForSerialization')?.boolValue;
+
   return EnumAssist(
     createJsonConv: createJsonConv,
     serializedFormat: serializedFormat,
     useDocCommentAsDescription: useDocCommentAsDescription,
+    useIntValueForSerialization: useIntValueForSerialization,
   );
 }

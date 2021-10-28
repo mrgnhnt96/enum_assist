@@ -8,12 +8,18 @@ import 'package:enum_assist/src/util/util.dart';
 /// {@endtemplate}
 class JsonConverterTemplate extends TemplateCoreDetailed<_Item> {
   /// {@macro enum_assist.map_template}
-  JsonConverterTemplate(String enumName, Iterable<FieldData> fields,
-      {required this.isNullable})
-      : super(enumName, fields);
+  JsonConverterTemplate(
+    String enumName,
+    Iterable<FieldData> fields, {
+    required this.isNullable,
+    required this.useIntValueForSerialization,
+  }) : super(enumName, fields);
 
   /// sets the template to return a nullable value
   final bool isNullable;
+
+  /// sets the template to return the int value for serialized
+  final bool useIntValueForSerialization;
 
   String get _possNullType => isNullable ? '?' : '';
   String get _possNullName => isNullable ? 'Nullable' : '';
@@ -121,18 +127,36 @@ class JsonConverterTemplate extends TemplateCoreDetailed<_Item> {
   }
 
   @override
-  _Item convert(FieldData e) => _Item(enumName, e, isNullable);
+  _Item convert(FieldData e) => _Item(
+        enumName,
+        e,
+        isNullable,
+        useIntValueForSerialization,
+      );
 }
 
 class _Item extends FieldTemplate<FieldData> {
-  const _Item(String enumName, FieldData field, this.isNullable)
-      : super(enumName, field);
+  const _Item(
+    String enumName,
+    FieldData field,
+    this.isNullable,
+    this.useIntValueForSerialization,
+  ) : super(enumName, field);
 
   final bool isNullable;
+  final bool useIntValueForSerialization;
 
   String get privateField => field.privateName;
+  String get serializedValue {
+    if (useIntValueForSerialization) {
+      return '${field.intValue}';
+    }
+
+    return field.getSerializedValue;
+  }
+
   String get privateFieldGetter =>
-      'static const $privateField = ${field.getSerializedValue};';
+      'static const $privateField = $serializedValue;';
 
   String get _className => isNullable ? '${enumName}Conv.' : '';
 
