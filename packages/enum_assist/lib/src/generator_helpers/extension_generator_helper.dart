@@ -18,7 +18,7 @@ abstract class ExtensionGeneratorHelper implements HelperCore {
       ..writeln(MapTemplate(enumName, fieldNames).toString())
       ..writeln(MaybeMapTemplate(enumName, fieldNames).toString())
       ..writeln(NameTemplate(enumName, fieldData).toString())
-      ..writeln(IntValueTemplate(enumName, fieldData, intValues).toString())
+      ..writeln(IntValueTemplate(enumName, fieldData).toString())
       ..writeln(ReadableTemplate(enumName, fieldData).toString())
       ..writeln(DescriptionTemplate(enumName, fieldData).toString())
       ..writeln(SerializedTemplate(

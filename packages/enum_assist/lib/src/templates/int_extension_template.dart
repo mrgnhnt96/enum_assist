@@ -9,11 +9,12 @@ class IntValueTemplate extends MapTemplate {
   IntValueTemplate(
     String enumName,
     Iterable<FieldData> fields,
-    Iterable<int> intValues,
   ) : super(
           enumName,
           fields,
-          getValue: (field) => '${intValues.elementAt(field.index)}',
+          // intValue is always getting set from [HelperCore#fieldData]
+          // so it should never be null
+          getValue: (field) => '${field.intValue ?? field.index}',
           methodName: 'toInt',
           typeAsString: '$int',
           allowNulls: false,

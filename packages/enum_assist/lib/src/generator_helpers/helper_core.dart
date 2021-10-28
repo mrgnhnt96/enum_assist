@@ -34,6 +34,7 @@ abstract class HelperCore {
   @protected
   Iterable<FieldData> get fieldData {
     final fields = <FieldData>[];
+    final intValues = <int>[];
 
     var index = 0;
     for (final field in element.fields) {
@@ -41,26 +42,16 @@ abstract class HelperCore {
 
       final data = FieldData.config(field, config, index++);
 
-      fields.add(data);
+      if (data.index == 0) {
+        intValues.add(data.intValue ?? 0);
+      } else {
+        intValues.add(data.intValue ?? intValues.last + 1);
+      }
+
+      fields.add(data.copyWith(intValue: intValues.last));
     }
 
     return fields;
-  }
-
-  @protected
-  Iterable<int> get intValues {
-    final values = <int>[];
-
-    for (final field in fieldData) {
-      if (field.index == 0) {
-        values.add(field.intValue ?? 0);
-        continue;
-      }
-
-      values.add(field.intValue ?? values.last + 1);
-    }
-
-    return values;
   }
 
   /// Returns all enum's field names, [FieldData.fieldName]
