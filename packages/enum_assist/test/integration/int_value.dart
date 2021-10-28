@@ -41,5 +41,6 @@ enum Soda {
   @EnumKey(intValue: 200)
   pepsi,
   sprite,
+  @EnumKey(intValue: 4)
   fanta,
 }

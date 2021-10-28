@@ -51,9 +51,7 @@ class FieldData {
     if (!serializedValueIsNull) {
       serializedReader!; // set to non-null
 
-      if (serializedReader.isString ||
-          serializedReader.isDouble ||
-          serializedReader.isInt) {
+      if (serializedReader.isString || serializedReader.isInt) {
         serializedValue = serializedReader.literalValue;
       } else {
         final enumAndField =
@@ -65,7 +63,7 @@ class FieldData {
           what: '"$enumAndField" has been assigned an '
               'invalid type for the field `serializedValue`',
           rule: '`serializedValue` can be types '
-              '`String`, `int`, `num`, and `double`',
+              '`String` and `int`',
           fix: 'Change the value in "$enumAndField" for the '
               '`serializedValue` field',
         );

@@ -89,7 +89,7 @@ void main() {
           coke: 0,
           pepsi: 200,
           sprite: 201,
-          fanta: 202,
+          fanta: 4,
         );
       }
 

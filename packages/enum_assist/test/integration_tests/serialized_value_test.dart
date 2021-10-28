@@ -73,6 +73,8 @@ void main() {
           skittles: 'Familia.madre',
           butterfinger: 'butterfinger',
           reeses: 1,
+          kitkat: 2,
+          snickers: 3,
         );
       }
 

@@ -1,3 +1,4 @@
+// ignore_for_file: unnecessary_cast
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 
 part 'serialized_value.ge.dart';
@@ -35,6 +36,10 @@ enum Candy {
   skittles,
   @EnumKey(serializedValue: null)
   butterfinger,
-  @EnumKey(serializedValue: 1)
+  @EnumKey(serializedValue: 1 as int)
   reeses,
+  @EnumKey(serializedValue: 2 as num)
+  kitkat,
+  @EnumKey(serializedValue: 3)
+  snickers,
 }
