@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:enum_assist/src/util/string_helpers.dart';
+import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
 export 'package:change_case/change_case.dart';
@@ -61,6 +62,19 @@ extension TypeCheckerX on TypeChecker {
 
     if (element.getter != null) {
       return firstAnnotationOf(element.getter!);
+    }
+  }
+}
+
+/// Extensions for FieldElement
+extension FieldElementX on FieldElement {
+  /// gets the first annotation of [EnumKey]
+  ElementAnnotation? getEnumKeyAnnotation() {
+    try {
+      return metadata
+          .firstWhere((data) => data.toSource().contains('$EnumKey'));
+    } catch (_) {
+      return null;
     }
   }
 }

@@ -216,7 +216,9 @@ value: $value
 
     final configs = <String, ExtensionConfig>{};
 
-    for (final data in element.metadata) {
+    final data = element.getEnumKeyAnnotation();
+
+    if (data != null) {
       final annotation = _getExtensionAnnotation(data);
 
       configs.addAll(getConfiguration(annotation));
