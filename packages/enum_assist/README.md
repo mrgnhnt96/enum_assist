@@ -35,6 +35,7 @@ Check out [the example] or [the index](#index) to see what it can do.
   - [Default Extension Methods](#default-extension-methods)
     - [Name](#name)
     - [Description](#description)
+    - [To Int](#to-int)
     - [Readable](#readable)
     - [Serialized](#serialized)
   - [map/maybeMap](#mapmaybemap)
@@ -57,9 +58,11 @@ Check out [the example] or [the index](#index) to see what it can do.
     - [Create Json Conversion](#create-json-conversion)
     - [Serialized Format](#serialized-format)
     - [Use Doc Comment As Description](#use-doc-comment-as-description)
+    - [Use Int Value For Serialization](#use-int-value-for-serialization)
   - [Enum Key](#enum-key)
     - [Readable](#readable-1)
     - [Description](#description-1)
+    - [Int Value](#int-value)
     - [Serialized Value](#serialized-value)
     - [Use Doc Comment As Description](#use-doc-comment-as-description-1)
     - [Extensions](#extensions)
@@ -156,6 +159,16 @@ Returns the [EnumKey.description](#description-1) of the enum value in a human r
 var greet = Greeting.friendly;
 
 greet.description; // A friendly greeting
+```
+
+### To Int
+
+Returns the [EnumKey.intValue](#int-value) of the enum value.
+
+```dart
+Greeting.professional.toInt; // 0
+Greeting.friendly.toInt; // 1
+Greeting.relaxed.toInt; //2
 ```
 
 ### Readable
@@ -764,6 +777,12 @@ targets:
       enum_assist:
         enabled: true
         options:
+          # possible values:
+          # - true
+          # - false
+          # default: true
+          create_json_conv: true
+
           # - camel
           # - capital
           # - constant
@@ -789,8 +808,8 @@ targets:
           # possible values:
           # - true
           # - false
-          # default: true
-          create_json_conv: true
+          # default: false
+          use_int_value_for_serialization: false
 ```
 
 # Annotations
@@ -838,11 +857,6 @@ Here's an example:
 
 ### Use Doc Comment As Description
 
-_field_: `useDocCommentAsDescription`
-
-Used By:
-- [description](#description-1)
-
 Whether or not to use the enum value's doc comment as the [description](#description-1) of the enum value.
 
 If set to `false`, the [description](#description-1) will return `null`, unless defined via [EnumKey.description](#description).
@@ -850,7 +864,9 @@ If set to `false`, the [description](#description-1) will return `null`, unless 
 Enum:
 
 ```dart
-@EnumAssist()
+@EnumAssist(
+  useDocCommentAsDescription: true,
+)
 enum Greeting {
   /// A professional greeting
   professional,
@@ -873,6 +889,34 @@ greet.description; // A friendly greeting
 // Which is my favorite!"
 Greeting.relaxed.description;
 ```
+
+### Use Int Value For Serialization
+
+Whether or not to use the enum's [int value](#int-value) for serialization.
+
+Setting this to `true`, the [`serializedValue`](#serializedValue) field will be ignored.
+
+```dart
+@EnumAssist(
+  useIntValueForSerialization: true,
+)
+enum Greeting {
+  professional,
+  friendly,
+  relaxed,
+}
+```
+
+```dart
+final greet = Greeting.friendly;
+
+greet.serialized; // 1
+
+Greeting.relaxed.serialized; // 2
+```
+
+> __Notice This:__
+Instead of returning `friendly`, it will return the `intValue` of the `friendly` field, which is `1`
 
 </details>
 
@@ -936,11 +980,62 @@ greet.description; // A friendly greeting
 Greeting.professional.description; // Recommended to use in the work place
 ```
 
+### Int Value
+
+Provides the int value for [toInt](#to-int) of the enum value.
+
+0 indexed integers used to represent the enum value.\
+When a value is assigned to [EnumKey.intValue](#int-value), the value will be passed on to the next enum field, incrementing by 1.
+
+For example:
+
+```dart
+@EnumAssist()
+enum ResponseCodes {
+  @EnumKey(intValue: 200)
+  ok,
+  created,
+  accepted,
+
+  @EnumKey(intValue: 400)
+  badRequest,
+  unauthorized,
+  @EnumKey(intValue: 403)
+  forbidden,
+  notFound,
+
+  @EnumKey(intValue: 500)
+  internalServerError,
+  notImplemented,
+  badGateway,
+  serviceUnavailable,
+}
+```
+
+Their return values will be:
+
+```dart
+ResponseCode.ok.toInt; // 200
+ResponseCode.created.toInt; // 201
+ResponseCode.accepted.toInt; // 202
+ResponseCode.badRequest.toInt; // 400
+ResponseCode.unauthorized.toInt; // 401
+ResponseCode.forbidden.toInt; // 403
+ResponseCode.notFound.toInt; // 404
+ResponseCode.internalServerError.toInt; // 500
+ResponseCode.notImplemented.toInt; // 501
+ResponseCode.badGateway.toInt; // 502
+ResponseCode.serviceUnavailable.toInt; // 503
+```
+
 ### Serialized Value
 
 Provides the serialized representation of the enum value for [serialized](#serialized) and [json converter classes](#json-converter-class).
 
 Specific case formatting can be done with [serializedFormat](#serialized-format) (either [`EnumAssist`] or [`build.yaml`])
+
+> __Note__:
+While the type for `serializedValue` is `Object?`, the only accepted types are `String`, and `int`.
 
 ```dart
 @EnumAssist()
