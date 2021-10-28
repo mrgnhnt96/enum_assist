@@ -20,7 +20,7 @@ class JsonConverterTemplate extends TemplateCoreDetailed<_Item> {
   String get _className =>
       '${isNullable ? '_' : ''}$enumName${_possNullName}Conv';
   String get _enumType => '$enumName$_possNullType';
-  String get _stringType => 'String$_possNullType';
+  String get _type => 'Object$_possNullType';
 
   String get _templateName =>
       isNullable ? _templateNameNullable : _templateNameNonNullable;
@@ -45,7 +45,7 @@ class JsonConverterTemplate extends TemplateCoreDetailed<_Item> {
 /// ```
 /// {@endtemplate}''')
       ..writeobj(
-        'class $_className extends JsonConverter<$_enumType, $_stringType>', // ignore:
+        'class $_className extends JsonConverter<$_enumType, $_type>', // ignore:
         body: (classBuff, classTab) {
           classBuff.writelnTab(
               '/// {@macro ${enumName.toSnakeCase()}.json_converter}',
@@ -72,7 +72,7 @@ class JsonConverterTemplate extends TemplateCoreDetailed<_Item> {
             ..writeln()
             ..writelnTab('@override', classTab)
             ..writeobj(
-              '$_enumType fromJson($_stringType json)',
+              '$_enumType fromJson($_type json)',
               tab: classTab,
               body: (fromBuff, fromTab) {
                 fromBuff.writeobj(
@@ -111,7 +111,7 @@ class JsonConverterTemplate extends TemplateCoreDetailed<_Item> {
             ..writeln()
             ..writelnTab('@override', classTab)
             ..writeln(
-              '$_stringType toJson($_enumType object) => '
+              '$_type toJson($_enumType object) => '
               'object$_possNullType.serialized;',
             );
         },
@@ -132,7 +132,7 @@ class _Item extends FieldTemplate<FieldData> {
 
   String get privateField => field.privateName;
   String get privateFieldGetter =>
-      "static const $privateField = '${field.getSerializedValue}';";
+      'static const $privateField = ${field.getSerializedValue};';
 
   String get _className => isNullable ? '${enumName}Conv.' : '';
 

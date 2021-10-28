@@ -147,8 +147,8 @@ void main() {
       conv = const AnimalConv();
     });
 
-    test('is a json converter type of animal and string', () {
-      expect(conv, isA<JsonConverter<Animal, String>>());
+    test('is a json converter type of animal and object', () {
+      expect(conv, isA<JsonConverter<Animal, Object>>());
     });
 
     group('#fromJson', () {
@@ -197,8 +197,8 @@ void main() {
       conv = AnimalConv.nullable;
     });
 
-    test('is a json converter nullable type of animal and string', () {
-      expect(conv, isA<JsonConverter<Animal?, String?>>());
+    test('is a json converter nullable type of animal and object', () {
+      expect(conv, isA<JsonConverter<Animal?, Object?>>());
     });
 
     group('#fromJson', () {

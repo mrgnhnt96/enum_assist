@@ -17,7 +17,7 @@ class SerializedTemplate extends MapTemplate {
             if (createJsonConv) {
               return '${field.enumName}Conv._${field.fieldName}Name';
             } else {
-              return "'${field.getSerializedValue}'";
+              return field.getSerializedValue;
             }
           },
           methodName: 'serialized',

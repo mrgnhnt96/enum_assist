@@ -2,6 +2,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:enum_assist/src/configs/class_config.dart';
 import 'package:enum_assist/src/configs/extension_config.dart';
 import 'package:enum_assist/src/util/extensions.dart';
+import 'package:enum_assist/src/util/util.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -17,6 +18,7 @@ class FieldData {
     required this.fieldName,
     required this.readableName,
     required this.serializedValue,
+    required this.serializedValueIsString,
     required this.useDocCommentAsDescription,
     required this.extensions,
     required this.serializedFormat,
@@ -35,7 +37,85 @@ class FieldData {
 
     final description = reader.peek('description')?.stringValue;
 
-    final serializedValue = reader.peek('serializedValue')?.literalValue;
+    final serializedReader = reader.peek('serializedValue');
+
+    Object? serializedValue;
+    final serializedValueIsNull = serializedReader?.isNull ?? true;
+    final serializedValueIsString = serializedReader?.isString ?? false;
+
+    if (!serializedValueIsNull) {
+      serializedReader!; // set to non-null
+
+      if (serializedReader.isString ||
+          serializedReader.isDouble ||
+          serializedReader.isInt) {
+        serializedValue = serializedReader.literalValue;
+      } else {
+        final enumAndField =
+            '${element.getter?.declaration}'.replaceAll(' get ', '.');
+
+        throw EnumException(
+          error: 'Invalid Serialized Value Type',
+          where: enumAndField,
+          what: '"$enumAndField" has been assigned an '
+              'invalid type for the field `serializedValue`',
+          rule: '`serializedValue` can be types '
+              '`String`, `int`, `num`, and `double`',
+          fix: 'Change the value in "$enumAndField" for the '
+              '`serializedValue` field',
+        );
+      }
+
+      // the following works, but i don't think that we should allow all types
+      // to be serialized.
+      // I think that we should just allow String, int, double, num, int
+      /*
+      final details = '${reader.read('serializedValue').objectValue}';
+
+      // checks if the value is not a literal
+      final pattern = RegExp(r'\w+ \(\w+ = ');
+      if (details.contains(pattern)) {
+        var annotation = element.getEnumKeyAnnotation()?.toSource();
+        if (annotation != null) {
+          annotation =
+              annotation.substring('@EnumKey('.length, annotation.length - 1);
+
+          // splits the arguments by ": "
+          final namedArgPattern = RegExp(r'(\w+): (?![^(]*\))');
+          final matches = namedArgPattern.allMatches(annotation);
+
+          const comparable = 'serializedValue: ';
+
+          int? start, end;
+          for (final match in matches) {
+            final str = match.group(0);
+
+            if (str == comparable) {
+              start = match.end;
+            } else if (start != null) {
+              end = match.start;
+              break;
+            }
+          }
+
+          if (start != null) {
+            serializedValue =
+                annotation.substring(start, end ?? annotation.length).trim();
+
+            if (serializedValue.endsWith(',')) {
+              serializedValue =
+                  serializedValue.substring(0, serializedValue.length - 1);
+            }
+          }
+        }
+      } else {
+        serializedValue =
+            details.substring(details.indexOf('(') + 1, details.indexOf(')'));
+
+        serializedValueIsString = details.split(' ').first == 'String';
+      }
+          */
+    }
 
     final useDocCommentAsDescription =
         reader.peek('useDocCommentAsDescription')?.boolValue;
@@ -47,6 +127,7 @@ class FieldData {
       fieldName: element.name,
       readableName: readable,
       serializedValue: serializedValue,
+      serializedValueIsString: serializedValueIsString,
       useDocCommentAsDescription:
           useDocCommentAsDescription ?? classConfig.useDocCommentAsDescription,
       extensions: extensions,
@@ -82,6 +163,9 @@ class FieldData {
 
   /// [EnumAssist.serializedFormat]
   final SerializedFormat serializedFormat;
+
+  /// Whether the [serializedValue] is a string
+  final bool serializedValueIsString;
 
   // -- getters --
 
@@ -127,10 +211,16 @@ class FieldData {
   /// [fieldName]
   ///
   /// [fieldName] is formatted by [EnumAssist.serializedFormat]
-  Object get getSerializedValue {
-    if (serializedValue != null) return serializedValue!;
+  String get getSerializedValue {
+    if (serializedValue != null) {
+      if (serializedValueIsString) {
+        return "'$serializedValue'";
+      }
 
-    return _format(fieldName);
+      return '$serializedValue';
+    }
+
+    return "'${_format(fieldName)}'";
   }
 
   /// [fieldName] as a private member
@@ -171,6 +261,7 @@ class FieldData {
     Map<String, ExtensionConfig>? extensions,
     String? fieldName,
     Object? serializedValue,
+    bool? serializedValueIsString,
     bool? useDocCommentAsDescription,
     SerializedFormat? serializedFormat,
   }) {
@@ -182,6 +273,8 @@ class FieldData {
       extensions: extensions ?? this.extensions,
       fieldName: fieldName ?? this.fieldName,
       serializedValue: serializedValue ?? this.serializedValue,
+      serializedValueIsString:
+          serializedValueIsString ?? this.serializedValueIsString,
       useDocCommentAsDescription:
           useDocCommentAsDescription ?? this.useDocCommentAsDescription,
       serializedFormat: serializedFormat ?? this.serializedFormat,
