@@ -15,6 +15,8 @@ class FieldData {
     required this.enumName,
     required this.docComment,
     required this.description,
+    required this.intValue,
+    required this.index,
     required this.fieldName,
     required this.readableName,
     required this.serializedValue,
@@ -27,7 +29,8 @@ class FieldData {
   /// {@macro enum_assist.enum_field}
   ///
   /// Retrieves data from the annotation & merges it with [classConfig]
-  factory FieldData.config(FieldElement element, ClassConfig classConfig) {
+  factory FieldData.config(
+      FieldElement element, ClassConfig classConfig, int index) {
     final extensions = ExtensionConfig.resolve(element);
 
     final object = enumKeyChecker.getObjectFromAnnotation(element);
@@ -36,6 +39,8 @@ class FieldData {
     final readable = reader.peek('readable')?.stringValue;
 
     final description = reader.peek('description')?.stringValue;
+
+    final intValue = reader.peek('intValue')?.intValue;
 
     final serializedReader = reader.peek('serializedValue');
 
@@ -124,6 +129,8 @@ class FieldData {
       enumName: classConfig.enumName,
       docComment: element.documentationComment,
       description: description,
+      intValue: intValue,
+      index: index,
       fieldName: element.name,
       readableName: readable,
       serializedValue: serializedValue,
@@ -145,6 +152,12 @@ class FieldData {
 
   /// [EnumKey.description]
   final String? description;
+
+  /// [EnumKey.intValue]
+  final int? intValue;
+
+  /// The index of the field in the enum
+  final int index;
 
   /// The name of the enum
   final String enumName;
@@ -257,6 +270,8 @@ class FieldData {
     String? readableName,
     String? docComment,
     String? description,
+    int? intValue,
+    int? index,
     String? enumName,
     Map<String, ExtensionConfig>? extensions,
     String? fieldName,
@@ -269,6 +284,8 @@ class FieldData {
       readableName: readableName ?? this.readableName,
       docComment: docComment ?? this.docComment,
       description: description ?? this.description,
+      intValue: intValue ?? this.intValue,
+      index: index ?? this.index,
       enumName: enumName ?? this.enumName,
       extensions: extensions ?? this.extensions,
       fieldName: fieldName ?? this.fieldName,

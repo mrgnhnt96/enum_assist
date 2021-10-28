@@ -35,15 +35,32 @@ abstract class HelperCore {
   Iterable<FieldData> get fieldData {
     final fields = <FieldData>[];
 
+    var index = 0;
     for (final field in element.fields) {
       if (!field.isEnumConstant) continue;
 
-      final data = FieldData.config(field, config);
+      final data = FieldData.config(field, config, index++);
 
       fields.add(data);
     }
 
     return fields;
+  }
+
+  @protected
+  Iterable<int> get intValues {
+    final values = <int>[];
+
+    for (final field in fieldData) {
+      if (field.index == 0) {
+        values.add(field.intValue ?? 0);
+        continue;
+      }
+
+      values.add(field.intValue ?? values.last + 1);
+    }
+
+    return values;
   }
 
   /// Returns all enum's field names, [FieldData.fieldName]

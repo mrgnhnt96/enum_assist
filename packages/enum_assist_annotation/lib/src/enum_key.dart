@@ -1,18 +1,5 @@
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 
-// TODO: Add `toInt` method
-// it would be 0 indexed & increment based off of the previous enum field value
-
-/*
-enum Test {one, two = 200, three, four}
-
-I'd expect this to print like this
-print(Test.one.index); // 0
-print(Test.two.index); // 200
-print(Test.three.index); // 201
-print(Test.four.index); // 202
-*/
-
 /// {@template enum_assist_annotation.enum_key}
 /// Annotation to assist in generating code for enum values.
 /// {@endtemplate}
@@ -34,6 +21,11 @@ print(Test.four.index); // 202
 ///
 /// ---
 ///
+/// ## Int Value
+/// {@macro enum_assist_annotation.enum_key.int_value}
+///
+/// ---
+///
 /// ## Use Doc Comment As Description
 /// {@macro enum_assist_annotation.enum_assist.use_doc_comment_as_description}
 ///
@@ -46,6 +38,7 @@ class EnumKey {
   const EnumKey({
     this.readable,
     this.description,
+    this.intValue,
     this.serializedValue,
     this.useDocCommentAsDescription,
     this.extensions,
@@ -72,6 +65,19 @@ class EnumKey {
   /// (either annotation or build.yaml file)
   /// {@endtemplate}
   final String? description;
+
+  /// {@template enum_assist_annotation.enum_key.int_value}
+  /// The enum value converted to an integer\
+  /// Incremented by 1 based on the previous enum value
+  ///
+  /// (e.g. `one` => 0, `two` => 200, `three` => 201, `four` => 202)
+  ///
+  /// Extension Method: `toInt`
+  ///
+  /// __default:__ 0 indexed & incremented by 1
+  ///
+  /// {@endtemplate}
+  final int? intValue;
 
   /// {@template enum_assist_annotation.enum_key.serialized_value}
   /// The serialized represenation of the enum value.
