@@ -57,13 +57,10 @@ class FieldData {
         final enumAndField =
             '${element.getter?.declaration}'.replaceAll(' get ', '.');
 
-        throw EnumException(
-          error: 'Invalid Serialized Value Type',
+        throw InvalidSerializedTypeException(
           where: enumAndField,
           what: '"$enumAndField" has been assigned an '
               'invalid type for the field `serializedValue`',
-          rule: '`serializedValue` can be types '
-              '`String` and `int`',
           fix: 'Change the value in "$enumAndField" for the '
               '`serializedValue` field',
         );

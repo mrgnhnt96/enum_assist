@@ -31,15 +31,10 @@ abstract class AdditionalExtensionsGeneratorHelper implements HelperCore {
 
         if (field == null) continue;
 
-        throw EnumException(
-          error: 'Missing Declared Extension',
+        throw MissingDeclaredExtensionException(
           where: field.wholeName,
           what: '${field.wholeName} is missing method "$name", '
               'which comes from "${extension.valueClassName}"',
-          rule: 'If the method is a type `MapExtension` and `allowNulls` is '
-              'equal to `false` (default), then each field must be annotated '
-              'with @EnumValue & contain the method within the '
-              '`extensions: [...]` argument',
           fix: 'Make sure the `@EnumValue` annotation '
               'is on "${field.wholeName}". Then '
               'add the extension "$name" via '

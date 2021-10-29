@@ -150,12 +150,10 @@ void _checkIfMethodNameIsUniqueToClass(
 
     final classesInError = classes.join(' & ');
 
-    throw EnumException(
-      error: 'Duplicated Method Name',
+    throw DuplicateMethodException(
       where: enumAndField,
       what: 'The method "$methodName" has been '
           'defined in $classesInError',
-      rule: 'Method names must be unique.',
       fix: 'Double Check $classesInError, and change one of the '
           'method names from "$methodName" and try again',
     );
@@ -174,12 +172,10 @@ void _checkIfMethodNameIsUniqueToClass(
   if (existingMethodName == methodName) return;
 
   // [methodName] did not match [existingMethodName]
-  throw EnumException(
-    error: 'Duplicated Method Name',
+  throw DuplicateMethodException(
     where: enumAndField,
     what: '$className has different method names assigned, '
         '"$existingMethodName" and "$methodName" were found',
-    rule: 'Method names must be unique for each `enum`',
     fix: 'Double Check $className, and change one of the '
         'method names from "$methodName" or $existingMethodName '
         'and try again',
@@ -205,13 +201,10 @@ Map<String, String> _checkForDuplicateDeclarations(
   ) {
     if (!topLevel.containsKey(extClassName)) return;
 
-    throw EnumException(
-      error: 'Duplicated Extension Declaration',
+    throw DuplicateExtensionException(
       where: enumAndField,
       what: 'The extension "$extClassName" has been '
           'declared already for $enumAndField',
-      rule: 'Extensions can only be declared '
-          'once for a single enum field',
       fix: 'Double check the argument '
           '`extensions: [...]` in $enumAndField '
           '& change or remove a `$extClassName` declaration',
@@ -279,12 +272,8 @@ void _throwIfMissingField({
 
     final whatsMissing = missingFields.join(', ');
 
-    throw EnumException(
-      error: 'Missing Required Fields',
+    throw MissingFieldException(
       where: enumAndField,
-      rule: 'All methods must have a method name [methodName], '
-          'method type, a value, and whether `null`s may '
-          'be a return value [allowNulls]',
       what: 'The extension "$extensionClassName" is missing '
           'the following fields: $whatsMissing',
       fix: 'Double check $extensionClassName, found in the argument '
@@ -315,10 +304,8 @@ void _throwIfNullValueOnNonNullReturn({
   // nulls are allowed for maybeMap
   if (methodType.map(map: false, maybeMap: true)) return;
 
-  throw EnumException(
-    error: 'Null Value on Non-Null Return Type',
+  throw NullReturnedOnNonNullException(
     where: enumAndField,
-    rule: 'On `.map()` methods, return `null` only when [allowNulls] is `true`',
     what: 'The value defined by extension "$extensionClassName"  is `null`, '
         'but the return type is not nullable',
     fix: 'Set "$extensionClassName" the return type to a non-null value OR '
