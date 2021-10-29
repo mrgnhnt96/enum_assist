@@ -783,6 +783,7 @@ targets:
           # default: true
           create_json_conv: true
 
+          # possible values:
           # - camel
           # - capital
           # - constant
