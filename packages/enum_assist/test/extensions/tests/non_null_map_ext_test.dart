@@ -1,12 +1,12 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:test/test.dart';
 
-import '../integration/null_map_ext.dart';
-import '../integration/util/util.dart';
-import '../src/util/nullable_values.dart';
+import '../../src/util/nullable_values.dart';
+import '../integration/non_null_map_ext.dart';
+import '../util/util.dart';
 
 void main() {
-  const fileName = 'null_map_ext';
+  const fileName = 'non_null_map_ext';
   late LibraryElement main;
 
   setUp(() async {
@@ -22,32 +22,32 @@ void main() {
   group('$Animal', () {
     group('#list', () {
       test('should return value from key annotation', () {
-        List<int>? getValue(Animal value) {
+        List<int> getValue(Animal value) {
           return value.map(
             dog: [20],
-            cat: null,
+            cat: [100, 200, 300],
             mouse: [400, 500, 600],
           );
         }
 
         for (final value in Animal.values) {
-          expect(value.listInt, getValue(value));
+          expect(value.list, getValue(value));
         }
       });
     });
 
-    test('should return nullable type', () {
+    test('should return non nullable type', () {
       final value = Animal.values.first;
 
-      isNullable(value.listInt);
+      isNotNullable(value.list);
     });
 
     group('#mapExt', () {
       test('should return value from key annotation', () {
-        Map<String, int>? getValue(Animal value) {
+        Map<String, int> getValue(Animal value) {
           return value.map(
             dog: {'': 20},
-            cat: null,
+            cat: {'a': 100, 'b': 200, 'c': 300},
             mouse: {'a': 400, 'b': 500, 'c': 600},
           );
         }
@@ -58,20 +58,20 @@ void main() {
       });
     });
 
-    test('should return nullable type', () {
+    test('should return non nullable type', () {
       final value = Animal.values.first;
 
-      isNullable(value.mapInt);
+      isNotNullable(value.mapInt);
     });
   });
 
   group('$Familia', () {
     group('#translation', () {
       test('should return value from key annotation', () {
-        Translation? getValue(Familia value) {
+        Translation getValue(Familia value) {
           return value.map(
             madre: const Translation('mom'),
-            padre: null,
+            padre: const Translation('dad'),
             hijo: const Translation('son'),
           );
         }
@@ -82,19 +82,19 @@ void main() {
       });
     });
 
-    test('should return nullable type', () {
+    test('should return non nullable type', () {
       final value = Familia.values.first;
 
-      isNullable(value.translation);
+      isNotNullable(value.translation);
     });
 
     group('#apodo', () {
       test('should return value from key annotation', () {
-        List<Apodo>? getValue(Familia value) {
+        List<Apodo> getValue(Familia value) {
           return value.map(
             madre: const [Apodo('la jefa'), Apodo('some cool name')],
-            padre: const [],
-            hijo: null,
+            padre: const [Apodo('peluche'), Apodo('some cool name')],
+            hijo: const [Apodo('moco'), Apodo('[{some cool{, } name}]')],
           );
         }
 
@@ -104,10 +104,10 @@ void main() {
       });
     });
 
-    test('should return nullable type', () {
+    test('should return non nullable type', () {
       final value = Familia.values.first;
 
-      isNullable(value.apodo);
+      isNotNullable(value.apodo);
     });
   });
 
@@ -125,10 +125,10 @@ void main() {
         }
       });
 
-      test('should return nullable type', () {
+      test('should return non nullable type', () {
         final value = Superhero.values.first;
 
-        isNullable(value.boolExt);
+        isNotNullable(value.boolExt);
       });
     });
 
@@ -145,10 +145,10 @@ void main() {
         }
       });
 
-      test('should return nullable type', () {
+      test('should return non nullable type', () {
         final value = Superhero.values.first;
 
-        isNullable(value.intExt);
+        isNotNullable(value.intExt);
       });
     });
 
@@ -165,10 +165,10 @@ void main() {
         }
       });
 
-      test('should return nullable type', () {
+      test('should return non nullable type', () {
         final value = Superhero.values.first;
 
-        isNullable(value.doubleExt);
+        isNotNullable(value.doubleExt);
       });
     });
 
@@ -185,10 +185,10 @@ void main() {
         }
       });
 
-      test('should return nullable type', () {
+      test('should return non nullable type', () {
         final value = Superhero.values.first;
 
-        isNullable(value.stringExt);
+        isNotNullable(value.stringExt);
       });
     });
 
@@ -205,10 +205,10 @@ void main() {
         }
       });
 
-      test('should return nullable type', () {
+      test('should return non nullable type', () {
         final value = Superhero.values.first;
 
-        isNullable(value.enumExt);
+        isNotNullable(value.enumExt);
       });
     });
 
@@ -225,10 +225,10 @@ void main() {
         }
       });
 
-      test('should return nullable type', () {
+      test('should return non nullable type', () {
         final value = Superhero.values.first;
 
-        isNullable(value.listExt);
+        isNotNullable(value.listExt);
       });
     });
 
@@ -245,10 +245,10 @@ void main() {
         }
       });
 
-      test('should return nullable type', () {
+      test('should return non nullable type', () {
         final value = Superhero.values.first;
 
-        isNullable(value.mapExt);
+        isNotNullable(value.mapExt);
       });
     });
   });

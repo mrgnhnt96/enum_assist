@@ -1,11 +1,11 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:test/test.dart';
 
-import '../integration/use_int_value_for_serialization.dart';
-import '../integration/util/util.dart';
+import '../integration/int_value.dart';
+import '../util/util.dart';
 
 void main() {
-  const fileName = 'use_int_value_for_serialization';
+  const fileName = 'int_value';
   late LibraryElement main;
 
   setUp(() async {
@@ -20,7 +20,7 @@ void main() {
 
   group('$Animal', () {
     test('should return value from key annotation', () {
-      Object getValue(Animal value) {
+      int getValue(Animal value) {
         return value.map(
           dog: 0,
           cat: 1,
@@ -29,14 +29,14 @@ void main() {
       }
 
       for (final value in Animal.values) {
-        expect(value.serialized, getValue(value));
+        expect(value.toInt, getValue(value));
       }
     });
   });
 
   group('$Letters', () {
     test('should return value from key annotation', () {
-      Object getValue(Letters value) {
+      int getValue(Letters value) {
         return value.map(
           handWritten: 0,
           email: 1,
@@ -45,39 +45,56 @@ void main() {
       }
 
       for (final value in Letters.values) {
-        expect(value.serialized, getValue(value));
+        expect(value.toInt, getValue(value));
       }
     });
   });
 
   group('$Familia', () {
     test('should return value from key annotation', () {
-      Object getValue(Familia value) {
+      int getValue(Familia value) {
         return value.map(
-          madre: 101,
-          padre: 102,
-          hijo: 103,
+          madre: 3,
+          padre: 4,
+          hijo: 5,
         );
       }
 
       for (final value in Familia.values) {
-        expect(value.serialized, getValue(value));
+        expect(value.toInt, getValue(value));
       }
     });
   });
 
   group('$Candy', () {
     test('should return value from key annotation', () {
-      Object getValue(Candy value) {
+      int getValue(Candy value) {
         return value.map(
-          skittles: 0,
-          butterfinger: 200,
-          reeses: 201,
+          skittles: 6,
+          butterfinger: 7,
+          reeses: 8,
         );
       }
 
       for (final value in Candy.values) {
-        expect(value.serialized, getValue(value));
+        expect(value.toInt, getValue(value));
+      }
+    });
+  });
+
+  group('$Soda', () {
+    test('should return value from key annotation', () {
+      int getValue(Soda value) {
+        return value.map(
+          coke: 0,
+          pepsi: 200,
+          sprite: 201,
+          fanta: 4,
+        );
+      }
+
+      for (final value in Soda.values) {
+        expect(value.toInt, getValue(value));
       }
     });
   });

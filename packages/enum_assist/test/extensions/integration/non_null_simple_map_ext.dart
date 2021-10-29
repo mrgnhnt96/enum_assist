@@ -1,6 +1,6 @@
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 
-import 'util/far_ext.dart';
+import '../util/far_ext.dart';
 
 part 'non_null_simple_map_ext.ge.dart';
 

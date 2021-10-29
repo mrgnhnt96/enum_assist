@@ -2,7 +2,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:test/test.dart';
 
 import '../integration/serialized_format.dart';
-import '../integration/util/util.dart';
+import '../util/util.dart';
 
 void main() {
   const fileName = 'serialized_format';

@@ -1,9 +1,9 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:test/test.dart';
 
+import '../../src/util/nullable_values.dart';
 import '../integration/non_null_simple_map_ext.dart';
-import '../integration/util/util.dart';
-import '../src/util/nullable_values.dart';
+import '../util/util.dart';
 
 void main() {
   const fileName = 'non_null_simple_map_ext';

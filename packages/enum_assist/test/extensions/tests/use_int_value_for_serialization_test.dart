@@ -1,11 +1,11 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:test/test.dart';
 
-import '../integration/serialized_value.dart';
-import '../integration/util/util.dart';
+import '../integration/use_int_value_for_serialization.dart';
+import '../util/util.dart';
 
 void main() {
-  const fileName = 'serialized_value';
+  const fileName = 'use_int_value_for_serialization';
   late LibraryElement main;
 
   setUp(() async {
@@ -22,9 +22,9 @@ void main() {
     test('should return value from key annotation', () {
       Object getValue(Animal value) {
         return value.map(
-          dog: 'dog',
-          cat: 'cat',
-          mouse: 'mouse',
+          dog: 0,
+          cat: 1,
+          mouse: 2,
         );
       }
 
@@ -38,9 +38,9 @@ void main() {
     test('should return value from key annotation', () {
       Object getValue(Letters value) {
         return value.map(
-          handWritten: 'handWritten',
-          email: 'email',
-          hate: 'hate',
+          handWritten: 0,
+          email: 1,
+          hate: 2,
         );
       }
 
@@ -54,9 +54,9 @@ void main() {
     test('should return value from key annotation', () {
       Object getValue(Familia value) {
         return value.map(
-          madre: 1,
-          padre: 2,
-          hijo: 3,
+          madre: 101,
+          padre: 102,
+          hijo: 103,
         );
       }
 
@@ -70,11 +70,9 @@ void main() {
     test('should return value from key annotation', () {
       Object getValue(Candy value) {
         return value.map(
-          skittles: 'Familia.madre',
-          butterfinger: 'butterfinger',
-          reeses: 1,
-          kitkat: 2,
-          snickers: 3,
+          skittles: 0,
+          butterfinger: 200,
+          reeses: 201,
         );
       }
 

@@ -1,13 +1,14 @@
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 
-import 'util/far_ext.dart';
+import '../util/far_ext.dart';
 
-part 'null_simple_map_ext.ge.dart';
+part 'null_simple_maybe_ext.ge.dart';
 
-class NullNumExt extends MapExtension<int?> {
+class NullNumExt extends MaybeExtension<int?> {
   const NullNumExt([int? value = 12])
       : super(
           value,
+          defaultValue: 10,
           methodName: 'small num',
           allowNulls: true,
         );
@@ -27,26 +28,25 @@ enum Animal {
 enum BodyParts {
   @EnumValue()
   head,
-  @EnumValue(extensions: [NullFarMapExt()])
+  @EnumValue(extensions: [NullFarMaybeExt()])
   body,
-  @EnumValue(extensions: [NullFarMapExt(3.01)])
+  @EnumValue(extensions: [NullFarMaybeExt(3.01)])
   leg,
 }
 
-class NullDurationExt extends MapExtension<Duration?> {
-  const NullDurationExt({Duration? value = const Duration(days: 1)})
-      : super(
-          value,
-          methodName: 'Duration',
-          allowNulls: true,
-        );
+class NullDurationExt extends MaybeExtension<Duration?> {
+  const NullDurationExt({Duration? value = const Duration(days: 5)})
+      : super(value,
+            methodName: 'Duration',
+            allowNulls: true,
+            defaultValue: const Duration(days: 1));
 }
 
 @EnumAssist()
 enum Family {
   @EnumValue(extensions: [NullDurationExt()])
   mom,
-  @EnumValue(extensions: [NullDurationExt(value: Duration(days: 2))])
+  @EnumValue(extensions: [])
   dad,
   @EnumValue(extensions: [NullDurationExt(value: null)])
   kid,

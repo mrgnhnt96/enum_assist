@@ -1,12 +1,12 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:test/test.dart';
 
-import '../integration/null_maybe_ext.dart';
-import '../integration/util/util.dart';
-import '../src/util/nullable_values.dart';
+import '../../src/util/nullable_values.dart';
+import '../integration/null_map_ext.dart';
+import '../util/util.dart';
 
 void main() {
-  const fileName = 'null_maybe_ext';
+  const fileName = 'null_map_ext';
   late LibraryElement main;
 
   setUp(() async {
@@ -26,7 +26,7 @@ void main() {
           return value.map(
             dog: [20],
             cat: null,
-            mouse: [10],
+            mouse: [400, 500, 600],
           );
         }
 
@@ -48,7 +48,7 @@ void main() {
           return value.map(
             dog: {'': 20},
             cat: null,
-            mouse: {'': 10},
+            mouse: {'a': 400, 'b': 500, 'c': 600},
           );
         }
 
@@ -72,7 +72,7 @@ void main() {
           return value.map(
             madre: const Translation('mom'),
             padre: null,
-            hijo: const Translation('default'),
+            hijo: const Translation('son'),
           );
         }
 
@@ -93,8 +93,8 @@ void main() {
         List<Apodo>? getValue(Familia value) {
           return value.map(
             madre: const [Apodo('la jefa'), Apodo('some cool name')],
-            padre: null,
-            hijo: const [Apodo('default')],
+            padre: const [],
+            hijo: null,
           );
         }
 

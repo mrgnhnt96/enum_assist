@@ -1,7 +1,7 @@
 import 'package:test/test.dart';
 
 import '../integration/create_json_conv.dart';
-import '../integration/util/util.dart';
+import '../util/util.dart';
 
 void main() {
   const fileName = 'create_json_conv';
