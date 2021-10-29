@@ -90,7 +90,7 @@ class MissingFieldException extends EnumException {
           what: what,
           rule: 'All methods must have a method name [methodName], '
               'method type, a value, and whether `null`s may '
-              'be a return value [allowNulls]',
+              'be a return value, defined by [allowNulls]',
           fix: fix,
         );
 }
