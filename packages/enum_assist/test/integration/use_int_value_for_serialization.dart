@@ -11,17 +11,17 @@ enum Animal {
 
 @EnumAssist(useIntValueForSerialization: true)
 enum Letters {
-  @EnumKey(serializedValue: 'handWritten')
+  @EnumValue(serializedValue: 'handWritten')
   handWritten,
-  @EnumKey(serializedValue: 'email')
+  @EnumValue(serializedValue: 'email')
   email,
-  @EnumKey(serializedValue: 'hate')
+  @EnumValue(serializedValue: 'hate')
   hate,
 }
 
 @EnumAssist(useIntValueForSerialization: true)
 enum Familia {
-  @EnumKey(intValue: 101)
+  @EnumValue(intValue: 101)
   madre,
   padre,
   hijo,
@@ -29,10 +29,10 @@ enum Familia {
 
 @EnumAssist(useIntValueForSerialization: true)
 enum Candy {
-  @EnumKey(serializedValue: 'Familia.madre')
+  @EnumValue(serializedValue: 'Familia.madre')
   skittles,
-  @EnumKey(serializedValue: null, intValue: 200)
+  @EnumValue(serializedValue: null, intValue: 200)
   butterfinger,
-  @EnumKey(serializedValue: 1)
+  @EnumValue(serializedValue: 1)
   reeses,
 }

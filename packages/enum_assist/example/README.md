@@ -23,7 +23,7 @@ The [`MapExtension`] class also has an `allowNulls` argument, which defaults to 
   This can be set to `true` to change the return type nullable.
 
 Next, we need to add our extension to the enum.\
-This can be done by annotating the enum's values with [`EnumKey`],
+This can be done by annotating the enum's values with [`EnumValue`],
 And then adding the extension to the `extensions` field.
 
 > __Note__:\
@@ -33,21 +33,21 @@ _Failure to do so will result in an error when generating the code._
 ```dart
 @EnumAssist()
 enum Greeting {
-  @EnumKey(
+  @EnumValue(
     extensions: [
       ResponseExt('Hello, how do you do?'),
     ],
   )
   professional,
 
-  @EnumKey(
+  @EnumValue(
     extensions: [
       ResponseExt('Hey! Hows it going?'),
     ],
   )
   friendly,
 
-  @EnumKey(
+  @EnumValue(
     extensions: [
       ResponseExt('Whats up my dude!?'),
     ],
@@ -96,7 +96,7 @@ The [`MaybeExtension`] class also has an `allowNulls` argument, which defaults t
 > ```
 
 Next, we need to add our extension to the enum.\
-This can be done by adding the [`EnumKey`] annotation to ___any enum field___.
+This can be done by adding the [`EnumValue`] annotation to ___any enum field___.
 And then adding the extension to the `extensions` list.
 
 ```dart
@@ -104,14 +104,14 @@ And then adding the extension to the `extensions` list.
 enum Greeting {
   professional,
 
-  @EnumKey(
+  @EnumValue(
     extensions: [
       IsCoolExt(true),
     ],
   )
   friendly,
 
-  @EnumKey(
+  @EnumValue(
     extensions: [
       IsCoolExt(true),
     ],
@@ -121,7 +121,7 @@ enum Greeting {
 ```
 
 > __Notice This__:\
-We did not annotate `professional` with [`EnumKey`] or `IsCoolExt`.\
+We did not annotate `professional` with [`EnumValue`] or `IsCoolExt`.\
   This is because `.maybeMap(...)` doesn't require all callbacks to be defined.
 >
 > The generator will use the `defaultValue` from `IsCoolExt` as the return value.
@@ -136,7 +136,7 @@ Greeting.professional.isCool; // false
 ```
 
 
-[`EnumKey`]: https://github.com/mrgnhnt96/enum_assist/blob/main/packages/enum_assist_annotation/lib/src/enum_key.dart
+[`EnumValue`]: https://github.com/mrgnhnt96/enum_assist/blob/main/packages/enum_assist_annotation/lib/src/enum_key.dart
 [build_runner]: https://pub.dev/packages/build_runner
 [`MapExtension`]: https://github.com/mrgnhnt96/enum_assist/blob/main/packages/enum_assist_annotation/lib/src/map_extension.dart
 [`MaybeExtension`]: https://github.com/mrgnhnt96/enum_assist/blob/main/packages/enum_assist_annotation/lib/src/maybe_extension.dart

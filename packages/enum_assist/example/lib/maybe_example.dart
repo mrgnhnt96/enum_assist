@@ -41,16 +41,16 @@ class FactorsExt extends MaybeExtension<List<int>> {
 
 @EnumAssist()
 enum Example {
-  @EnumKey(extensions: [
+  @EnumValue(extensions: [
     NumberExt(1),
     FactorsExt([1, 3]),
     IsImportant(true),
   ])
   one,
 
-  @EnumKey(extensions: [])
+  @EnumValue(extensions: [])
   two,
 
-  @EnumKey(extensions: [])
+  @EnumValue(extensions: [])
   three,
 }

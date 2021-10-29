@@ -12,34 +12,34 @@ enum Animal {
 
 @EnumAssist()
 enum Letters {
-  @EnumKey(serializedValue: 'handWritten')
+  @EnumValue(serializedValue: 'handWritten')
   handWritten,
-  @EnumKey(serializedValue: 'email')
+  @EnumValue(serializedValue: 'email')
   email,
-  @EnumKey(serializedValue: 'hate')
+  @EnumValue(serializedValue: 'hate')
   hate,
 }
 
 @EnumAssist()
 enum Familia {
-  @EnumKey(serializedValue: 1)
+  @EnumValue(serializedValue: 1)
   madre,
-  @EnumKey(serializedValue: 2)
+  @EnumValue(serializedValue: 2)
   padre,
-  @EnumKey(serializedValue: 3)
+  @EnumValue(serializedValue: 3)
   hijo,
 }
 
 @EnumAssist()
 enum Candy {
-  @EnumKey(serializedValue: 'Familia.madre')
+  @EnumValue(serializedValue: 'Familia.madre')
   skittles,
-  @EnumKey(serializedValue: null)
+  @EnumValue(serializedValue: null)
   butterfinger,
-  @EnumKey(serializedValue: 1 as int)
+  @EnumValue(serializedValue: 1 as int)
   reeses,
-  @EnumKey(serializedValue: 2 as num)
+  @EnumValue(serializedValue: 2 as num)
   kitkat,
-  @EnumKey(serializedValue: 3)
+  @EnumValue(serializedValue: 3)
   snickers,
 }

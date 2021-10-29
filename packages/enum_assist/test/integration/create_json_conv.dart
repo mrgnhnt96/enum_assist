@@ -15,11 +15,11 @@ enum Animal {
   createJsonConv: false,
 )
 enum Letters {
-  @EnumKey(serializedValue: 'handWrittenValue')
+  @EnumValue(serializedValue: 'handWrittenValue')
   handWritten,
-  @EnumKey(serializedValue: 'emailValue')
+  @EnumValue(serializedValue: 'emailValue')
   email,
-  @EnumKey(serializedValue: 'hateValue')
+  @EnumValue(serializedValue: 'hateValue')
   hate,
 }
 

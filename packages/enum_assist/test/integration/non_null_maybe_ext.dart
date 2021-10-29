@@ -32,15 +32,15 @@ class MapIntExt extends MaybeExtension<Map<String, int>> {
 
 @EnumAssist()
 enum Animal {
-  @EnumKey(extensions: [])
+  @EnumValue(extensions: [])
   dog,
-  @EnumKey(extensions: [
+  @EnumValue(extensions: [
     ListIntExt(),
     MapIntExt(),
     NullableExt(),
   ])
   cat,
-  @EnumKey(extensions: [
+  @EnumValue(extensions: [
     ListIntExt([400, 500, 600]),
     MapIntExt({'a': 400, 'b': 500, 'c': 600}),
   ])
@@ -101,14 +101,14 @@ class ApodoExt extends MaybeExtension<List<Apodo>> {
 
 @EnumAssist()
 enum Familia {
-  @EnumKey()
+  @EnumValue()
   madre,
-  @EnumKey(extensions: [
+  @EnumValue(extensions: [
     TranslationExt(Translation('dad')),
     ApodoExt([Apodo('peluche'), Apodo('some cool name')]),
   ])
   padre,
-  @EnumKey(extensions: [
+  @EnumValue(extensions: [
     TranslationExt(Translation('son')),
     ApodoExt([Apodo('moco'), Apodo('[{some cool{, } name}]')]),
   ])
@@ -180,7 +180,7 @@ class MapExt extends MaybeExtension<Map<String, int>> {
 
 @EnumAssist()
 enum Superhero {
-  @EnumKey(extensions: [
+  @EnumValue(extensions: [
     BoolExt(),
     IntExt(),
     DoubleExt(),

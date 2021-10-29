@@ -38,9 +38,9 @@ abstract class AdditionalExtensionsGeneratorHelper implements HelperCore {
               'which comes from "${extension.valueClassName}"',
           rule: 'If the method is a type `MapExtension` and `allowNulls` is '
               'equal to `false` (default), then each field must be annotated '
-              'with @EnumKey & contain the method within the '
+              'with @EnumValue & contain the method within the '
               '`extensions: [...]` argument',
-          fix: 'Make sure the `@EnumKey` annotation '
+          fix: 'Make sure the `@EnumValue` annotation '
               'is on "${field.wholeName}". Then '
               'add the extension "$name" via '
               'the class "${extension.valueClassName}" '

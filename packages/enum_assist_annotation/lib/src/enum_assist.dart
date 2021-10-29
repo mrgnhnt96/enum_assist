@@ -15,7 +15,8 @@ import 'package:meta/meta_meta.dart';
 ///
 /// - name
 ///    - Returns the name of the enum value
-///    - Formats the field to capital case unless overridden with @EnumKey.name
+///    - Formats the field to capital case unless
+///      overridden with @EnumValue.name
 ///
 /// - toInt
 ///   - Returns the int value of the enum field
@@ -23,15 +24,15 @@ import 'package:meta/meta_meta.dart';
 /// - description
 ///    - Returns the description of the enum field
 ///    - Uses the doc comment of the field unless overridden with
-///        @EnumKey.description or
+///        @EnumValue.description or
 ///        @EnumAssist.useDocCommentAsDescription is set to false
 ///        (either annotation or build.yaml file)
-///    - Uses the @EnumKey.description if overridden in annotation
+///    - Uses the @EnumValue.description if overridden in annotation
 ///
 /// - serialized
 ///    - Returns the serialized value of the enum field, the default
 ///        format is the name of the enum value
-///    - Uses the @EnumKey.serialized if overridden in annotation
+///    - Uses the @EnumValue.serialized if overridden in annotation
 ///    - Can be formatted via @EnumAssist.serializedFormat
 ///        (either annotation or build.yaml file)
 ///
@@ -91,10 +92,10 @@ class EnumAssist {
   /// {@template enum_assist_annotation.enum_assist.use_doc_comment_as_description}
   /// Whether to use the doc comment of the enum for the `description` method.
   ///
-  /// [EnumKey.description] will override the doc comment description.
+  /// [EnumValue.description] will override the doc comment description.
   ///
   /// If false, the description will return `null`
-  /// unless overridden by [EnumKey.description].
+  /// unless overridden by [EnumValue.description].
   ///
   /// __default:__ `true`
   /// {@endtemplate}
@@ -104,7 +105,7 @@ class EnumAssist {
   /// Whether to use the `toInt` value of the enum field for toJson/fromJson
   /// & `serialized` method.
   ///
-  /// Setting this to `true` will override the [EnumKey.serialized] value.
+  /// Setting this to `true` will override the [EnumValue.serialized] value.
   ///
   /// __default:__ `false`
   /// {@endtemplate}

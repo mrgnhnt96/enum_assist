@@ -15,21 +15,21 @@ class NullNumExt extends MapExtension<int?> {
 
 @EnumAssist()
 enum Animal {
-  @EnumKey()
+  @EnumValue()
   dog,
-  @EnumKey(extensions: [])
+  @EnumValue(extensions: [])
   cat,
-  @EnumKey(extensions: [NullNumExt(null)])
+  @EnumValue(extensions: [NullNumExt(null)])
   mouse,
 }
 
 @EnumAssist()
 enum BodyParts {
-  @EnumKey()
+  @EnumValue()
   head,
-  @EnumKey(extensions: [NullFarMapExt()])
+  @EnumValue(extensions: [NullFarMapExt()])
   body,
-  @EnumKey(extensions: [NullFarMapExt(3.01)])
+  @EnumValue(extensions: [NullFarMapExt(3.01)])
   leg,
 }
 
@@ -44,10 +44,10 @@ class NullDurationExt extends MapExtension<Duration?> {
 
 @EnumAssist()
 enum Family {
-  @EnumKey(extensions: [NullDurationExt()])
+  @EnumValue(extensions: [NullDurationExt()])
   mom,
-  @EnumKey(extensions: [NullDurationExt(value: Duration(days: 2))])
+  @EnumValue(extensions: [NullDurationExt(value: Duration(days: 2))])
   dad,
-  @EnumKey(extensions: [NullDurationExt(value: null)])
+  @EnumValue(extensions: [NullDurationExt(value: null)])
   kid,
 }

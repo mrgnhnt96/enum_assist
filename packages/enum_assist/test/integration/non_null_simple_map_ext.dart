@@ -10,21 +10,21 @@ class NumExt extends MapExtension<int> {
 
 @EnumAssist()
 enum Animal {
-  @EnumKey(extensions: [NumExt()])
+  @EnumValue(extensions: [NumExt()])
   dog,
-  @EnumKey(extensions: [NumExt(200)])
+  @EnumValue(extensions: [NumExt(200)])
   cat,
-  @EnumKey(extensions: [NumExt(300)])
+  @EnumValue(extensions: [NumExt(300)])
   mouse,
 }
 
 @EnumAssist()
 enum BodyParts {
-  @EnumKey(extensions: [FarMapExt(1.01)])
+  @EnumValue(extensions: [FarMapExt(1.01)])
   head,
-  @EnumKey(extensions: [FarMapExt(2.01)])
+  @EnumValue(extensions: [FarMapExt(2.01)])
   body,
-  @EnumKey(extensions: [FarMapExt(3.01)])
+  @EnumValue(extensions: [FarMapExt(3.01)])
   leg,
 }
 
@@ -35,10 +35,10 @@ class DurationExt extends MapExtension<Duration> {
 
 @EnumAssist()
 enum Family {
-  @EnumKey(extensions: [DurationExt()])
+  @EnumValue(extensions: [DurationExt()])
   mom,
-  @EnumKey(extensions: [DurationExt(value: Duration(days: 2))])
+  @EnumValue(extensions: [DurationExt(value: Duration(days: 2))])
   dad,
-  @EnumKey(extensions: [DurationExt(value: Duration(days: 3))])
+  @EnumValue(extensions: [DurationExt(value: Duration(days: 3))])
   kid,
 }

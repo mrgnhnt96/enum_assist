@@ -96,7 +96,7 @@ value: $value
   ///
   /// Returns Map<[methodName], [ExtensionConfig]> from the [element]
   static Map<String, ExtensionConfig> resolve(FieldElement element) {
-    final object = FieldData.enumKeyChecker.getObjectFromAnnotation(element);
+    final object = FieldData.enumValueChecker.getObjectFromAnnotation(element);
     final reader = ConstantReader(object);
 
     final enumAndField =
@@ -216,7 +216,7 @@ value: $value
 
     final configs = <String, ExtensionConfig>{};
 
-    final data = element.getEnumKeyAnnotation();
+    final data = element.getEnumValueAnnotation();
 
     if (data != null) {
       final annotation = _getExtensionAnnotation(data);

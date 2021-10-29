@@ -33,7 +33,7 @@ class FieldData {
       FieldElement element, ClassConfig classConfig, int index) {
     final extensions = ExtensionConfig.resolve(element);
 
-    final object = enumKeyChecker.getObjectFromAnnotation(element);
+    final object = enumValueChecker.getObjectFromAnnotation(element);
     final reader = ConstantReader(object);
 
     final readable = reader.peek('readable')?.stringValue;
@@ -78,10 +78,10 @@ class FieldData {
       // checks if the value is not a literal
       final pattern = RegExp(r'\w+ \(\w+ = ');
       if (details.contains(pattern)) {
-        var annotation = element.getEnumKeyAnnotation()?.toSource();
+        var annotation = element.getEnumValueAnnotation()?.toSource();
         if (annotation != null) {
           annotation =
-              annotation.substring('@EnumKey('.length, annotation.length - 1);
+              annotation.substring('@EnumValue('.length, annotation.length - 1);
 
           // splits the arguments by ": "
           final namedArgPattern = RegExp(r'(\w+): (?![^(]*\))');
@@ -142,16 +142,16 @@ class FieldData {
     return data;
   }
 
-  /// [EnumKey.readable]
+  /// [EnumValue.readable]
   final String? readableName;
 
   /// Doc comment of the field
   final String? docComment;
 
-  /// [EnumKey.description]
+  /// [EnumValue.description]
   final String? description;
 
-  /// [EnumKey.intValue]
+  /// [EnumValue.intValue]
   final int? intValue;
 
   /// The index of the field in the enum
@@ -160,16 +160,16 @@ class FieldData {
   /// The name of the enum
   final String enumName;
 
-  /// [EnumKey.extensions]
+  /// [EnumValue.extensions]
   final Map<String, ExtensionConfig> extensions;
 
   /// The name of the field
   final String fieldName;
 
-  /// [EnumKey.serializedValue]
+  /// [EnumValue.serializedValue]
   final Object? serializedValue;
 
-  /// [EnumKey.useDocCommentAsDescription]
+  /// [EnumValue.useDocCommentAsDescription]
   final bool useDocCommentAsDescription;
 
   /// [EnumAssist.serializedFormat]
@@ -187,7 +187,7 @@ class FieldData {
     return extensions[methodName];
   }
 
-  /// [EnumKey.description]
+  /// [EnumValue.description]
   ///
   /// _prioritizes by order:_
   /// - [description]
@@ -202,7 +202,7 @@ class FieldData {
     return null;
   }
 
-  /// [EnumKey.readable]
+  /// [EnumValue.readable]
   ///
   /// _prioritizes by order:_
   /// [readableName]
@@ -215,7 +215,7 @@ class FieldData {
     return fieldName.toCapitalCase();
   }
 
-  /// [EnumKey.serializedValue]
+  /// [EnumValue.serializedValue]
   ///
   /// _prioritizes by order:_
   /// [serializedValue]
@@ -242,8 +242,8 @@ class FieldData {
   /// e.g. `MyEnum.myField`
   String get wholeName => '$enumName.$fieldName';
 
-  /// type checker for [EnumKey]
-  static const enumKeyChecker = TypeChecker.fromRuntime(EnumKey);
+  /// type checker for [EnumValue]
+  static const enumValueChecker = TypeChecker.fromRuntime(EnumValue);
 
   String _format(String s) {
     return serializedFormat.map(

@@ -30,7 +30,7 @@ abstract class HelperCore {
 
   /// Converts [FieldElement] to List<[FieldData]>
   ///
-  /// Converts all [EnumKey] annotations to [FieldData]
+  /// Converts all [EnumValue] annotations to [FieldData]
   @protected
   Iterable<FieldData> get fieldData {
     final fields = <FieldData>[];

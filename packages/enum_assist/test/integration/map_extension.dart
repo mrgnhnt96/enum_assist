@@ -15,15 +15,15 @@ class NullNumExtension extends MapExtension<int?> {
 @EnumAssist()
 enum Letters {
   /// handWritten doc comment
-  @EnumKey()
+  @EnumValue()
   handWritten,
 
   /// email doc comment
-  @EnumKey(extensions: [NullNumExtension(200)])
+  @EnumValue(extensions: [NullNumExtension(200)])
   email,
 
   /// hate doc comment
-  @EnumKey(extensions: [NullNumExtension()])
+  @EnumValue(extensions: [NullNumExtension()])
   hate,
 }
 
@@ -51,10 +51,10 @@ class MyClassValue extends MapExtension<MyClass> {
 
 @EnumAssist()
 enum Familia {
-  @EnumKey(extensions: [MyClassValue(MyClass('mama'))])
+  @EnumValue(extensions: [MyClassValue(MyClass('mama'))])
   madre,
-  @EnumKey(extensions: [MyClassValue(MyClass('papa'))])
+  @EnumValue(extensions: [MyClassValue(MyClass('papa'))])
   padre,
-  @EnumKey(extensions: [MyClassValue(MyClass('mijo'))])
+  @EnumValue(extensions: [MyClassValue(MyClass('mijo'))])
   hijo,
 }

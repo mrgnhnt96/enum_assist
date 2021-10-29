@@ -37,17 +37,17 @@ class FactorsExt extends MapExtension<List<int>> {
 
 @EnumAssist()
 enum Example {
-  @EnumKey(extensions: [
+  @EnumValue(extensions: [
     NumberExt(1),
     FactorsExt([1, 3]),
     IsImportant(true),
   ])
   one,
 
-  @EnumKey(extensions: [NumberExt(2), FactorsExt()])
+  @EnumValue(extensions: [NumberExt(2), FactorsExt()])
   two,
 
-  @EnumKey(extensions: [
+  @EnumValue(extensions: [
     NumberExt(3),
     FactorsExt([1, 3]),
   ])

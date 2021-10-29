@@ -1,28 +1,28 @@
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 
-/// {@template enum_assist_annotation.enum_key}
+/// {@template enum_assist_annotation.enum_value}
 /// Annotation to assist in generating code for enum values.
 /// {@endtemplate}
 ///
 /// ---
 ///
 /// ## Name
-/// {@macro enum_assist_annotation.enum_key.name}
+/// {@macro enum_assist_annotation.enum_value.name}
 ///
 /// ---
 ///
 /// ## Description
-/// {@macro enum_assist_annotation.enum_key.description}
+/// {@macro enum_assist_annotation.enum_value.description}
 ///
 /// ---
 ///
 /// ## Serialized Value
-/// {@macro enum_assist_annotation.enum_key.serialized_value}
+/// {@macro enum_assist_annotation.enum_value.serialized_value}
 ///
 /// ---
 ///
 /// ## Int Value
-/// {@macro enum_assist_annotation.enum_key.int_value}
+/// {@macro enum_assist_annotation.enum_value.int_value}
 ///
 /// ---
 ///
@@ -32,10 +32,10 @@ import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 /// ---
 ///
 /// ## Extensions
-/// {@macro enum_assist_annotation.enum_key.extensions}
-class EnumKey {
-  /// {@macro enum_assist_annotation.enum_key}
-  const EnumKey({
+/// {@macro enum_assist_annotation.enum_value.extensions}
+class EnumValue {
+  /// {@macro enum_assist_annotation.enum_value}
+  const EnumValue({
     this.readable,
     this.description,
     this.intValue,
@@ -44,7 +44,7 @@ class EnumKey {
     this.extensions,
   });
 
-  /// {@template enum_assist_annotation.enum_key.name}
+  /// {@template enum_assist_annotation.enum_value.name}
   /// The name of the enum value, should be formatted as a human readable name
   ///
   /// Extension Method: `readable`
@@ -55,7 +55,7 @@ class EnumKey {
   /// {@endtemplate}
   final String? readable;
 
-  /// {@template enum_assist_annotation.enum_key.description}
+  /// {@template enum_assist_annotation.enum_value.description}
   /// The description of the enum value
   ///
   /// Extension Method: `description`
@@ -66,7 +66,7 @@ class EnumKey {
   /// {@endtemplate}
   final String? description;
 
-  /// {@template enum_assist_annotation.enum_key.int_value}
+  /// {@template enum_assist_annotation.enum_value.int_value}
   /// The enum value converted to an integer\
   /// Incremented by 1 based on the previous enum value
   ///
@@ -79,7 +79,7 @@ class EnumKey {
   /// {@endtemplate}
   final int? intValue;
 
-  /// {@template enum_assist_annotation.enum_key.serialized_value}
+  /// {@template enum_assist_annotation.enum_value.serialized_value}
   /// The serialized represenation of the enum value.
   ///
   /// Can be manipulated via [EnumAssist.serializedFormat]\
@@ -92,19 +92,20 @@ class EnumKey {
   /// {@endtemplate}
   final Object? serializedValue;
 
-  /// {@template enum_assist_annotation.enum_key.use_doc_comment_as_description}
+  // ignore: lines_longer_than_80_chars
+  /// {@template enum_assist_annotation.enum_value.use_doc_comment_as_description}
   /// Whether to use the doc comment of the enum for the `description` method.
   ///
-  /// [EnumKey.description] will override the doc comment description.
+  /// [EnumValue.description] will override the doc comment description.
   ///
   /// If false, the description will return `null`
-  /// unless overridden by [EnumKey.description].
+  /// unless overridden by [EnumValue.description].
   ///
   /// __default:__ `true`
   /// {@endtemplate}
   final bool? useDocCommentAsDescription;
 
-  /// {@template enum_assist_annotation.enum_key.extensions}
+  /// {@template enum_assist_annotation.enum_value.extensions}
   /// Methods to be generated for the enum
   ///
   /// Defined classes must extend [MapExtension] or [MaybeExtension]

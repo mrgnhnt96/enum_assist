@@ -34,7 +34,7 @@ enum Vehicle {
   car,
 
   /// plane doc comment
-  @EnumKey(
+  @EnumValue(
     useDocCommentAsDescription: false,
   )
   plane,
@@ -49,7 +49,7 @@ enum BodyParts {
   head,
 
   /// arm doc comment
-  @EnumKey(description: 'My arms look tiny')
+  @EnumValue(description: 'My arms look tiny')
   arm,
 
   /// leg doc comment

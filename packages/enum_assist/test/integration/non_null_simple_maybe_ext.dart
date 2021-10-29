@@ -15,21 +15,21 @@ class NumExt extends MaybeExtension<int> {
 
 @EnumAssist()
 enum Animal {
-  @EnumKey(extensions: [])
+  @EnumValue(extensions: [])
   dog,
-  @EnumKey(extensions: [NumExt()])
+  @EnumValue(extensions: [NumExt()])
   cat,
-  @EnumKey(extensions: [NumExt(300)])
+  @EnumValue(extensions: [NumExt(300)])
   mouse,
 }
 
 @EnumAssist()
 enum BodyParts {
-  @EnumKey()
+  @EnumValue()
   head,
-  @EnumKey(extensions: [FarMaybeExt(2.01)])
+  @EnumValue(extensions: [FarMaybeExt(2.01)])
   body,
-  @EnumKey(extensions: [FarMaybeExt(3.01)])
+  @EnumValue(extensions: [FarMaybeExt(3.01)])
   leg,
 }
 
@@ -44,10 +44,10 @@ class DurationExt extends MaybeExtension<Duration> {
 
 @EnumAssist()
 enum Family {
-  @EnumKey(extensions: [DurationExt()])
+  @EnumValue(extensions: [DurationExt()])
   mom,
-  @EnumKey(extensions: [])
+  @EnumValue(extensions: [])
   dad,
-  @EnumKey(extensions: [DurationExt(value: Duration(days: 3))])
+  @EnumValue(extensions: [DurationExt(value: Duration(days: 3))])
   kid,
 }

@@ -16,21 +16,21 @@ class NullNumExt extends MaybeExtension<int?> {
 
 @EnumAssist()
 enum Animal {
-  @EnumKey()
+  @EnumValue()
   dog,
-  @EnumKey(extensions: [])
+  @EnumValue(extensions: [])
   cat,
-  @EnumKey(extensions: [NullNumExt(null)])
+  @EnumValue(extensions: [NullNumExt(null)])
   mouse,
 }
 
 @EnumAssist()
 enum BodyParts {
-  @EnumKey()
+  @EnumValue()
   head,
-  @EnumKey(extensions: [NullFarMaybeExt()])
+  @EnumValue(extensions: [NullFarMaybeExt()])
   body,
-  @EnumKey(extensions: [NullFarMaybeExt(3.01)])
+  @EnumValue(extensions: [NullFarMaybeExt(3.01)])
   leg,
 }
 
@@ -44,10 +44,10 @@ class NullDurationExt extends MaybeExtension<Duration?> {
 
 @EnumAssist()
 enum Family {
-  @EnumKey(extensions: [NullDurationExt()])
+  @EnumValue(extensions: [NullDurationExt()])
   mom,
-  @EnumKey(extensions: [])
+  @EnumValue(extensions: [])
   dad,
-  @EnumKey(extensions: [NullDurationExt(value: null)])
+  @EnumValue(extensions: [NullDurationExt(value: null)])
   kid,
 }

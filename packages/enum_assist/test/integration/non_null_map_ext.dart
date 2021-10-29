@@ -15,17 +15,17 @@ class MapIntExt extends MapExtension<Map<String, int>> {
 
 @EnumAssist()
 enum Animal {
-  @EnumKey(extensions: [
+  @EnumValue(extensions: [
     ListIntExt(),
     MapIntExt(),
   ])
   dog,
-  @EnumKey(extensions: [
+  @EnumValue(extensions: [
     ListIntExt([100, 200, 300]),
     MapIntExt({'a': 100, 'b': 200, 'c': 300}),
   ])
   cat,
-  @EnumKey(extensions: [
+  @EnumValue(extensions: [
     ListIntExt([400, 500, 600]),
     MapIntExt({'a': 400, 'b': 500, 'c': 600}),
   ])
@@ -77,17 +77,17 @@ class ApodoExt extends MapExtension<List<Apodo>> {
 
 @EnumAssist()
 enum Familia {
-  @EnumKey(extensions: [
+  @EnumValue(extensions: [
     TranslationExt(Translation('mom')),
     ApodoExt([Apodo('la jefa'), Apodo('some cool name')]),
   ])
   madre,
-  @EnumKey(extensions: [
+  @EnumValue(extensions: [
     TranslationExt(Translation('dad')),
     ApodoExt([Apodo('peluche'), Apodo('some cool name')]),
   ])
   padre,
-  @EnumKey(extensions: [
+  @EnumValue(extensions: [
     TranslationExt(Translation('son')),
     ApodoExt([Apodo('moco'), Apodo('[{some cool{, } name}]')]),
   ])
@@ -124,7 +124,7 @@ class MapExt extends MapExtension<Map<String, int>> {
 
 @EnumAssist()
 enum Superhero {
-  @EnumKey(extensions: [
+  @EnumValue(extensions: [
     BoolExt(),
     IntExt(),
     DoubleExt(),

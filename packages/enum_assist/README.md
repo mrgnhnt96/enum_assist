@@ -59,7 +59,7 @@ Check out [the example] or [the index](#index) to see what it can do.
     - [Serialized Format](#serialized-format)
     - [Use Doc Comment As Description](#use-doc-comment-as-description)
     - [Use Int Value For Serialization](#use-int-value-for-serialization)
-  - [Enum Key](#enum-key)
+  - [Enum Value](#enum-value)
     - [Readable](#readable-1)
     - [Description](#description-1)
     - [Int Value](#int-value)
@@ -153,7 +153,7 @@ greet.name; // friendly
 
 ### Description
 
-Returns the [EnumKey.description](#description-1) of the enum value in a human readable format.
+Returns the [EnumValue.description](#description-1) of the enum value in a human readable format.
 
 ```dart
 var greet = Greeting.friendly;
@@ -163,7 +163,7 @@ greet.description; // A friendly greeting
 
 ### To Int
 
-Returns the [EnumKey.intValue](#int-value) of the enum value.
+Returns the [EnumValue.intValue](#int-value) of the enum value.
 
 ```dart
 Greeting.professional.toInt; // 0
@@ -173,7 +173,7 @@ Greeting.relaxed.toInt; //2
 
 ### Readable
 
-Returns the [EnumKey.readable](#readable-1) of the enum value in a human readable format.
+Returns the [EnumValue.readable](#readable-1) of the enum value in a human readable format.
 
 ```dart
 var greet = Greeting.friendly;
@@ -183,7 +183,7 @@ greet.readable; // Friendly
 
 ### Serialized
 
-Returns the [EnumKey.serializedValue](#serialized-value) of the enum value.
+Returns the [EnumValue.serializedValue](#serialized-value) of the enum value.
 
 Specific case formatting can be done with [serializedFormat](#serialized-format) (either [`EnumAssist`] or [`build.yaml`])
 
@@ -460,7 +460,7 @@ The [`MapExtension`] class also has an `allowNulls` argument, which defaults to 
   This can be set to `true` to change the return type nullable.
 
 Next, we need to add our extension to the enum.\
-This can be done by annotating the enum's values with [EnumKey](#enumkey),
+This can be done by annotating the enum's values with [EnumValue](#EnumValue),
 And then adding the extension to the [`extensions`](#extensions) field.
 
 > __Note__:\
@@ -470,21 +470,21 @@ _Failure to do so will result in an error when generating the code._
 ```dart
 @EnumAssist()
 enum Greeting {
-  @EnumKey(
+  @EnumValue(
     extensions: [
       ResponseExt('Hello, how do you do?'),
     ],
   )
   professional,
 
-  @EnumKey(
+  @EnumValue(
     extensions: [
       ResponseExt('Hey! Hows it going?'),
     ],
   )
   friendly,
 
-  @EnumKey(
+  @EnumValue(
     extensions: [
       ResponseExt('Whats up my dude!?'),
     ],
@@ -534,7 +534,7 @@ The [`MaybeExtension`] class also has an `allowNulls` argument, which defaults t
 > ```
 
 Next, we need to add our extension to the enum.\
-This can be done by adding the [`EnumKey`] annotation to ___any enum field___.
+This can be done by adding the [`EnumValue`] annotation to ___any enum field___.
 And then adding the extension to the `extensions` list.
 
 ```dart
@@ -542,14 +542,14 @@ And then adding the extension to the `extensions` list.
 enum Greeting {
   professional,
 
-  @EnumKey(
+  @EnumValue(
     extensions: [
       IsCoolExt(true),
     ],
   )
   friendly,
 
-  @EnumKey(
+  @EnumValue(
     extensions: [
       IsCoolExt(true),
     ],
@@ -559,7 +559,7 @@ enum Greeting {
 ```
 
 > __Notice This__:\
-We did not annotate `professional` with [`EnumKey`] or `IsCoolExt`.\
+We did not annotate `professional` with [`EnumValue`] or `IsCoolExt`.\
   This is because [`.maybeMap(...)`](#maybe-map) doesn't require all callbacks to be defined.
 >
 > The generator will use the `defaultValue` from `IsCoolExt` as the return value.
@@ -585,13 +585,13 @@ Let's create an enum for the two examples below, [Using json_serializable](#usin
 ```dart
 @EnumAssist()
 enum SuperHeroes {
-  @EnumKey(serializedValue: 'Capitan America')
+  @EnumValue(serializedValue: 'Capitan America')
   capitanAmerica,
 
-  @EnumKey(serializedValue: 'Black Widow')
+  @EnumValue(serializedValue: 'Black Widow')
   blackWidow,
 
-  @EnumKey(serializedValue: 'Dr. Strange')
+  @EnumValue(serializedValue: 'Dr. Strange')
   drStrange,
 }
 ```
@@ -631,7 +631,7 @@ final json = steve.toJson();
 print(json['hero']); //capitanAmerica
 ```
 
-To tell [json_serializable] to convert the `hero` field with the values provided by `EnumKey.serializedValue`, you'll need to annotated the field in your class
+To tell [json_serializable] to convert the `hero` field with the values provided by `EnumValue.serializedValue`, you'll need to annotated the field in your class
 
 ```dart
   final String secretIdentity;
@@ -859,7 +859,7 @@ Here's an example:
 
 Whether or not to use the enum value's doc comment as the [description](#description-1) of the enum value.
 
-If set to `false`, the [description](#description-1) will return `null`, unless defined via [EnumKey.description](#description).
+If set to `false`, the [description](#description-1) will return `null`, unless defined via [EnumValue.description](#description).
 
 Enum:
 
@@ -920,7 +920,7 @@ Instead of returning `friendly`, it will return the `intValue` of the `friendly`
 
 </details>
 
-## Enum Key
+## Enum Value
 
 <details>
 <summary>Used to customize the generator for a specific enum value.</summary>
@@ -933,7 +933,7 @@ The name should be a human readable format.
 ```dart
 @EnumAssist()
 enum Greeting {
-  @EnumKey(readable: 'Formal')
+  @EnumValue(readable: 'Formal')
   professional,
   friendly,
   relaxed,
@@ -957,14 +957,14 @@ For Example: for `Example.isReallyCool`, the description could be `The example i
 
 Expected Return Value:
 - Doc Comment of the enum value
-- `null` if the [EnumKey](#use-doc-comment-as-description), [EnumAssist, or build.yaml](#use-doc-comment-as-description) `useDocCommentAsDescription` fields are set to false
-- Value of [EnumKey.description](#description) (regardless of `useDocCommentAsDescription`'s value)
+- `null` if the [EnumValue](#use-doc-comment-as-description), [EnumAssist, or build.yaml](#use-doc-comment-as-description) `useDocCommentAsDescription` fields are set to false
+- Value of [EnumValue.description](#description) (regardless of `useDocCommentAsDescription`'s value)
 
 ```dart
 @EnumAssist()
 enum Greeting {
   /// A professional greeting
-  @EnumKey(description: 'Recommended to use in the work place')
+  @EnumValue(description: 'Recommended to use in the work place')
   professional,
   /// A friendly greeting
   friendly,
@@ -985,26 +985,26 @@ Greeting.professional.description; // Recommended to use in the work place
 Provides the int value for [toInt](#to-int) of the enum value.
 
 0 indexed integers used to represent the enum value.\
-When a value is assigned to [EnumKey.intValue](#int-value), the value will be passed on to the next enum field, incrementing by 1.
+When a value is assigned to [EnumValue.intValue](#int-value), the value will be passed on to the next enum field, incrementing by 1.
 
 For example:
 
 ```dart
 @EnumAssist()
 enum ResponseCodes {
-  @EnumKey(intValue: 200)
+  @EnumValue(intValue: 200)
   ok,
   created,
   accepted,
 
-  @EnumKey(intValue: 400)
+  @EnumValue(intValue: 400)
   badRequest,
   unauthorized,
-  @EnumKey(intValue: 403)
+  @EnumValue(intValue: 403)
   forbidden,
   notFound,
 
-  @EnumKey(intValue: 500)
+  @EnumValue(intValue: 500)
   internalServerError,
   notImplemented,
   badGateway,
@@ -1040,10 +1040,10 @@ While the type for `serializedValue` is `Object?`, the only accepted types are `
 ```dart
 @EnumAssist()
 enum Greeting {
-  @EnumKey(serializedValue: 'formal')
+  @EnumValue(serializedValue: 'formal')
   professional,
   friendly,
-  @EnumKey(serializedValue: 3) // serializedValue accepts type Object?
+  @EnumValue(serializedValue: 3) // serializedValue accepts type Object?
   relaxed,
 }
 ```
@@ -1062,13 +1062,13 @@ Gretting.relaxed.serialized; // 3
 
 Whether or not to use the enum value's doc comment as the [description](#description-1) of the enum value.
 
-If set to `false`, the [description](#description-1) will return `null`, unless defined via [EnumKey.description](#description).
+If set to `false`, the [description](#description-1) will return `null`, unless defined via [EnumValue.description](#description).
 
 ```dart
 @EnumAssist()
 enum Greeting {
   /// A professional greeting
-  @EnumKey(useDocCommentAsDescription: false)
+  @EnumValue(useDocCommentAsDescription: false)
   professional,
   /// A friendly greeting
   friendly,
@@ -1098,7 +1098,7 @@ Extension classes must extend
 
 
 [`EnumAssist`]: https://github.com/mrgnhnt96/enum_assist/blob/main/packages/enum_assist_annotation/lib/src/enum_assist.dart
-[`EnumKey`]: https://github.com/mrgnhnt96/enum_assist/blob/main/packages/enum_assist_annotation/lib/src/enum_key.dart
+[`EnumValue`]: https://github.com/mrgnhnt96/enum_assist/blob/main/packages/enum_assist_annotation/lib/src/enum_value.dart
 [commands & options]: https://pub.dev/packages/build_runner#built-in-commands
 [the example]: https://github.com/mrgnhnt96/enum_assist/tree/main/packages/enum_assist/example
 [build_runner]: https://pub.dev/packages/build_runner

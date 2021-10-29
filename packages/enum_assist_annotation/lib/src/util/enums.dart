@@ -116,7 +116,7 @@ enum MethodType {
   /// {@template enum_assist_annotation.method_type.map}
   /// The generated method will be `map(...)`.
   ///
-  /// Requires an extension declaration in [EnumKey.extensions]
+  /// Requires an extension declaration in [EnumValue.extensions]
   /// on __ALL__ enum fields
   /// ___except when___ [Extension.allowNulls] is set to `true`
   /// {@endtemplate}
@@ -125,7 +125,7 @@ enum MethodType {
   /// {@template enum_assist_annotation.method_type.maybe_map}
   /// The generated method will be `maybeMap(...)`.
   ///
-  /// Requires at least one extension declaration in the [EnumKey.extensions]
+  /// Requires at least one extension declaration in the [EnumValue.extensions]
   /// annotation on any enum field
   ///
   /// Returns [Extension.defaultValue], or `null`

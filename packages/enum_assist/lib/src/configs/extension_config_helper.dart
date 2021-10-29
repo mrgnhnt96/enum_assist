@@ -50,7 +50,7 @@ const _reservedWords = {
 };
 
 /// Recursively returns the declared [ExtensionConfig.valueClassName] and
-/// value from [EnumKey.extensions]
+/// value from [EnumValue.extensions]
 ///
 /// An extension consists of:
 /// - [ExtensionConfig.valueClassName]
@@ -87,7 +87,7 @@ List<String> _getExtensions(String str) {
 /// example:
 ///
 /// Annotation:\
-/// `@EnumKey(extensions: [ToMap({'thirty-three' : 33}), IsImportant(true)])`
+/// `@EnumValue(extensions: [ToMap({'thirty-three' : 33}), IsImportant(true)])`
 ///
 /// Results in:\
 /// `[ToMap({'thirty-three' : 33}), IsImportant(true)]`

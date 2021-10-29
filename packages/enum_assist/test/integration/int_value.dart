@@ -11,17 +11,17 @@ enum Animal {
 
 @EnumAssist()
 enum Letters {
-  @EnumKey(intValue: 0)
+  @EnumValue(intValue: 0)
   handWritten,
-  @EnumKey(intValue: 1)
+  @EnumValue(intValue: 1)
   email,
-  @EnumKey(intValue: 2)
+  @EnumValue(intValue: 2)
   hate,
 }
 
 @EnumAssist()
 enum Familia {
-  @EnumKey(intValue: 3)
+  @EnumValue(intValue: 3)
   madre,
   padre,
   hijo,
@@ -29,7 +29,7 @@ enum Familia {
 
 @EnumAssist()
 enum Candy {
-  @EnumKey(intValue: 6)
+  @EnumValue(intValue: 6)
   skittles,
   butterfinger,
   reeses,
@@ -38,9 +38,9 @@ enum Candy {
 @EnumAssist()
 enum Soda {
   coke,
-  @EnumKey(intValue: 200)
+  @EnumValue(intValue: 200)
   pepsi,
   sprite,
-  @EnumKey(intValue: 4)
+  @EnumValue(intValue: 4)
   fanta,
 }

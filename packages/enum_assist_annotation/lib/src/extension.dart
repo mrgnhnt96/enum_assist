@@ -63,7 +63,7 @@ abstract class Extension<T extends Object?> {
   final String methodName;
 
   /// {@template enum_assist_annotation.extension.default_value}
-  /// The default value to be used if [EnumKey.extensions]\
+  /// The default value to be used if [EnumValue.extensions]\
   /// does not declare a value for this [Extension]
   /// {@endtemplate}
   final T? defaultValue;

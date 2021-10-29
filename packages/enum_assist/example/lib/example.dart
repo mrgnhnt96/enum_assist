@@ -32,7 +32,7 @@ enum Numbers {
   /// this is the number 11
   ///
   /// and its prime!
-  @EnumKey(
+  @EnumValue(
     description: '11 is also a girl from Stranger Things', // optional
     readable: 'Eleven', // default (field name formatted to Capital Case)
     serializedValue: 'eleven', // default (field name formatted as is)
@@ -44,14 +44,14 @@ enum Numbers {
   )
   eleven,
 
-  @EnumKey(
+  @EnumValue(
     extensions: [
       ToMap({'twenty-two': 22})
     ],
   )
   twentyTwo,
 
-  @EnumKey(
+  @EnumValue(
     extensions: [
       ToMap({'thirty-three': 33}),
     ],

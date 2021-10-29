@@ -68,11 +68,11 @@ extension TypeCheckerX on TypeChecker {
 
 /// Extensions for FieldElement
 extension FieldElementX on FieldElement {
-  /// gets the first annotation of [EnumKey]
-  ElementAnnotation? getEnumKeyAnnotation() {
+  /// gets the first annotation of [EnumValue]
+  ElementAnnotation? getEnumValueAnnotation() {
     try {
       return metadata
-          .firstWhere((data) => data.toSource().contains('$EnumKey'));
+          .firstWhere((data) => data.toSource().contains('$EnumValue'));
     } catch (_) {
       return null;
     }
