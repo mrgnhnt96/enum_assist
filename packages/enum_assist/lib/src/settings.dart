@@ -54,17 +54,20 @@ class Settings {
   /// Used for testing
   @visibleForTesting
   Settings.manual({
-    String enumName = '',
-    bool createJsonConv = false,
-    SerializedFormat serializedFormat = SerializedFormat.none,
-    bool useDocCommentAsDescription = false,
-    bool useIntValueForSerialization = false,
+    String? enumName,
+    bool? createJsonConv,
+    SerializedFormat? serializedFormat,
+    bool? useDocCommentAsDescription,
+    bool? useIntValueForSerialization,
   }) : _config = ClassConfig(
-          enumName: enumName,
-          createJsonConv: createJsonConv,
-          serializedFormat: serializedFormat,
-          useDocCommentAsDescription: useDocCommentAsDescription,
-          useIntValueForSerialization: useIntValueForSerialization,
+          enumName: enumName ?? ClassConfig.defaults.enumName,
+          createJsonConv: createJsonConv ?? ClassConfig.defaults.createJsonConv,
+          serializedFormat:
+              serializedFormat ?? ClassConfig.defaults.serializedFormat,
+          useDocCommentAsDescription: useDocCommentAsDescription ??
+              ClassConfig.defaults.useDocCommentAsDescription,
+          useIntValueForSerialization: useIntValueForSerialization ??
+              ClassConfig.defaults.useIntValueForSerialization,
         );
 
   final ClassConfig _config;
