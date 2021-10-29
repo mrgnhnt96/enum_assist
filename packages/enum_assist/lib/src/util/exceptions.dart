@@ -1,3 +1,5 @@
+// ignore_for_file: comment_references
+
 /// {@template enum_exception}
 /// The Exception thrown by EnumAssist
 /// {@endtemplate}
