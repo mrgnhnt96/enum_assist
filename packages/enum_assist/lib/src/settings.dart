@@ -1,5 +1,6 @@
 import 'package:enum_assist/src/configs/class_config.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
+import 'package:meta/meta.dart';
 
 /// {@template enum_assist.settings}
 /// Settings configured in the `build.yaml` file
@@ -50,8 +51,37 @@ class Settings {
     return Settings._(config);
   }
 
+  /// Used for testing
+  @visibleForTesting
+  Settings.manual({
+    String enumName = '',
+    bool createJsonConv = false,
+    SerializedFormat serializedFormat = SerializedFormat.none,
+    bool useDocCommentAsDescription = false,
+    bool useIntValueForSerialization = false,
+  }) : _config = ClassConfig(
+          enumName: enumName,
+          createJsonConv: createJsonConv,
+          serializedFormat: serializedFormat,
+          useDocCommentAsDescription: useDocCommentAsDescription,
+          useIntValueForSerialization: useIntValueForSerialization,
+        );
+
   final ClassConfig _config;
 
   /// {@macro enum_assist.settings}
   ClassConfig get config => _config;
+
+  /// Used for testing
+  @visibleForTesting
+  Map<String, dynamic> toJson() {
+    final json = {
+      'create_json_conv': config.createJsonConv,
+      'serialized_format': config.serializedFormat,
+      'use_doc_comment_as_description': config.useDocCommentAsDescription,
+      'use_int_value_for_serialization': config.useIntValueForSerialization,
+    };
+
+    return json;
+  }
 }
