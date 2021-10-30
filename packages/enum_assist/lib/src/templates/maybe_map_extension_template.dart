@@ -4,9 +4,9 @@ import 'package:enum_assist/src/util/util.dart';
 /// {@template enum_assist.map_template}
 /// Returns the map extension template
 /// {@endtemplate}
-class MaybeMapTemplate extends TemplateCoreSimple<_Item> {
+class MaybeMapExtensionTemplate extends TemplateCoreSimple<_Item> {
   /// {@macro enum_assist.map_template}
-  MaybeMapTemplate(String enumName, Iterable<String> fields)
+  MaybeMapExtensionTemplate(String enumName, Iterable<String> fields)
       : super(enumName, fields);
 
   @override
@@ -25,18 +25,27 @@ class MaybeMapTemplate extends TemplateCoreSimple<_Item> {
             ..writeln(map((i) => tabn(i.arg, tab)));
         },
         close: '})',
+        appendNewLine: false,
       )
       ..writeobj(
         '',
         body: (mapBuff, bodyTab) {
           mapBuff
             ..writelnTab('var isNullable = true;', bodyTab)
-            ..writeobj('try', body: (tryBuff, tryTab) {
-              tryBuff.writelnTab('final value = null as T;', tryTab);
-            })
-            ..writeobj('catch (_)', body: (catchBuff, catchTab) {
-              catchBuff.writelnTab('isNullable = false;', catchTab);
-            })
+            ..writeobj(
+              'try',
+              body: (tryBuff, tryTab) {
+                tryBuff.writelnTab('final value = null as T;', tryTab);
+              },
+              tab: bodyTab,
+            )
+            ..writeobj(
+              'catch (_)',
+              body: (catchBuff, catchTab) {
+                catchBuff.writelnTab('isNullable = false;', catchTab);
+              },
+              tab: bodyTab,
+            )
             ..writeln()
             ..writeobj(
               'switch(this)',

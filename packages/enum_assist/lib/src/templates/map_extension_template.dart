@@ -4,9 +4,9 @@ import 'package:enum_assist/src/util/util.dart';
 /// {@template enum_assist.map_template}
 /// Returns the map extension template
 /// {@endtemplate}
-class MapTemplate extends TemplateCoreSimple<_Item> {
+class MapExtensionTemplate extends TemplateCoreSimple<_Item> {
   /// {@macro enum_assist.map_template}
-  MapTemplate(String enumName, Iterable<String> fields)
+  MapExtensionTemplate(String enumName, Iterable<String> fields)
       : super(enumName, fields);
 
   @override
@@ -20,6 +20,7 @@ class MapTemplate extends TemplateCoreSimple<_Item> {
           mapBuffer.writeln(map((i) => tabn(i.arg, tab)));
         },
         close: '})',
+        appendNewLine: false,
       )
       ..writeobj(
         '',

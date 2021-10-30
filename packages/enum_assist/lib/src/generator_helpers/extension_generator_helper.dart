@@ -15,8 +15,8 @@ abstract class ExtensionGeneratorHelper implements HelperCore {
       ..writeln('''
 /// Extensions for the enum $enumName''')
       ..writeln('extension ${enumName}X on $enumName {')
-      ..writeln(MapTemplate(enumName, fieldNames).toString())
-      ..writeln(MaybeMapTemplate(enumName, fieldNames).toString())
+      ..writeln(MapExtensionTemplate(enumName, fieldNames).toString())
+      ..writeln(MaybeMapExtensionTemplate(enumName, fieldNames).toString())
       ..writeln(NameTemplate(enumName, fieldData).toString())
       ..writeln(IntValueTemplate(enumName, fieldData).toString())
       ..writeln(ReadableTemplate(enumName, fieldData).toString())
