@@ -82,8 +82,9 @@ abstract class ExtensionTemplate extends TemplateCoreDetailed<_Item> {
         '$typeAsString${allowNulls ? '?' : ''} get $methodName',
         body: (nameBuffer, tab) {
           nameBuffer.writeobj(
-            'return $_getAccess',
+            'return $_getAccess<$typeAsString${allowNulls ? '?' : ''}>',
             tab: tab,
+            includeSpaceBetweenOpen: false,
             open: '(',
             close: ');',
             body: (mapBuffer, mapTab) {
@@ -98,7 +99,7 @@ abstract class ExtensionTemplate extends TemplateCoreDetailed<_Item> {
                     mapTab,
                   );
               }
-              mapBuffer.writelnTab(
+              mapBuffer.writeln(
                 map((i) {
                   var value = returnValue(i.field);
 
@@ -106,14 +107,19 @@ abstract class ExtensionTemplate extends TemplateCoreDetailed<_Item> {
                       value?.endsWith('().value') ?? false;
 
                   if (value == unassigned) {
-                    value = methodType.map(map: null, maybeMap: defaultValue);
+                    value = methodType.map(
+                      map: null,
+                      // both return the default value
+                      // but if allowNulls is true, then it will return null
+                      // which is NOT the expected value
+                      maybeMap: allowNulls ? defaultValue : null,
+                    );
                   } else if (!isValueFromExtClass) {
                     value = _checkValueAndPrepare(value, i.field);
                   }
 
-                  return tabn(i.returnString(value), tab);
+                  return tabn(i.returnString(value), mapTab);
                 }),
-                mapTab,
               );
             },
           );

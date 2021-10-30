@@ -8,7 +8,21 @@ void main() {
 
   setUp(() {
     fields = const {
-      FieldData.manual(index: 0, fieldName: 'one', intValue: 1),
+      FieldData.manual(
+        index: 0,
+        fieldName: 'one',
+        readableName: 'one name',
+      ),
+      FieldData.manual(
+        index: 1,
+        fieldName: 'two',
+        readableName: 'two name',
+      ),
+      FieldData.manual(
+        index: 2,
+        fieldName: 'three',
+        readableName: 'three name',
+      ),
     };
   });
 
@@ -19,8 +33,10 @@ void main() {
 /// Returns the name of the enum field
 /// In a human readable format
 String get readable {
-  return map (
-      one: 'One',
+  return map<String>(
+    one: 'one name',
+    two: 'two name',
+    three: 'three name',
   );
 }
 ''';

@@ -57,17 +57,26 @@ extension NumbersX on Numbers {
 
   /// Returns the name of the enum field
   String get name {
-    return map(
+    return map<String>(
       eleven: 'eleven',
       twentyTwo: 'twentyTwo',
       thirtyThree: 'thirtyThree',
     );
   }
 
+  /// The enum value converted to an integer
+  int get toInt {
+    return map<int>(
+      eleven: 0,
+      twentyTwo: 1,
+      thirtyThree: 2,
+    );
+  }
+
   /// Returns the name of the enum field
   /// In a human readable format
   String get readable {
-    return map(
+    return map<String>(
       eleven: 'Eleven',
       twentyTwo: 'Twenty Two',
       thirtyThree: 'Thirty Three',
@@ -78,7 +87,7 @@ extension NumbersX on Numbers {
   ///
   /// If the description is null, the doc comment of the enum field is returned.
   String? get description {
-    return map(
+    return map<String?>(
       eleven: '''
 11 is also a girl from Stranger Things''',
       twentyTwo: null,
@@ -87,8 +96,8 @@ extension NumbersX on Numbers {
   }
 
   /// Returns the serialized value of the enum field.
-  String get serialized {
-    return map(
+  Object get serialized {
+    return map<Object>(
       eleven: NumbersConv._elevenName,
       twentyTwo: NumbersConv._twentyTwoName,
       thirtyThree: NumbersConv._thirtyThreeName,
@@ -97,7 +106,7 @@ extension NumbersX on Numbers {
 
   /// converts value to a map
   Map<String, int> get toMap {
-    return map(
+    return map<Map<String, int>>(
       eleven: {'eleven': 11},
       twentyTwo: {'twenty-two': 22},
       thirtyThree: {'thirty-three': 33},
@@ -106,13 +115,13 @@ extension NumbersX on Numbers {
 
   /// whether the value is prime
   bool get isPrime {
-    return maybeMap(
+    return maybeMap<bool>(
       // returns default value
       //? if theres an argument provided, it does nothing.
       orElse: IsPrime(true).defaultValue!,
       eleven: true,
-      twentyTwo: IsPrime(true).defaultValue,
-      thirtyThree: IsPrime(true).defaultValue,
+      twentyTwo: null,
+      thirtyThree: null,
     );
   }
 }
@@ -127,7 +136,7 @@ extension NumbersX on Numbers {
 /// final Numbers myEnum;
 /// ```
 /// {@endtemplate}
-class NumbersConv extends JsonConverter<Numbers, String> {
+class NumbersConv extends JsonConverter<Numbers, Object> {
   /// {@macro numbers.json_converter}
   const NumbersConv({this.defaultValue});
 
@@ -142,7 +151,7 @@ class NumbersConv extends JsonConverter<Numbers, String> {
   static const _thirtyThreeName = 'thirtyThree';
 
   @override
-  Numbers fromJson(String json) {
+  Numbers fromJson(Object json) {
     switch (json) {
       case _elevenName:
         return Numbers.eleven;
@@ -158,7 +167,7 @@ class NumbersConv extends JsonConverter<Numbers, String> {
   }
 
   @override
-  String toJson(Numbers object) => object.serialized;
+  Object toJson(Numbers object) => object.serialized;
 }
 
 /// {@template numbers.json_converter_nullable}
@@ -171,12 +180,12 @@ class NumbersConv extends JsonConverter<Numbers, String> {
 /// final Numbers? myEnum;
 /// ```
 /// {@endtemplate}
-class _NumbersNullableConv extends JsonConverter<Numbers?, String?> {
+class _NumbersNullableConv extends JsonConverter<Numbers?, Object?> {
   /// {@macro numbers.json_converter}
   const _NumbersNullableConv();
 
   @override
-  Numbers? fromJson(String? json) {
+  Numbers? fromJson(Object? json) {
     switch (json) {
       case NumbersConv._elevenName:
         return Numbers.eleven;
@@ -190,5 +199,5 @@ class _NumbersNullableConv extends JsonConverter<Numbers?, String?> {
   }
 
   @override
-  String? toJson(Numbers? object) => object?.serialized;
+  Object? toJson(Numbers? object) => object?.serialized;
 }

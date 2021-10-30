@@ -1,5 +1,5 @@
 import 'package:enum_assist/src/field_data.dart';
-import 'package:enum_assist/src/templates/map_template.dart';
+import 'package:enum_assist/src/templates/templates.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -12,15 +12,36 @@ void main() {
         index: 0,
         fieldName: 'one',
       ),
+      FieldData.manual(
+        index: 1,
+        fieldName: 'two',
+      ),
+      FieldData.manual(
+        index: 2,
+        fieldName: 'three',
+      ),
     };
   });
+
+  String? getValue(FieldData data) {
+    switch (data.index) {
+      case 0:
+        return '${data.index}';
+      case 1:
+        return null;
+      case 2:
+        return unassigned;
+      default:
+        throw Exception('No value found for ${data.index}');
+    }
+  }
 
   test('should return non-nullable method', () {
     final template = MapTemplate(
       enumName,
       fields,
       methodName: 'method',
-      getValue: (f) => '${f.index}',
+      getValue: getValue,
       typeAsString: '$String',
       docComment: '/// doc comment',
       allowNulls: false,
@@ -29,8 +50,10 @@ void main() {
     const output = '''
 /// doc comment
 String get method {
-  return map (
-      one: '0',
+  return map<String>(
+    one: '0',
+    two: null,
+    three: null,
   );
 }
 ''';
@@ -43,7 +66,7 @@ String get method {
       enumName,
       fields,
       methodName: 'method',
-      getValue: (f) => '${f.index}',
+      getValue: getValue,
       typeAsString: '$String',
       docComment: '/// doc comment',
       allowNulls: true,
@@ -52,8 +75,10 @@ String get method {
     const output = '''
 /// doc comment
 String? get method {
-  return map (
-      one: '0',
+  return map<String?>(
+    one: '0',
+    two: null,
+    three: null,
   );
 }
 ''';

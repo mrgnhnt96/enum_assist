@@ -8,7 +8,21 @@ void main() {
 
   setUp(() {
     fields = const {
-      FieldData.manual(index: 0, fieldName: 'one', description: 'description'),
+      FieldData.manual(
+        index: 0,
+        fieldName: 'one',
+        description: 'description for one',
+      ),
+      FieldData.manual(
+        index: 1,
+        fieldName: 'two',
+        description: 'description for two',
+      ),
+      FieldData.manual(
+        index: 2,
+        fieldName: 'three',
+        description: 'description for three',
+      ),
     };
   });
 
@@ -20,9 +34,13 @@ void main() {
 ///
 /// If the description is null, the doc comment of the enum field is returned.
 String? get description {
-  return map (
-      one: \'''
-description\''',
+  return map<String?>(
+    one: \'''
+description for one\''',
+    two: \'''
+description for two\''',
+    three: \'''
+description for three\''',
   );
 }
 ''';

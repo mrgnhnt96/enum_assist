@@ -8,7 +8,18 @@ void main() {
 
   setUp(() {
     fields = const {
-      FieldData.manual(index: 0, fieldName: 'one', intValue: 1),
+      FieldData.manual(
+        index: 0,
+        fieldName: 'one',
+      ),
+      FieldData.manual(
+        index: 1,
+        fieldName: 'two',
+      ),
+      FieldData.manual(
+        index: 2,
+        fieldName: 'three',
+      ),
     };
   });
 
@@ -18,8 +29,10 @@ void main() {
     const output = '''
 /// Returns the name of the enum field
 String get name {
-  return map (
-      one: 'one',
+  return map<String>(
+    one: 'one',
+    two: 'two',
+    three: 'three',
   );
 }
 ''';

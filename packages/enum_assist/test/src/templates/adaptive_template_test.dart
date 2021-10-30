@@ -1,5 +1,6 @@
 import 'package:enum_assist/src/field_data.dart';
 import 'package:enum_assist/src/templates/adaptive_template.dart';
+import 'package:enum_assist/src/templates/extension_template.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 import 'package:test/test.dart';
 
@@ -13,8 +14,29 @@ void main() {
         index: 0,
         fieldName: 'one',
       ),
+      FieldData.manual(
+        index: 1,
+        fieldName: 'two',
+      ),
+      FieldData.manual(
+        index: 2,
+        fieldName: 'three',
+      ),
     };
   });
+
+  String? getValue(FieldData data) {
+    switch (data.index) {
+      case 0:
+        return '${data.index}';
+      case 1:
+        return null;
+      case 2:
+        return unassigned;
+      default:
+        throw Exception('No value found for ${data.index}');
+    }
+  }
 
   group('map', () {
     test('should return non-nullable method', () {
@@ -22,7 +44,7 @@ void main() {
         enumName,
         fields,
         methodName: 'method',
-        getValue: (f) => '${f.index}',
+        getValue: getValue,
         defaultValue: null,
         typeAsString: '$String',
         methodType: MethodType.map,
@@ -33,8 +55,10 @@ void main() {
       const output = '''
 /// doc comment
 String get method {
-  return map (
-      one: '0',
+  return map<String>(
+    one: '0',
+    two: null,
+    three: null,
   );
 }
 ''';
@@ -47,7 +71,7 @@ String get method {
         enumName,
         fields,
         methodName: 'method',
-        getValue: (f) => '${f.index}',
+        getValue: getValue,
         defaultValue: null,
         typeAsString: '$String',
         methodType: MethodType.map,
@@ -58,8 +82,10 @@ String get method {
       const output = '''
 /// doc comment
 String? get method {
-  return map (
-      one: '0',
+  return map<String?>(
+    one: '0',
+    two: null,
+    three: null,
   );
 }
 ''';
@@ -69,27 +95,29 @@ String? get method {
   });
 
   group('maybeMap', () {
-    test('should return non-nullable method', () {
+    test('should return value', () {
       final template = AdaptiveTemplate(
         enumName,
         fields,
         methodName: 'method',
-        getValue: (f) => '${f.index}',
+        getValue: getValue,
         defaultValue: "'hello'",
         typeAsString: '$String',
         methodType: MethodType.maybeMap,
-        docComment: '',
-        allowNulls: false,
+        docComment: '/// doc comment',
+        allowNulls: true,
       );
 
       const output = '''
-
-String get method {
-  return maybeMap (
+/// doc comment
+String? get method {
+  return maybeMap<String?>(
     // returns default value
     //? if theres an argument provided, it does nothing.
-    orElse: 'hello'!,
-      one: '0',
+    orElse: 'hello',
+    one: '0',
+    two: null,
+    three: 'hello',
   );
 }
 ''';
@@ -97,27 +125,29 @@ String get method {
       expect(template.toString(), output);
     });
 
-    test('should return nullable method', () {
+    test('should return non-nullable method', () {
       final template = AdaptiveTemplate(
         enumName,
         fields,
         methodName: 'method',
-        getValue: (f) => '${f.index}',
+        getValue: getValue,
         defaultValue: "'hello'",
         typeAsString: '$String',
         methodType: MethodType.maybeMap,
-        docComment: '',
-        allowNulls: true,
+        docComment: '/// doc comment',
+        allowNulls: false,
       );
 
       const output = '''
-
-String? get method {
-  return maybeMap (
+/// doc comment
+String get method {
+  return maybeMap<String>(
     // returns default value
     //? if theres an argument provided, it does nothing.
-    orElse: 'hello',
-      one: '0',
+    orElse: 'hello'!,
+    one: '0',
+    two: null,
+    three: null,
   );
 }
 ''';

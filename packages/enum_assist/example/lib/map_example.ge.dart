@@ -57,17 +57,26 @@ extension ExampleX on Example {
 
   /// Returns the name of the enum field
   String get name {
-    return map(
+    return map<String>(
       one: 'one',
       two: 'two',
       three: 'three',
     );
   }
 
+  /// The enum value converted to an integer
+  int get toInt {
+    return map<int>(
+      one: 0,
+      two: 1,
+      three: 2,
+    );
+  }
+
   /// Returns the name of the enum field
   /// In a human readable format
   String get readable {
-    return map(
+    return map<String>(
       one: 'One',
       two: 'Two',
       three: 'Three',
@@ -78,7 +87,7 @@ extension ExampleX on Example {
   ///
   /// If the description is null, the doc comment of the enum field is returned.
   String? get description {
-    return map(
+    return map<String?>(
       one: null,
       two: null,
       three: null,
@@ -86,8 +95,8 @@ extension ExampleX on Example {
   }
 
   /// Returns the serialized value of the enum field.
-  String get serialized {
-    return map(
+  Object get serialized {
+    return map<Object>(
       one: ExampleConv._oneName,
       two: ExampleConv._twoName,
       three: ExampleConv._threeName,
@@ -96,7 +105,7 @@ extension ExampleX on Example {
 
   /// @nodoc
   int get number {
-    return map(
+    return map<int>(
       one: 1,
       two: 2,
       three: 3,
@@ -105,7 +114,7 @@ extension ExampleX on Example {
 
   /// @nodoc
   List<int> get factors {
-    return map(
+    return map<List<int>>(
       one: [1, 3],
       two: FactorsExt().value,
       three: [1, 3],
@@ -114,7 +123,7 @@ extension ExampleX on Example {
 
   /// @nodoc
   bool? get isImportant {
-    return map(
+    return map<bool?>(
       one: true,
       two: null,
       three: null,
@@ -132,7 +141,7 @@ extension ExampleX on Example {
 /// final Example myEnum;
 /// ```
 /// {@endtemplate}
-class ExampleConv extends JsonConverter<Example, String> {
+class ExampleConv extends JsonConverter<Example, Object> {
   /// {@macro example.json_converter}
   const ExampleConv({this.defaultValue});
 
@@ -147,7 +156,7 @@ class ExampleConv extends JsonConverter<Example, String> {
   static const _threeName = 'three';
 
   @override
-  Example fromJson(String json) {
+  Example fromJson(Object json) {
     switch (json) {
       case _oneName:
         return Example.one;
@@ -163,7 +172,7 @@ class ExampleConv extends JsonConverter<Example, String> {
   }
 
   @override
-  String toJson(Example object) => object.serialized;
+  Object toJson(Example object) => object.serialized;
 }
 
 /// {@template example.json_converter_nullable}
@@ -176,12 +185,12 @@ class ExampleConv extends JsonConverter<Example, String> {
 /// final Example? myEnum;
 /// ```
 /// {@endtemplate}
-class _ExampleNullableConv extends JsonConverter<Example?, String?> {
+class _ExampleNullableConv extends JsonConverter<Example?, Object?> {
   /// {@macro example.json_converter}
   const _ExampleNullableConv();
 
   @override
-  Example? fromJson(String? json) {
+  Example? fromJson(Object? json) {
     switch (json) {
       case ExampleConv._oneName:
         return Example.one;
@@ -195,5 +204,5 @@ class _ExampleNullableConv extends JsonConverter<Example?, String?> {
   }
 
   @override
-  String? toJson(Example? object) => object?.serialized;
+  Object? toJson(Example? object) => object?.serialized;
 }

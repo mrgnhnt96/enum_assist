@@ -1,5 +1,6 @@
 import 'package:enum_assist/src/field_data.dart';
 import 'package:enum_assist/src/templates/maybe_map_template.dart';
+import 'package:enum_assist/src/templates/templates.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -12,29 +13,52 @@ void main() {
         index: 0,
         fieldName: 'one',
       ),
+      FieldData.manual(
+        index: 1,
+        fieldName: 'two',
+      ),
+      FieldData.manual(
+        index: 2,
+        fieldName: 'three',
+      ),
     };
   });
 
-  test('should return non-nullable method', () {
+  String? getValue(FieldData data) {
+    switch (data.index) {
+      case 0:
+        return '${data.index}';
+      case 1:
+        return null;
+      case 2:
+        return unassigned;
+      default:
+        throw Exception('No value found for ${data.index}');
+    }
+  }
+
+  test('should return value', () {
     final template = MaybeMapTemplate(
       enumName,
       fields,
       methodName: 'method',
-      getValue: (f) => '${f.index}',
+      getValue: getValue,
       defaultValue: "'hello'",
       typeAsString: '$String',
-      docComment: '',
-      allowNulls: false,
+      docComment: '/// doc comment',
+      allowNulls: true,
     );
 
     const output = '''
-
-String get method {
-  return maybeMap (
+/// doc comment
+String? get method {
+  return maybeMap<String?>(
     // returns default value
     //? if theres an argument provided, it does nothing.
-    orElse: 'hello'!,
-      one: '0',
+    orElse: 'hello',
+    one: '0',
+    two: null,
+    three: 'hello',
   );
 }
 ''';
@@ -42,26 +66,28 @@ String get method {
     expect(template.toString(), output);
   });
 
-  test('should return nullable method', () {
+  test('should return non-nullable method', () {
     final template = MaybeMapTemplate(
       enumName,
       fields,
       methodName: 'method',
-      getValue: (f) => '${f.index}',
+      getValue: getValue,
       defaultValue: "'hello'",
       typeAsString: '$String',
-      docComment: '',
-      allowNulls: true,
+      docComment: '/// doc comment',
+      allowNulls: false,
     );
 
     const output = '''
-
-String? get method {
-  return maybeMap (
+/// doc comment
+String get method {
+  return maybeMap<String>(
     // returns default value
     //? if theres an argument provided, it does nothing.
-    orElse: 'hello',
-      one: '0',
+    orElse: 'hello'!,
+    one: '0',
+    two: null,
+    three: null,
   );
 }
 ''';

@@ -29,6 +29,19 @@ class IsImportant extends MaybeExtension<bool?> {
         );
 }
 
+// Even though [allowNull] = true, [defaultValue] will be used as the default value
+//
+// IsImportant needs to be annotated on at least 1 field
+class IsSmall extends MaybeExtension<bool?> {
+  const IsSmall([bool? value])
+      : super(
+          value,
+          methodName: 'isSmall',
+          defaultValue: false,
+          allowNulls: false,
+        );
+}
+
 // FactorsExt needs to be annotated on at least 1 field
 class FactorsExt extends MaybeExtension<List<int>> {
   const FactorsExt([List<int> value = const []])
@@ -45,6 +58,7 @@ enum Example {
     NumberExt(1),
     FactorsExt([1, 3]),
     IsImportant(true),
+    IsSmall(true),
   ])
   one,
 
@@ -53,4 +67,11 @@ enum Example {
 
   @EnumValue(extensions: [])
   three,
+}
+
+void main() {
+  // TODO: update tests to reflect the added type to extensions
+  // add tests when type is nullable & allowNulls if false
+  // add tests when value is `__unassigned__`
+  print(Example.three.isSmall);
 }

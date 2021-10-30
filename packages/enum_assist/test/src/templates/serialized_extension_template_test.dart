@@ -8,7 +8,21 @@ void main() {
 
   setUp(() {
     fields = const {
-      FieldData.manual(index: 0, fieldName: 'one', intValue: 1),
+      FieldData.manual(
+        index: 0,
+        fieldName: 'one',
+        serializedValue: 'one serialized',
+      ),
+      FieldData.manual(
+        index: 1,
+        fieldName: 'two',
+        serializedValue: 'two serialized',
+      ),
+      FieldData.manual(
+        index: 2,
+        fieldName: 'three',
+        serializedValue: 'three serialized',
+      ),
     };
   });
 
@@ -22,8 +36,10 @@ void main() {
     const output = '''
 /// Returns the serialized value of the enum field.
 Object get serialized {
-  return map (
-      one: enumNameConv._oneName,
+  return map<Object>(
+    one: enumNameConv._oneName,
+    two: enumNameConv._twoName,
+    three: enumNameConv._threeName,
   );
 }
 ''';
@@ -41,8 +57,10 @@ Object get serialized {
     const output = '''
 /// Returns the serialized value of the enum field.
 Object get serialized {
-  return map (
-      one: 'one',
+  return map<Object>(
+    one: 'one serialized',
+    two: 'two serialized',
+    three: 'three serialized',
   );
 }
 ''';
