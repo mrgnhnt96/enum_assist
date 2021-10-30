@@ -1,4 +1,13 @@
+export 'adaptive_template.dart';
+export 'description_extension_template.dart';
+export 'extension_template.dart';
+export 'int_extension_template.dart';
 export 'json_converter_template.dart';
 export 'map_extension_template.dart';
+export 'map_template.dart';
 export 'maybe_map_extension_template.dart';
+export 'maybe_map_template.dart';
+export 'name_template.dart';
+export 'readable_template.dart';
+export 'serialized_extension_template.dart';
 export 'template_core.dart';
