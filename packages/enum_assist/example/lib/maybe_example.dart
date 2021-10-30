@@ -68,10 +68,3 @@ enum Example {
   @EnumValue(extensions: [])
   three,
 }
-
-void main() {
-  // TODO: update tests to reflect the added type to extensions
-  // add tests when type is nullable & allowNulls if false
-  // add tests when value is `__unassigned__`
-  print(Example.three.isSmall);
-}
