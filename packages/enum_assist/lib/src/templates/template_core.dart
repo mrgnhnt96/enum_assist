@@ -37,10 +37,6 @@ abstract class TemplateCore<T extends FieldTemplate<R>, R> {
   @nonVirtual
   final Iterable<R> fields;
 
-  @protected
-  @nonVirtual
-  final _buffer = StringBuffer();
-
   /// {@macro tab_indentation}
   @protected
   @nonVirtual
@@ -66,7 +62,9 @@ abstract class TemplateCore<T extends FieldTemplate<R>, R> {
   @override
   @nonVirtual
   String toString() {
-    return writeTemplate(_buffer).toString();
+    final buffer = StringBuffer();
+
+    return writeTemplate(buffer).toString();
   }
 
   /// fields to be used in the template
