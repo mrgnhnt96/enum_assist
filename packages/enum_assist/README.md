@@ -50,7 +50,7 @@ Check out [the example] or [the index](#index) to see what it can do.
   - [Map Example](#map-example)
   - [MaybeMap Example](#maybemap-example)
   - [toJson & fromJson](#tojson--fromjson)
-    - [Using [json_serializable]](#using-json_serializable)
+    - [Using json_serializable](#using-json_serializable)
     - [Manually Serializing](#manually-serializing)
 - [Build Configuration](#build-configuration)
 - [Annotations](#annotations)
@@ -596,7 +596,7 @@ enum SuperHeroes {
 }
 ```
 
-### Using [json_serializable]
+### Using json_serializable
 
 [json_serializable] will automatically serialize enums to json by using [describeEnum](https://api.flutter.dev/flutter/foundation/describeEnum.html). This is great if your enum's values are exactly the same as the json values. But that is not always the case, just like our `SuperHeroes` enum.
 
