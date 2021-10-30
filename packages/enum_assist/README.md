@@ -341,23 +341,41 @@ There are 4 arguments:
 An example:
 
 ```dart
-class MyExt extends MapExtension<String> {
-  const MyExt(String value)
+class SaidByExt extends MapExtension<String> {
+  const SaidByExt(String value)
     : super(
         value,
-        methodName: 'myExt',
-        docComment: 'This is my extension',
+        methodName: 'saidBy',
+        docComment: 'Greeting that is said by...',
         allowNulls: false, // default
       );
+}
+```
+
+Add it to the the [`extensions`](#extensions) property
+
+```dart
+@EnumAssist()
+enum Greeting {
+  @EnumValue(extensions: [SaidByExt('Executives')])
+  professional,
+  @EnumValue(extensions: [SaidByExt('Co-workers')])
+  friendly,
+  @EnumValue(extensions: [SaidByExt('Friends')])
+  relaxed,
 }
 ```
 
 Generated code:
 
 ```dart
-/// This is my extension
-String get myExt {
-  return map(...);
+/// Greeting that is said by...
+String get saidBy {
+  return map(
+    professional: 'Executives',
+    friendly: 'Co-workers',
+    relaxed: 'Friends',
+  );
 }
 ```
 
@@ -382,26 +400,49 @@ Expected return values:
   - If the extension value is defined
 
 ```dart
-class MyExt extends MaybeExtension<String?> {
-  const MyExt(String? value)
+class HowFrequentExt extends MaybeExtension<int?> {
+  const HowFrequentExt(int? value)
     : super(
         value,
-        methodName: 'myExt',
-        docComment: 'This is my extension',
-        defaultValue: 'default',
+        methodName: 'howFrequent',
+        docComment: '1-10, How often this greeting is used.\n\n`null` if never used',
+        defaultValue: 0,
         allowNulls: true,
       );
+}
+```
+
+Add it to the the [`extensions`](#extensions) property
+
+```dart
+@EnumAssist()
+enum Greeting {
+  @EnumValue(extensions: [])
+  professional,
+  @EnumValue(extensions: [HowFrequentExt(3)])
+  friendly,
+  @EnumValue(extensions: [HowFrequentExt(8)])
+  relaxed,
+  @EnumValue(extensions: [HowFrequentExt(null)])
+  rude,
 }
 ```
 
 Generated Code:
 
 ```dart
-/// This is my extension
-String get myExt {
-  return maybeMap(
-    orElse: MyExt(...).defaultValue,
-    ...
+/// 1-10, How often this greeting is used
+///
+/// `null` if never used
+int? get howFrequent {
+  return maybeMap (
+    // returns default value
+    //? if theres an argument provided, it does nothing.
+    orElse: HowFrequentExt(3).defaultValue,
+    professional: HowFrequentExt(3).defaultValue,
+    friendly: 3,
+    relaxed: 8,
+    rude: null,
   );
 }
 ```
@@ -410,6 +451,10 @@ String get myExt {
 For the generated code to access the `defaultValue`, it must create an instance of the
 extension class. If there is a required argument, the arg must be passed to avoid
 exceptions. Therefore, the required arg will be ___provided___ & ___ignored___ to return default value.
+
+> __Note__:
+If an extension is omitted (like `professional`), the default value will be used.\
+`null` will only be returned if declared with a `null` value. (like `rude`)
 
 ## Json Converter
 
