@@ -4,6 +4,7 @@ import 'package:enum_assist/src/configs/extension_config.dart';
 import 'package:enum_assist/src/util/extensions.dart';
 import 'package:enum_assist/src/util/util.dart';
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
+import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
 /// {@template enum_assist.enum_field}
@@ -24,6 +25,23 @@ class FieldData {
     required this.useDocCommentAsDescription,
     required this.extensions,
     required this.serializedFormat,
+  });
+
+  /// used for testing
+  @visibleForTesting
+  const FieldData.manual({
+    required this.index,
+    required this.fieldName,
+    this.readableName,
+    this.docComment,
+    this.description,
+    this.intValue,
+    this.enumName = 'enumName',
+    this.extensions = const <String, ExtensionConfig>{},
+    this.serializedValue,
+    this.useDocCommentAsDescription = true,
+    this.serializedFormat = SerializedFormat.none,
+    this.serializedValueIsString = true,
   });
 
   /// {@macro enum_assist.enum_field}
