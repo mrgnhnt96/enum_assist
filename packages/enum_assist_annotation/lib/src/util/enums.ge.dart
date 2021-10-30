@@ -127,7 +127,7 @@ extension SerializedFormatX on SerializedFormat {
 
   /// Returns the name of the enum field
   String get name {
-    return map(
+    return map<String>(
       camel: 'camel',
       capital: 'capital',
       constant: 'constant',
@@ -144,10 +144,29 @@ extension SerializedFormatX on SerializedFormat {
     );
   }
 
+  /// The enum value converted to an integer
+  int get toInt {
+    return map<int>(
+      camel: 0,
+      capital: 1,
+      constant: 2,
+      dot: 3,
+      header: 4,
+      kebab: 5,
+      no: 6,
+      none: 7,
+      pascal: 8,
+      path: 9,
+      sentence: 10,
+      snake: 11,
+      swap: 12,
+    );
+  }
+
   /// Returns the name of the enum field
   /// In a human readable format
   String get readable {
-    return map(
+    return map<String>(
       camel: 'Camel',
       capital: 'Capital',
       constant: 'Constant',
@@ -168,7 +187,7 @@ extension SerializedFormatX on SerializedFormat {
   ///
   /// If the description is null, the doc comment of the enum field is returned.
   String? get description {
-    return map(
+    return map<String?>(
       camel: '''
 Converts to a string with the separators denoted
 by having the next letter capitalized
@@ -241,8 +260,8 @@ Converts to a string with every character case reversed
   }
 
   /// Returns the serialized value of the enum field.
-  String get serialized {
-    return map(
+  Object get serialized {
+    return map<Object>(
       camel: SerializedFormatConv._camelName,
       capital: SerializedFormatConv._capitalName,
       constant: SerializedFormatConv._constantName,
@@ -270,7 +289,7 @@ Converts to a string with every character case reversed
 /// final SerializedFormat myEnum;
 /// ```
 /// {@endtemplate}
-class SerializedFormatConv extends JsonConverter<SerializedFormat, String> {
+class SerializedFormatConv extends JsonConverter<SerializedFormat, Object> {
   /// {@macro serialized_format.json_converter}
   const SerializedFormatConv({this.defaultValue});
 
@@ -295,7 +314,7 @@ class SerializedFormatConv extends JsonConverter<SerializedFormat, String> {
   static const _swapName = 'swap';
 
   @override
-  SerializedFormat fromJson(String json) {
+  SerializedFormat fromJson(Object json) {
     switch (json) {
       case _camelName:
         return SerializedFormat.camel;
@@ -331,7 +350,7 @@ class SerializedFormatConv extends JsonConverter<SerializedFormat, String> {
   }
 
   @override
-  String toJson(SerializedFormat object) => object.serialized;
+  Object toJson(SerializedFormat object) => object.serialized;
 }
 
 /// {@template serialized_format.json_converter_nullable}
@@ -345,12 +364,12 @@ class SerializedFormatConv extends JsonConverter<SerializedFormat, String> {
 /// ```
 /// {@endtemplate}
 class _SerializedFormatNullableConv
-    extends JsonConverter<SerializedFormat?, String?> {
+    extends JsonConverter<SerializedFormat?, Object?> {
   /// {@macro serialized_format.json_converter}
   const _SerializedFormatNullableConv();
 
   @override
-  SerializedFormat? fromJson(String? json) {
+  SerializedFormat? fromJson(Object? json) {
     switch (json) {
       case SerializedFormatConv._camelName:
         return SerializedFormat.camel;
@@ -384,7 +403,7 @@ class _SerializedFormatNullableConv
   }
 
   @override
-  String? toJson(SerializedFormat? object) => object?.serialized;
+  Object? toJson(SerializedFormat? object) => object?.serialized;
 }
 
 /// Extensions for the enum MethodType
@@ -429,16 +448,24 @@ extension MethodTypeX on MethodType {
 
   /// Returns the name of the enum field
   String get name {
-    return map(
+    return map<String>(
       map: 'map',
       maybeMap: 'maybeMap',
+    );
+  }
+
+  /// The enum value converted to an integer
+  int get toInt {
+    return map<int>(
+      map: 0,
+      maybeMap: 1,
     );
   }
 
   /// Returns the name of the enum field
   /// In a human readable format
   String get readable {
-    return map(
+    return map<String>(
       map: 'Map',
       maybeMap: 'Maybe Map',
     );
@@ -448,7 +475,7 @@ extension MethodTypeX on MethodType {
   ///
   /// If the description is null, the doc comment of the enum field is returned.
   String? get description {
-    return map(
+    return map<String?>(
       map: '''
 The generated method will be `map(...)`.
 
@@ -469,8 +496,8 @@ if [Extension.allowNulls] is `true`
   }
 
   /// Returns the serialized value of the enum field.
-  String get serialized {
-    return map(
+  Object get serialized {
+    return map<Object>(
       map: MethodTypeConv._mapName,
       maybeMap: MethodTypeConv._maybeMapName,
     );
@@ -487,7 +514,7 @@ if [Extension.allowNulls] is `true`
 /// final MethodType myEnum;
 /// ```
 /// {@endtemplate}
-class MethodTypeConv extends JsonConverter<MethodType, String> {
+class MethodTypeConv extends JsonConverter<MethodType, Object> {
   /// {@macro method_type.json_converter}
   const MethodTypeConv({this.defaultValue});
 
@@ -501,7 +528,7 @@ class MethodTypeConv extends JsonConverter<MethodType, String> {
   static const _maybeMapName = 'maybeMap';
 
   @override
-  MethodType fromJson(String json) {
+  MethodType fromJson(Object json) {
     switch (json) {
       case _mapName:
         return MethodType.map;
@@ -515,7 +542,7 @@ class MethodTypeConv extends JsonConverter<MethodType, String> {
   }
 
   @override
-  String toJson(MethodType object) => object.serialized;
+  Object toJson(MethodType object) => object.serialized;
 }
 
 /// {@template method_type.json_converter_nullable}
@@ -528,12 +555,12 @@ class MethodTypeConv extends JsonConverter<MethodType, String> {
 /// final MethodType? myEnum;
 /// ```
 /// {@endtemplate}
-class _MethodTypeNullableConv extends JsonConverter<MethodType?, String?> {
+class _MethodTypeNullableConv extends JsonConverter<MethodType?, Object?> {
   /// {@macro method_type.json_converter}
   const _MethodTypeNullableConv();
 
   @override
-  MethodType? fromJson(String? json) {
+  MethodType? fromJson(Object? json) {
     switch (json) {
       case MethodTypeConv._mapName:
         return MethodType.map;
@@ -545,5 +572,5 @@ class _MethodTypeNullableConv extends JsonConverter<MethodType?, String?> {
   }
 
   @override
-  String? toJson(MethodType? object) => object?.serialized;
+  Object? toJson(MethodType? object) => object?.serialized;
 }
