@@ -12,7 +12,7 @@
 /// details, and `build.yaml` for how these builders are configured by default.
 
 import 'package:build/build.dart';
-import 'package:enum_assist/enum_assist.dart';
+import 'package:enum_assist/src/enum_assist.dart';
 import 'package:enum_assist/src/settings.dart';
 import 'package:source_gen/source_gen.dart';
 

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:build_test/build_test.dart';
-import 'package:enum_assist/enum_assist.dart';
+import 'package:enum_assist/src/enum_assist.dart';
 import 'package:enum_assist/src/src.dart';
 import 'package:source_gen/source_gen.dart';
 
