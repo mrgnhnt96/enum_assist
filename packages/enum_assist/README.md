@@ -371,7 +371,7 @@ Generated code:
 ```dart
 /// Greeting that is said by...
 String get saidBy {
-  return map(
+  return map<String>(
     professional: 'Executives',
     friendly: 'Co-workers',
     relaxed: 'Friends',
@@ -435,7 +435,7 @@ Generated Code:
 ///
 /// `null` if never used
 int? get howFrequent {
-  return maybeMap (
+  return maybeMap<int?>(
     // returns default value
     //? if theres an argument provided, it does nothing.
     orElse: HowFrequentExt(3).defaultValue,
@@ -1141,7 +1141,6 @@ Extension classes must extend
 > Go to [Examples](#examples) for an example of how to create custom extensions.
 
 </details>
-
 
 [`EnumAssist`]: https://github.com/mrgnhnt96/enum_assist/blob/main/packages/enum_assist_annotation/lib/src/enum_assist.dart
 [`EnumValue`]: https://github.com/mrgnhnt96/enum_assist/blob/main/packages/enum_assist_annotation/lib/src/enum_value.dart
