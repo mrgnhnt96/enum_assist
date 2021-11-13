@@ -25,3 +25,7 @@ coverage:
 runtests:
   - pub run test --coverage coverage -r expanded
   - $coverage
+
+publish:
+  - cd ../enum_assist && pub publish
+  - cd ../enum_assist_annotation && pub publish
