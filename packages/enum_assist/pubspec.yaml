@@ -3,8 +3,6 @@ version: 0.0.1
 description: >-
   Seamlessly generate extension methods and json conversion classes for your enums using enum_assist
 repository: https://github.com/mrgnhnt96/enum_assist/enum_assist
-publish_to: none
-
 environment:
   sdk: ">=2.14.0 <3.0.0"
 
@@ -14,7 +12,7 @@ dependencies:
   build_config: ^1.0.0
   change_case: ^1.0.0+2
   enum_assist_annotation:
-    path: ../enum_assist_annotation
+    # path: ../enum_assist_annotation
   json_annotation: ^4.1.0
   meta: ^1.7.0
   source_gen: ^1.1.1
