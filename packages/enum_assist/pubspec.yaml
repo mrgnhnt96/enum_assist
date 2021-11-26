@@ -1,5 +1,5 @@
 name: enum_assist
-version: 0.0.1
+version: 0.1.0
 description: >-
   Seamlessly generate extension methods and json conversion classes for your enums using enum_assist
 repository: https://github.com/mrgnhnt96/enum_assist/tree/main/packages/enum_assist
