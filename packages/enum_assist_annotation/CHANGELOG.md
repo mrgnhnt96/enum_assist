@@ -1,3 +1,8 @@
+# 0.1.0+1 (11/26/2021)
+
+Update:
+- Package description text
+
 # 0.1.0 (11/26/2021)
 
 Feature:
