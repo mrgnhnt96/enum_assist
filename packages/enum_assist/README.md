@@ -39,26 +39,13 @@ Check out [the example] or [the index](#index) to see what it can do.
     - [Map Extension](#map-extension)
     - [Maybe Extension](#maybe-extension)
   - [Json Converter](#json-converter)
+- [Build Configuration](#build-configuration)
 - [Examples](#examples)
   - [Map Example](#map-example)
   - [MaybeMap Example](#maybemap-example)
   - [toJson & fromJson](#tojson--fromjson)
     - [Using json_serializable](#using-json_serializable)
     - [Manually Serializing](#manually-serializing)
-- [Build Configuration](#build-configuration)
-- [Annotations](#annotations)
-  - [Enum Assist](#enum-assist)
-    - [Creation Settings](#creation-settings)
-    - [Serialized Format](#serialized-format)
-    - [Use Doc Comment As Description](#use-doc-comment-as-description)
-    - [Use Int Value For Serialization](#use-int-value-for-serialization)
-  - [Enum Value](#enum-value)
-    - [Readable](#readable)
-    - [Description](#description)
-    - [Int Value](#int-value)
-    - [Serialized Value](#serialized-value)
-    - [Use Doc Comment As Description](#use-doc-comment-as-description-1)
-    - [Extensions](#extensions)
 
 # How to use
 
@@ -378,6 +365,56 @@ final conv = GreetingConv();
 conv.toJson(Greeting.professional); // professional
 conv.fromJson('professional'); // Greeting.professional
 ```
+
+# Build Configuration
+
+Customize the [settings](#enum-assist) for each enum, or for all enums inside your `build.yaml` file.
+
+```yaml
+targets:
+  $default:
+    builders:
+      enum_assist:
+        enabled: true
+        options:
+          # possible values:
+          # - true
+          # - false
+          # default: true
+          create_json_conv: true
+
+          # possible values:
+          # - camel
+          # - capital
+          # - constant
+          # - dot
+          # - header
+          # - kebab
+          # - no
+          # - none
+          # - pascal
+          # - path
+          # - sentence
+          # - snake
+          # - swap
+          # default: none
+          serialized_format: none
+
+          # possible values:
+          # - true
+          # - false
+          # default: true
+          use_doc_comment_as_description: true
+
+          # possible values:
+          # - true
+          # - false
+          # default: false
+          use_int_value_for_serialization: false
+```
+
+<details>
+<summary>Some Examples!</summary>
 
 # Examples
 
@@ -705,283 +742,6 @@ final json = steve.toJson();
 
 print(json['hero']); // Capitan America
 ```
-
-# Build Configuration
-
-Customize the [settings](#enum-assist) for each enum, or for all enums inside your `build.yaml` file.
-
-```yaml
-targets:
-  $default:
-    builders:
-      enum_assist:
-        enabled: true
-        options:
-          # possible values:
-          # - true
-          # - false
-          # default: true
-          create_json_conv: true
-
-          # possible values:
-          # - camel
-          # - capital
-          # - constant
-          # - dot
-          # - header
-          # - kebab
-          # - no
-          # - none
-          # - pascal
-          # - path
-          # - sentence
-          # - snake
-          # - swap
-          # default: none
-          serialized_format: none
-
-          # possible values:
-          # - true
-          # - false
-          # default: true
-          use_doc_comment_as_description: true
-
-          # possible values:
-          # - true
-          # - false
-          # default: false
-          use_int_value_for_serialization: false
-```
-
-# Annotations
-
-## Enum Assist
-
-<details>
-<summary>Used to specify the enum you want to generate code for</summary>
-
-### Creation Settings
-
-Determine which methods to generate
-
-- createJsonConv
-- createName
-- createDescription
-- createToInt
-- createReadable
-- createSerialized
-
-### Serialized Format
-
-Sets the format you want the values of the enum to be serialized to.
-
-[enum_assist] depends on [change_case] to format the serialized value.\
-  The possible values for the [`build.yaml`] file is any value from the [SerializedFormat] enum
-
-- [SerializedFormat].none (default)
-
-  ```dart
-  // SerializedFormat.none (default)
-  static const _professionalName = 'professional';
-
-  // SerializedFormat.snake
-  static const _veryProfessionalName = 'very_professional';
-  ```
-
-### Use Doc Comment As Description
-
-Whether or not to use the enum value's doc comment as the [description](#description-1) of the enum value.
-
-If set to `false`, the [description](#description-1) will return `null`, unless defined via [EnumValue.description](#description).
-
-Enum:
-
-```dart
-@EnumAssist(useDocCommentAsDescription: true)
-enum Greeting {
-  /// A professional greeting
-  professional,
-  /// A friendly greeting
-  friendly,
-  /// A relaxed greeting
-  ///
-  /// Which is my favorite!
-  relaxed,
-}
-
-// "A relaxed greeting
-//
-// Which is my favorite!"
-Greeting.relaxed.description;
-```
-
-### Use Int Value For Serialization
-
-Whether or not to use the enum's [int value](#int-value) for serialization.
-
-Setting this to `true`, the [`serializedValue`](#serializedValue) field will be ignored.
-
-```dart
-@EnumAssist(useIntValueForSerialization: true)
-enum Greeting {
-  professional,
-  friendly,
-  relaxed,
-}
-
-Greeting.relaxed.serialized; // 2
-```
-
-> __Notice This:__
-Instead of returning `friendly`, it will return the `intValue` of the `friendly` field, which is `1`
-
-</details>
-
-## Enum Value
-
-<details>
-<summary>Used to customize the generator for a specific enum value.</summary>
-
-### Readable
-
-Provides the name for [readable](#readable) of the enum value.
-The name should be a human readable format.
-
-```dart
-@EnumAssist()
-enum Greeting {
-  @EnumValue(readable: 'Formal')
-  professional,
-  friendly,
-  relaxed,
-}
-
-Greeting.friendly.readable; // Friendly
-Greeting.professional.readable; // Formal
-```
-
-### Description
-
-Provides the description for the [description](#description) of the enum value.
-
-Expected Return Value:
-- Doc Comment of the enum value
-- `null` if the [EnumValue](#use-doc-comment-as-description), [EnumAssist, or build.yaml](#use-doc-comment-as-description) `useDocCommentAsDescription` fields are set to false
-- Value of [EnumValue.description](#description) (regardless of `useDocCommentAsDescription`'s value)
-
-```dart
-@EnumAssist()
-enum Greeting {
-  /// A professional greeting
-  @EnumValue(description: 'Recommended to use in the work place')
-  professional,
-  /// A friendly greeting
-  friendly,
-  relaxed,
-}
-
-Greeting.friendly.description; // A friendly greeting
-Greeting.professional.description; // Recommended to use in the work place
-```
-
-### Int Value
-
-Provides the int value for [toInt](#to-int) of the enum value.
-
-0 indexed integers used to represent the enum value.\
-When a value is assigned to [EnumValue.intValue](#int-value), the value will be passed on to the next enum field, incrementing by 1.
-
-For example:
-
-```dart
-@EnumAssist()
-enum ResponseCodes {
-  @EnumValue(intValue: 200)
-  ok,
-  created,
-  accepted,
-
-  @EnumValue(intValue: 400)
-  badRequest,
-  unauthorized,
-  @EnumValue(intValue: 403)
-  forbidden,
-  notFound,
-
-  @EnumValue(intValue: 500)
-  internalServerError,
-  notImplemented,
-  badGateway,
-  serviceUnavailable,
-}
-
-ResponseCode.ok.toInt; // 200
-ResponseCode.created.toInt; // 201
-ResponseCode.accepted.toInt; // 202
-ResponseCode.badRequest.toInt; // 400
-ResponseCode.unauthorized.toInt; // 401
-ResponseCode.forbidden.toInt; // 403
-ResponseCode.notFound.toInt; // 404
-ResponseCode.internalServerError.toInt; // 500
-ResponseCode.notImplemented.toInt; // 501
-ResponseCode.badGateway.toInt; // 502
-ResponseCode.serviceUnavailable.toInt; // 503
-```
-
-### Serialized Value
-
-Provides the serialized representation of the enum value for [serialized](#serialized) and [json converter classes](#json-converter-class).
-
-Specific case formatting can be done with [serializedFormat](#serialized-format) (either [`EnumAssist`] or [`build.yaml`])
-
-> __Note__:
-While the type for `serializedValue` is `Object?`, the only accepted types are `String`, and `int`.
-
-```dart
-@EnumAssist()
-enum Greeting {
-  @EnumValue(serializedValue: 'formal')
-  professional,
-  friendly,
-  @EnumValue(serializedValue: 3)
-  relaxed,
-}
-
-Greeting.professional.serialized; // formal
-Greeting.friendly.serialized; // friendly
-Gretting.relaxed.serialized; // 3
-```
-
-### Use Doc Comment As Description
-
-Whether or not to use the enum value's doc comment as the [description](#description-1) of the enum value.
-
-If set to `false`, the [description](#description-1) will return `null`, unless defined via [EnumValue.description](#description).
-
-```dart
-@EnumAssist()
-enum Greeting {
-  /// A professional greeting
-  @EnumValue(useDocCommentAsDescription: false)
-  professional,
-  /// A friendly greeting
-  friendly,
-  relaxed,
-}
-
-Greeting.friendly.description; // A friendly greeting
-Greeting.professional.description; // null
-```
-
-### Extensions
-
-[Custom Extension Methods](#custom-extensions) to be created for the enum, specified with the value of the enum field.
-
-Extension classes must extend
-- [`MapExtension`], representing the [`.map(...)`](#mapmaybemap) method
-- [`MaybeExtension`], representing the [`.maybeMap(...)`](#mapmaybemap) method
-
-> Go to [Examples](#examples) for an example of how to create custom extensions.
 
 </details>
 
