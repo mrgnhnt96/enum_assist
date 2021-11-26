@@ -5,8 +5,10 @@ import 'package:enum_assist/src/enum_assist.dart';
 import 'package:enum_assist/src/src.dart';
 import 'package:source_gen/source_gen.dart';
 
-Future<String> getGeneratedInput(String fileName,
-    {bool addPart = false}) async {
+Future<String> getGeneratedInput(
+  String fileName, {
+  bool addPart = false,
+}) async {
   final path = 'test/generator/content/$fileName.dart';
 
   String? part;

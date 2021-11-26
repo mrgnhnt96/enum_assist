@@ -1,6 +1,6 @@
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 
-part 'create_json_conv.ge.dart';
+part 'output/create_json_conv.dart';
 
 @EnumAssist(
   createJsonConv: false,

@@ -40,18 +40,4 @@ void main() {
       }
     });
   });
-
-  group('$Vehicle', () {
-    test('should return name of enum value', () {
-      const comments = {
-        Vehicle.car: 'car',
-        Vehicle.plane: 'plane',
-        Vehicle.train: 'train',
-      };
-
-      for (final value in Vehicle.values) {
-        expect(value.serialized, comments[value]);
-      }
-    });
-  });
 }

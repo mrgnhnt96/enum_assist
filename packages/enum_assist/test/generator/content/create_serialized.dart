@@ -1,9 +1,9 @@
 import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 
-part 'create_json_conv.ge.dart';
+part 'output/create_serialized.dart';
 
 @EnumAssist(
-  createJsonConv: false,
+  createSerialized: false,
 )
 enum Animal {
   dog,
@@ -12,7 +12,7 @@ enum Animal {
 }
 
 @EnumAssist(
-  createJsonConv: false,
+  createSerialized: false,
 )
 enum Letters {
   @EnumValue(serializedValue: 'handWrittenValue')
