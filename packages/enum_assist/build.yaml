@@ -8,12 +8,12 @@ targets:
           exclude:
             - test/
           include:
-            - test/integration/*
-            - test/integration/**/*
+            - test/**/integration/*
+            - test/**/integration/**/*
 
 builders:
   enum_assist:
-    import: "package:enum_assist/builder.dart"
+    import: "package:enum_assist/enum_assist.dart"
     builder_factories: ["enumAssist"]
     build_extensions: { ".dart": ["ge.dart"] }
     auto_apply: dependents
