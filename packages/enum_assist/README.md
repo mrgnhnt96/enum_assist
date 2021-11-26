@@ -33,14 +33,7 @@ Check out [the example] or [the index](#index) to see what it can do.
   - [File Setup](#file-setup)
 - [Features](#features)
   - [Default Extension Methods](#default-extension-methods)
-    - [Name](#name)
-    - [Description](#description)
-    - [To Int](#to-int)
-    - [Readable](#readable)
-    - [Serialized](#serialized)
   - [map/maybeMap](#mapmaybemap)
-    - [Map](#map)
-    - [Maybe Map](#maybe-map)
     - [Return Type](#return-type)
   - [Custom Extensions](#custom-extensions)
     - [Map Extension](#map-extension)
@@ -55,13 +48,13 @@ Check out [the example] or [the index](#index) to see what it can do.
 - [Build Configuration](#build-configuration)
 - [Annotations](#annotations)
   - [Enum Assist](#enum-assist)
-    - [Create Json Conversion](#create-json-conversion)
+    - [Creation Settings](#creation-settings)
     - [Serialized Format](#serialized-format)
     - [Use Doc Comment As Description](#use-doc-comment-as-description)
     - [Use Int Value For Serialization](#use-int-value-for-serialization)
   - [Enum Value](#enum-value)
-    - [Readable](#readable-1)
-    - [Description](#description-1)
+    - [Readable](#readable)
+    - [Description](#description)
     - [Int Value](#int-value)
     - [Serialized Value](#serialized-value)
     - [Use Doc Comment As Description](#use-doc-comment-as-description-1)
@@ -96,15 +89,11 @@ What are these packages?
 
 ## Build Runner Commands
 
-- If your package depends on Flutter:
-
   ```dart
+  // If your package depends on Flutter
   flutter pub run build_runner build
-  ```
 
-- If your package _does not_ depend on Flutter:
-
-  ```dart
+  // If your package _does not_ depend on Flutter
   dart pub run build_runner build
   ```
 
@@ -120,50 +109,27 @@ import 'package:enum_assist_annotation/enum_assist_annotation.dart';
 part 'example.ge.dart';
 ```
 
-Here's a full example of `example.dart`:
-
-```dart
-import 'package:enum_assist_annotation/enum_assist_annotation.dart';
-
-part 'example.ge.dart';
-
-@EnumAssist()
-enum SuperHero {
-  superman,
-  spiderman,
-  ironman,
-}
-```
-
 # Features
 
 ## Default Extension Methods
 
 The following methods will be generated with every enum annotated with [`EnumAssist`]
 
-### Name
+**Name**
 
-Returns the name of the enum value.
-
-```dart
-var greet = Greeting.friendly;
-
-greet.name; // friendly
-```
-
-### Description
-
-Returns the [EnumValue.description](#description-1) of the enum value in a human readable format.
+The name of the enum value.
 
 ```dart
-var greet = Greeting.friendly;
-
-greet.description; // A friendly greeting
+Greeting.friendly.name; // friendly
 ```
 
-### To Int
+[**Description**](#description)
 
-Returns the [EnumValue.intValue](#int-value) of the enum value.
+```dart
+Greeting.friendly.description; // A friendly greeting
+```
+
+[**To Int**](#int-value)
 
 ```dart
 Greeting.professional.toInt; // 0
@@ -171,46 +137,24 @@ Greeting.friendly.toInt; // 1
 Greeting.relaxed.toInt; //2
 ```
 
-### Readable
-
-Returns the [EnumValue.readable](#readable-1) of the enum value in a human readable format.
+[**Readable**](#readable)
 
 ```dart
-var greet = Greeting.friendly;
-
-greet.readable; // Friendly
+Greeting.friendly.readable; // Friendly
 ```
 
-### Serialized
+[**Serialized**](#serialized-value)
 
-Returns the [EnumValue.serializedValue](#serialized-value) of the enum value.
-
-Specific case formatting can be done with [serializedFormat](#serialized-format) (either [`EnumAssist`] or [`build.yaml`])
+> Specific case formatting can be done with [serializedFormat](#serialized-format) (either [`EnumAssist`] or [`build.yaml`])
 
 ```dart
-var greet = Greeting.friendly;
-
-greet.serialized; // friendly
+Greeting.friendly.serialized; // friendly
 ```
 
 ## map/maybeMap
 
+__The base of all [custom extension methods](#custom-extensions).__\
 Each enum will generate a `.map(...)` & `.maybeMap(...)` method, which is equivalent to pattern matching.
-
-__The base of all [custom extension methods](#custom-extensions).__
-
-This enum will be used as reference:
-
-```dart
-@EnumAssist()
-enum Greeting {
-  professional,
-  friendly,
-  relaxed,
-}
-```
-
-### Map
 
 `.map()` provides callbacks for each enum value. __All callbacks are required args__ and can return any value.
 
@@ -226,8 +170,6 @@ enum Greeting {
   whatDoYouSay; // Hello
   ```
 
-### Maybe Map
-
 `.maybeMap()` provides callbacks for each enum value, plus an `orElse` callback.\
 `orElse` is the only required arg.
 
@@ -235,8 +177,8 @@ enum Greeting {
 var greet = Greeting.friendly;
 
 final whatDoYouSay = greet.maybeMap(
-    orElse: '*blank stare*',
     professional: 'Hello Sir',
+    orElse: '*blank stare*',
 );
 
 whatDoYouSay; // *blank stare*
@@ -245,11 +187,6 @@ whatDoYouSay; // *blank stare*
 ### Return Type
 
 `.map<T>()` and `.maybeMap<T>()` use generics to provide the return type of the callback.
-
-While its not necessary to define the return type, it is recommended to do so.\
-Defining the return type protects you by forcing a specific return type.
-
-- Defined Return Type: `String`
 
   ```dart
   var greet = Greeting.friendly;
@@ -264,9 +201,7 @@ Defining the return type protects you by forcing a specific return type.
   whatDoYouSay.runtimeType; // String
   ```
 
-Here are a couple of examples of inferred return types:
-
-- Return type: `String`
+While its not necessary to define the return type, it is recommended to do so.
 
   ```dart
   var greet = Greeting.friendly;
@@ -280,8 +215,6 @@ Here are a couple of examples of inferred return types:
   whatDoYouSay.runtimeType; // String
   ```
 
-- Return type: `String?`
-
   ```dart
   var greet = Greeting.friendly;
 
@@ -293,8 +226,6 @@ Here are a couple of examples of inferred return types:
 
   whatDoYouSay.runtimeType; // String?
   ```
-
-- Return type: `Object?`
 
   ```dart
   var greet = Greeting.friendly;
@@ -308,12 +239,9 @@ Here are a couple of examples of inferred return types:
   whatDoYouSay.runtimeType; // Object?
   ```
 
-  > <sub>_Note: Just because you can, doesn't mean you should..._\
-  _With great power, comes great responsibility_</sub>
-
 ## Custom Extensions
 
-[enum_assist] allows you to create your own extension methods for your enum, with minimal code!
+[enum_assist] allows you to create your own extension methods for your enum
 
 There are two ways to create your own extension methods.\
 You start by creating a class that extends [MapExtension](#map-extension) or [MaybeExtension](#maybe-extension).
@@ -324,21 +252,6 @@ within the super constructor!_
 ---
 
 ### Map Extension
-
-There are 4 arguments:
-- `value` (__required__), The value for the enum field.
-  - Can be any `const` value
-  - Type is inferred from the class's `type` arguments
-- `methodName` (__required__), The name of the method to be created
-  - This must be unique and should not be use by any other extension classes
-- `docComment` (optional), The doc comment for the method
-  - multi-line strings are supported.
-  - `///` will be prepended to each new line.
-- `allowNulls` (optional), Whether or not to return `null` values
-  - _default_: `false`
-  - _For the return type to be nullable, this must be set to `true`_
-
-An example:
 
 ```dart
 class SaidByExt extends MapExtension<String> {
@@ -383,21 +296,12 @@ String get saidBy {
 
 ### Maybe Extension
 
-There are 5 arguments, 4 are the same as [MapExtension](#map-extension)
-
-The 5th argument is:
-- `defaultValue` (required), used as the `orElse` callback value.
-  - Can be any `const` value
-  - Type is inferred from the class's type argument
-
 Expected return values:
 - `defaultValue`:
-  - If the extension value is not defined
-  - If the extension value is `null` __AND__ `allowNulls` is `false`
+  - When the extension value is not defined
+  - When the extension value is `null` __AND__ `allowNulls` is `false`
 - `null`
-  - If the extension value is `null` __AND__ `allowNulls` is `true`
-- Defined value
-  - If the extension value is defined
+  - When the extension value is `null` __AND__ `allowNulls` is `true`
 
 ```dart
 class HowFrequentExt extends MaybeExtension<int?> {
@@ -467,17 +371,12 @@ The name of json converter class will be `${NAME_OF_ENUM}Conv`
 
 For a detailed example, go to [toJson/fromJson](#tojson--fromjson)
 
-Here's a quick example:
-
 ```dart
 // Generated Json Converter class
 final conv = GreetingConv();
 
-final greet = Greeting.professional;
-conv.toJson(greet); // professional
-
-final greetJson = 'professional';
-conv.fromJson(greetJson); // Greeting.professional
+conv.toJson(Greeting.professional); // professional
+conv.fromJson('professional'); // Greeting.professional
 ```
 
 # Examples
@@ -797,9 +696,7 @@ class Character {
 }
 ```
 
-And that's it!
-
-And here is what the `hero`'s value would look like
+Here's what the `hero`'s value would look like
 
 ```dart
 final steve = Character('Steve Rogers', SuperHeroes.capitanAmerica);
@@ -811,9 +708,7 @@ print(json['hero']); // Capitan America
 
 # Build Configuration
 
-If you want to customize the [settings](#enum-assist) for each enum, you can specify it inside your `build.yaml` file.
-
-For example:
+Customize the [settings](#enum-assist) for each enum, or for all enums inside your `build.yaml` file.
 
 ```yaml
 targets:
@@ -865,39 +760,31 @@ targets:
 <details>
 <summary>Used to specify the enum you want to generate code for</summary>
 
-### Create Json Conversion
+### Creation Settings
 
-_field_: `createJsonConv`
+Determine which methods to generate
 
-Whether or not to create a [json converter class](#json-converter-class) (non-nullable & nullable) for your enum.
-
-[enum_assist_annotation] depends on [json_annotation] to generate [`JsonConverter`] classes.\
-  _Even if you do not use [json_serializable] or [json_annotation] in your project, you can still use the generated conversion classes in your code._
-
-> Go to [Json Converter Classes](#json-converter-class) for an example
+- createJsonConv
+- createName
+- createDescription
+- createToInt
+- createReadable
+- createSerialized
 
 ### Serialized Format
-
-_field_: `serializedFormat`
-
-Used By:
-- [serialized](#serialized)
 
 Sets the format you want the values of the enum to be serialized to.
 
 [enum_assist] depends on [change_case] to format the serialized value.\
   The possible values for the [`build.yaml`] file is any value from the [SerializedFormat] enum
 
-Here's an example:
 - [SerializedFormat].none (default)
 
   ```dart
+  // SerializedFormat.none (default)
   static const _professionalName = 'professional';
-  ```
 
-- [SerializedFormat].snake
-
-  ```dart
+  // SerializedFormat.snake
   static const _veryProfessionalName = 'very_professional';
   ```
 
@@ -910,9 +797,7 @@ If set to `false`, the [description](#description-1) will return `null`, unless 
 Enum:
 
 ```dart
-@EnumAssist(
-  useDocCommentAsDescription: true,
-)
+@EnumAssist(useDocCommentAsDescription: true)
 enum Greeting {
   /// A professional greeting
   professional,
@@ -923,12 +808,6 @@ enum Greeting {
   /// Which is my favorite!
   relaxed,
 }
-```
-
-```dart
-final greet = Greeting.friendly;
-
-greet.description; // A friendly greeting
 
 // "A relaxed greeting
 //
@@ -943,20 +822,12 @@ Whether or not to use the enum's [int value](#int-value) for serialization.
 Setting this to `true`, the [`serializedValue`](#serializedValue) field will be ignored.
 
 ```dart
-@EnumAssist(
-  useIntValueForSerialization: true,
-)
+@EnumAssist(useIntValueForSerialization: true)
 enum Greeting {
   professional,
   friendly,
   relaxed,
 }
-```
-
-```dart
-final greet = Greeting.friendly;
-
-greet.serialized; // 1
 
 Greeting.relaxed.serialized; // 2
 ```
@@ -984,22 +855,14 @@ enum Greeting {
   friendly,
   relaxed,
 }
-```
 
-```dart
-final greet = Greeting.friendly;
-
-greet.readable; // Friendly
-
+Greeting.friendly.readable; // Friendly
 Greeting.professional.readable; // Formal
 ```
 
 ### Description
 
 Provides the description for the [description](#description) of the enum value.
-
-The description should be a human readable format.\
-For Example: for `Example.isReallyCool`, the description could be `The example is really cool!`
 
 Expected Return Value:
 - Doc Comment of the enum value
@@ -1016,13 +879,8 @@ enum Greeting {
   friendly,
   relaxed,
 }
-```
 
-```dart
-final greet = Greeting.friendly;
-
-greet.description; // A friendly greeting
-
+Greeting.friendly.description; // A friendly greeting
 Greeting.professional.description; // Recommended to use in the work place
 ```
 
@@ -1056,11 +914,7 @@ enum ResponseCodes {
   badGateway,
   serviceUnavailable,
 }
-```
 
-Their return values will be:
-
-```dart
 ResponseCode.ok.toInt; // 200
 ResponseCode.created.toInt; // 201
 ResponseCode.accepted.toInt; // 202
@@ -1089,18 +943,12 @@ enum Greeting {
   @EnumValue(serializedValue: 'formal')
   professional,
   friendly,
-  @EnumValue(serializedValue: 3) // serializedValue accepts type Object?
+  @EnumValue(serializedValue: 3)
   relaxed,
 }
-```
-
-```dart
-final greet = Greeting.friendly;
-
-greet.serialized; // friendly
 
 Greeting.professional.serialized; // formal
-
+Greeting.friendly.serialized; // friendly
 Gretting.relaxed.serialized; // 3
 ```
 
@@ -1120,13 +968,8 @@ enum Greeting {
   friendly,
   relaxed,
 }
-```
 
-```dart
-final greet = Greeting.friendly;
-
-greet.description; // A friendly greeting
-
+Greeting.friendly.description; // A friendly greeting
 Greeting.professional.description; // null
 ```
 
