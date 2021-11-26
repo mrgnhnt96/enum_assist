@@ -22,10 +22,3 @@ enum Letters {
   @EnumValue(serializedValue: 'hateValue')
   hate,
 }
-
-@EnumAssist()
-enum Vehicle {
-  car,
-  plane,
-  train,
-}
