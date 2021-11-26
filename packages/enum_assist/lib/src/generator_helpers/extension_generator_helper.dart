@@ -16,16 +16,33 @@ abstract class ExtensionGeneratorHelper implements HelperCore {
 /// Extensions for the enum $enumName''')
       ..writeln('extension ${enumName}X on $enumName {')
       ..writeln(MapExtensionTemplate(enumName, fieldNames).toString())
-      ..writeln(MaybeMapExtensionTemplate(enumName, fieldNames).toString())
-      ..writeln(NameTemplate(enumName, fieldData).toString())
-      ..writeln(IntValueTemplate(enumName, fieldData).toString())
-      ..writeln(ReadableTemplate(enumName, fieldData).toString())
-      ..writeln(DescriptionTemplate(enumName, fieldData).toString())
-      ..writeln(SerializedTemplate(
+      ..writeln(MaybeMapExtensionTemplate(enumName, fieldNames).toString());
+
+    if (config.createName) {
+      buffer.writeln(NameTemplate(enumName, fieldData).toString());
+    }
+
+    if (config.createToInt) {
+      buffer.writeln(IntValueTemplate(enumName, fieldData).toString());
+    }
+
+    if (config.createReadable) {
+      buffer.writeln(ReadableTemplate(enumName, fieldData).toString());
+    }
+
+    if (config.createDescription) {
+      buffer.writeln(DescriptionTemplate(enumName, fieldData).toString());
+    }
+
+    if (config.createSerialized) {
+      buffer.writeln(SerializedTemplate(
         enumName,
         fieldData,
         createJsonConv: config.createJsonConv,
-      ).toString())
+      ).toString());
+    }
+
+    buffer
       ..writeln(additionalExtensions())
       ..writeln('}');
 
