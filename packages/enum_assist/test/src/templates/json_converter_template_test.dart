@@ -4,11 +4,12 @@ import 'package:test/test.dart';
 
 void main() {
   late Iterable<FieldData> fields;
-  const enumName = 'enumName';
+  const enumName = 'MyEnum';
 
   setUp(() {
     fields = const {
       FieldData.manual(
+        enumName: enumName,
         index: 0,
         fieldName: 'one',
         intValue: 1,
@@ -23,29 +24,30 @@ void main() {
         enumName,
         fields,
         isNullable: true,
+        canUseSerializedValue: true,
         useIntValueForSerialization: false,
       );
 
       const output = '''
-/// {@template enum_name.json_converter_nullable}
-/// Serializes [enumName?] to and from json
+/// {@template my_enum.json_converter_nullable}
+/// Serializes [MyEnum?] to and from json
 ///
 /// Can be used as annotation for `json_serializable` classes
 ///
 /// ```dart
-/// @enumNameConv.nullable
-/// final enumName? myEnum;
+/// @MyEnumConv.nullable
+/// final MyEnum? myEnum;
 /// ```
 /// {@endtemplate}
-class _enumNameNullableConv extends JsonConverter<enumName?, Object?> {
-  /// {@macro enum_name.json_converter}
-  const _enumNameNullableConv();
+class _MyEnumNullableConv extends JsonConverter<MyEnum?, Object?> {
+  /// {@macro my_enum.json_converter}
+  const _MyEnumNullableConv();
 
   @override
-  enumName? fromJson(Object? json) {
+  MyEnum? fromJson(Object? json) {
     switch (json) {
-      case enumNameConv._oneName:
-        return enumName.one;
+      case MyEnumConv._oneName:
+        return MyEnum.one;
       default:
 
       return null;
@@ -53,7 +55,7 @@ class _enumNameNullableConv extends JsonConverter<enumName?, Object?> {
   }
 
   @override
-Object? toJson(enumName? object) => object?.serialized;
+  Object? toJson(MyEnum? object) => object?.serialized;
 }
 ''';
 
@@ -65,29 +67,30 @@ Object? toJson(enumName? object) => object?.serialized;
         enumName,
         fields,
         isNullable: true,
+        canUseSerializedValue: true,
         useIntValueForSerialization: true,
       );
 
       const output = '''
-/// {@template enum_name.json_converter_nullable}
-/// Serializes [enumName?] to and from json
+/// {@template my_enum.json_converter_nullable}
+/// Serializes [MyEnum?] to and from json
 ///
 /// Can be used as annotation for `json_serializable` classes
 ///
 /// ```dart
-/// @enumNameConv.nullable
-/// final enumName? myEnum;
+/// @MyEnumConv.nullable
+/// final MyEnum? myEnum;
 /// ```
 /// {@endtemplate}
-class _enumNameNullableConv extends JsonConverter<enumName?, Object?> {
-  /// {@macro enum_name.json_converter}
-  const _enumNameNullableConv();
+class _MyEnumNullableConv extends JsonConverter<MyEnum?, Object?> {
+  /// {@macro my_enum.json_converter}
+  const _MyEnumNullableConv();
 
   @override
-  enumName? fromJson(Object? json) {
+  MyEnum? fromJson(Object? json) {
     switch (json) {
-      case enumNameConv._oneName:
-        return enumName.one;
+      case MyEnumConv._oneName:
+        return MyEnum.one;
       default:
 
       return null;
@@ -95,7 +98,52 @@ class _enumNameNullableConv extends JsonConverter<enumName?, Object?> {
   }
 
   @override
-Object? toJson(enumName? object) => object?.serialized;
+  Object? toJson(MyEnum? object) => object?.serialized;
+}
+''';
+
+      expect(template.toString(), output);
+    });
+
+    test('should use map instead of serialized method', () async {
+      final template = JsonConverterTemplate(
+        enumName,
+        fields,
+        isNullable: true,
+        canUseSerializedValue: false,
+        useIntValueForSerialization: false,
+      );
+
+      const output = '''
+/// {@template my_enum.json_converter_nullable}
+/// Serializes [MyEnum?] to and from json
+///
+/// Can be used as annotation for `json_serializable` classes
+///
+/// ```dart
+/// @MyEnumConv.nullable
+/// final MyEnum? myEnum;
+/// ```
+/// {@endtemplate}
+class _MyEnumNullableConv extends JsonConverter<MyEnum?, Object?> {
+  /// {@macro my_enum.json_converter}
+  const _MyEnumNullableConv();
+
+  @override
+  MyEnum? fromJson(Object? json) {
+    switch (json) {
+      case MyEnumConv._oneName:
+        return MyEnum.one;
+      default:
+
+      return null;
+    }
+  }
+
+  @override
+  Object? toJson(MyEnum? object) => object?.map(
+    one: MyEnumConv._oneName,
+);
 }
 ''';
 
@@ -109,37 +157,38 @@ Object? toJson(enumName? object) => object?.serialized;
         enumName,
         fields,
         isNullable: false,
+        canUseSerializedValue: true,
         useIntValueForSerialization: false,
       );
 
       const output = r'''
-/// {@template enum_name.json_converter}
-/// Serializes [enumName] to and from json
+/// {@template my_enum.json_converter}
+/// Serializes [MyEnum] to and from json
 ///
 /// Can be used as annotation for `json_serializable` classes
 ///
 /// ```dart
-/// @enumNameConv()
-/// final enumName myEnum;
+/// @MyEnumConv()
+/// final MyEnum myEnum;
 /// ```
 /// {@endtemplate}
-class enumNameConv extends JsonConverter<enumName, Object> {
-  /// {@macro enum_name.json_converter}
-  const enumNameConv({this.defaultValue});
+class MyEnumConv extends JsonConverter<MyEnum, Object> {
+  /// {@macro my_enum.json_converter}
+  const MyEnumConv({this.defaultValue});
 
   /// the value to be used when no match is found
-  final enumName? defaultValue;
+  final MyEnum? defaultValue;
 
-  /// {@macro enum_name.json_converter_nullable}
-  static const nullable = _enumNameNullableConv();
+  /// {@macro my_enum.json_converter_nullable}
+  static const nullable = _MyEnumNullableConv();
 
   static const _oneName = 'one_number';
 
   @override
-  enumName fromJson(Object json) {
+  MyEnum fromJson(Object json) {
     switch (json) {
       case _oneName:
-        return enumName.one;
+        return MyEnum.one;
       default:
         if (defaultValue != null) return defaultValue!;
 
@@ -148,7 +197,7 @@ class enumNameConv extends JsonConverter<enumName, Object> {
   }
 
   @override
-Object toJson(enumName object) => object.serialized;
+  Object toJson(MyEnum object) => object.serialized;
 }
 ''';
 
@@ -160,37 +209,38 @@ Object toJson(enumName object) => object.serialized;
         enumName,
         fields,
         isNullable: false,
+        canUseSerializedValue: true,
         useIntValueForSerialization: true,
       );
 
       const output = r'''
-/// {@template enum_name.json_converter}
-/// Serializes [enumName] to and from json
+/// {@template my_enum.json_converter}
+/// Serializes [MyEnum] to and from json
 ///
 /// Can be used as annotation for `json_serializable` classes
 ///
 /// ```dart
-/// @enumNameConv()
-/// final enumName myEnum;
+/// @MyEnumConv()
+/// final MyEnum myEnum;
 /// ```
 /// {@endtemplate}
-class enumNameConv extends JsonConverter<enumName, Object> {
-  /// {@macro enum_name.json_converter}
-  const enumNameConv({this.defaultValue});
+class MyEnumConv extends JsonConverter<MyEnum, Object> {
+  /// {@macro my_enum.json_converter}
+  const MyEnumConv({this.defaultValue});
 
   /// the value to be used when no match is found
-  final enumName? defaultValue;
+  final MyEnum? defaultValue;
 
-  /// {@macro enum_name.json_converter_nullable}
-  static const nullable = _enumNameNullableConv();
+  /// {@macro my_enum.json_converter_nullable}
+  static const nullable = _MyEnumNullableConv();
 
   static const _oneName = 1;
 
   @override
-  enumName fromJson(Object json) {
+  MyEnum fromJson(Object json) {
     switch (json) {
       case _oneName:
-        return enumName.one;
+        return MyEnum.one;
       default:
         if (defaultValue != null) return defaultValue!;
 
@@ -199,7 +249,61 @@ class enumNameConv extends JsonConverter<enumName, Object> {
   }
 
   @override
-Object toJson(enumName object) => object.serialized;
+  Object toJson(MyEnum object) => object.serialized;
+}
+''';
+
+      expect(template.toString(), output);
+    });
+
+    test('should use map instead of serialized method', () async {
+      final template = JsonConverterTemplate(
+        enumName,
+        fields,
+        isNullable: false,
+        canUseSerializedValue: false,
+        useIntValueForSerialization: false,
+      );
+
+      const output = r'''
+/// {@template my_enum.json_converter}
+/// Serializes [MyEnum] to and from json
+///
+/// Can be used as annotation for `json_serializable` classes
+///
+/// ```dart
+/// @MyEnumConv()
+/// final MyEnum myEnum;
+/// ```
+/// {@endtemplate}
+class MyEnumConv extends JsonConverter<MyEnum, Object> {
+  /// {@macro my_enum.json_converter}
+  const MyEnumConv({this.defaultValue});
+
+  /// the value to be used when no match is found
+  final MyEnum? defaultValue;
+
+  /// {@macro my_enum.json_converter_nullable}
+  static const nullable = _MyEnumNullableConv();
+
+  static const _oneName = 'one_number';
+
+  @override
+  MyEnum fromJson(Object json) {
+    switch (json) {
+      case _oneName:
+        return MyEnum.one;
+      default:
+        if (defaultValue != null) return defaultValue!;
+
+        throw Exception('Unknown field: $json');
+    }
+  }
+
+  @override
+  Object toJson(MyEnum object) => object.map(
+    one: _oneName,
+);
 }
 ''';
 

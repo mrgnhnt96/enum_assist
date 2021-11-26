@@ -13,6 +13,7 @@ class JsonConverterTemplate extends TemplateCoreDetailed<_Item> {
     Iterable<FieldData> fields, {
     required this.isNullable,
     required this.useIntValueForSerialization,
+    required this.canUseSerializedValue,
   }) : super(enumName, fields);
 
   /// sets the template to return a nullable value
@@ -20,6 +21,9 @@ class JsonConverterTemplate extends TemplateCoreDetailed<_Item> {
 
   /// sets the template to return the int value for serialized
   final bool useIntValueForSerialization;
+
+  /// sets the template to return the serialized value or use the map method
+  final bool canUseSerializedValue;
 
   String get _possNullType => isNullable ? '?' : '';
   String get _possNullName => isNullable ? 'Nullable' : '';
@@ -116,10 +120,21 @@ class JsonConverterTemplate extends TemplateCoreDetailed<_Item> {
             )
             ..writeln()
             ..writelnTab('@override', classTab)
-            ..writeln(
-              '$_type toJson($_enumType object) => '
-              'object$_possNullType.serialized;',
+            ..writeTab('$_type toJson($_enumType object) => ', classTab);
+
+          if (canUseSerializedValue) {
+            buffer.writeln('object$_possNullType.serialized;');
+          } else {
+            buffer.writeobj(
+              'object$_possNullType.map',
+              open: '(',
+              close: ');',
+              includeSpaceBetweenOpen: false,
+              body: (mapBuf, mapTab) {
+                mapBuf.writelnTab(map((i) => i.mapString), classTab + mapTab);
+              },
             );
+          }
         },
       );
 
@@ -167,4 +182,6 @@ class _Item extends FieldTemplate<FieldData> {
   String fromCaseItem(String caseTab, String returnTab) => '''
 $caseTab${caseString(privateField)}
 $returnTab$fromReturnString''';
+
+  String get mapString => '${field.fieldName}: $_className$privateField,';
 }

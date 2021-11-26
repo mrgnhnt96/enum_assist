@@ -60,6 +60,11 @@ class EnumAssist {
   /// {@macro enum_assist_annotation.enum_assist}
   const EnumAssist({
     this.createJsonConv,
+    this.createName,
+    this.createDescription,
+    this.createToInt,
+    this.createReadable,
+    this.createSerialized,
     this.serializedFormat,
     this.useDocCommentAsDescription,
     this.useIntValueForSerialization,
@@ -68,14 +73,56 @@ class EnumAssist {
   /// {@template enum_assist_annotation.enum_assist.create_json_conv}
   /// Whether to create a json converter for this enum
   ///
-  /// Can be used to convert between the enum
-  /// and its string (serialized) representation.
-  ///
   /// If false, the json converter will not be generated.
   ///
   /// __default:__ `true`
   /// {@endtemplate}
   final bool? createJsonConv;
+
+  /// {@template enum_assist_annotation.enum_assist.createName}
+  /// Whether to create the name for this enum
+  ///
+  /// If false, the name method will not be generated
+  ///
+  /// __default:__ `true`
+  /// {@endtemplate}
+  final bool? createName;
+
+  /// {@template enum_assist_annotation.enum_assist.createDescription}
+  /// Whether to create the description for this enum
+  ///
+  /// If false, the description method will not be generated
+  ///
+  /// __default:__ `true`
+  /// {@endtemplate}
+  final bool? createDescription;
+
+  /// {@template enum_assist_annotation.enum_assist.createToInt}
+  /// Whether to create the toInt for this enum
+  ///
+  /// If false, the toInt method will not be generated
+  ///
+  /// __default:__ `true`
+  /// {@endtemplate}
+  final bool? createToInt;
+
+  /// {@template enum_assist_annotation.enum_assist.createReadable}
+  /// Whether to create the readable for this enum
+  ///
+  /// If false, the readable method will not be generated
+  ///
+  /// __default:__ `true`
+  /// {@endtemplate}
+  final bool? createReadable;
+
+  /// {@template enum_assist_annotation.enum_assist.createSerialized}
+  /// Whether to create the serialized for this enum
+  ///
+  /// If false, the serialized method will not be generated
+  ///
+  /// __default:__ `true`
+  /// {@endtemplate}
+  final bool? createSerialized;
 
   /// {@template enum_assist_annotation.enum_assist.serialized_format}
   /// The format of the enum value when serialized.
