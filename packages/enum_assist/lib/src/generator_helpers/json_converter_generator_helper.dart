@@ -11,6 +11,7 @@ abstract class JsonConverterGeneratorHelper implements HelperCore {
         fieldData,
         isNullable: false,
         useIntValueForSerialization: config.useIntValueForSerialization,
+        canUseSerializedValue: config.createSerialized,
       ).toString())
       ..writeln()
       ..writeln(JsonConverterTemplate(
@@ -18,6 +19,7 @@ abstract class JsonConverterGeneratorHelper implements HelperCore {
         fieldData,
         isNullable: true,
         useIntValueForSerialization: config.useIntValueForSerialization,
+        canUseSerializedValue: config.createSerialized,
       ).toString());
 
     return '$buffer';
