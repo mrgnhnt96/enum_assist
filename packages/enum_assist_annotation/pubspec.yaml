@@ -1,5 +1,5 @@
 name: enum_assist_annotation
-version: 0.0.1
+version: 0.1.0
 description: >-
   Annotations for the `enum_assist` code-generator.
 repository: https://github.com/mrgnhnt96/enum_assist/tree/main/packages/enum_assist_annotation
