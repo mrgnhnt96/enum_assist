@@ -11,19 +11,30 @@ void main() {
 
   Settings getSettings() => Settings.resolve(settings);
 
-  group('#create_json_conv', () {
-    const key = 'create_json_conv';
+  final createKeys = {
+    'create_json_conv': () => getSettings().config.createJsonConv,
+    'create_name': () => getSettings().config.createName,
+    'create_description': () => getSettings().config.createDescription,
+    'create_to_int': () => getSettings().config.createToInt,
+    'create_readable': () => getSettings().config.createReadable,
+    'create_serialized': () => getSettings().config.createSerialized,
+  };
 
-    test('should return true', () {
-      settings[key] = true;
-      expect(getSettings().config.createJsonConv, isTrue);
-    });
+  for (final entries in createKeys.entries) {
+    final key = entries.key;
 
-    test('should return false', () {
-      settings[key] = false;
-      expect(getSettings().config.createJsonConv, isFalse);
+    group('#$key', () {
+      test('should return true', () {
+        settings[key] = true;
+        expect(entries.value(), isTrue);
+      });
+
+      test('should return false', () {
+        settings[key] = false;
+        expect(entries.value(), isFalse);
+      });
     });
-  });
+  }
 
   group('#serialized_format', () {
     const key = 'serialized_format';
