@@ -1,3 +1,8 @@
+# 0.1.0+1 (11/27/2021)
+
+Fix:
+- Update build.yaml options in Readme
+
 # 0.1.0 (11/26/2021)
 
 Feature:

@@ -1,7 +1,7 @@
 name: enum_assist_annotation
-version: 0.1.0
+version: 0.1.0+1
 description: >-
-  Annotations for the `enum_assist` code-generator.
+  Seamlessly generate extension methods and json conversion classes for your enums using enum_assist
 repository: https://github.com/mrgnhnt96/enum_assist/tree/main/packages/enum_assist_annotation
 homepage: https://github.com/mrgnhnt96/enum_assist
 
