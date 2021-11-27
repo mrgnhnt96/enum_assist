@@ -382,6 +382,11 @@ targets:
           # - false
           # default: true
           create_json_conv: true
+          create_name: true
+          create_description: true
+          create_to_int: true
+          create_readable: true
+          create_serialized: true
 
           # possible values:
           # - camel
